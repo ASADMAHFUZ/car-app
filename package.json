@@ -1,0 +1,15 @@
+{
+  "name": "autoplaza-ch",
+  "private": true,
+  "version": "1.0.0",
+  "description": "AutoPlaza.ch mobile web app (React)",
+  "type": "module",
+  "scripts": {
+    "dev": "node serve.js",
+    "build": "node build.js"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

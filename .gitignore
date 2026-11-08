@@ -1,0 +1,5 @@
+node_modules/
+.tools/
+dist/
+*.tgz
+_app_src_extract/
