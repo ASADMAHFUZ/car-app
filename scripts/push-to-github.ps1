@@ -23,9 +23,9 @@ if (-not $git) {
 if ($git -is [string]) { $git = (Get-Item $git).FullName }
 
 function Invoke-Git {
-    param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Args)
-    & $git @Args
-    if ($LASTEXITCODE -ne 0) { throw "git $($Args -join ' ') failed with $LASTEXITCODE" }
+    param([Parameter(ValueFromRemainingArguments = $true)][string[]]$GitArgs)
+    & $git @GitArgs
+    if ($LASTEXITCODE -ne 0) { throw "git $($GitArgs -join ' ') failed with $LASTEXITCODE" }
 }
 
 if (-not (Test-Path "$Root\.git")) {

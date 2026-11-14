@@ -2,6 +2,9 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type RefObjec
 import "./App.css";
 
 import logo from "./assets/logo-figma.png";
+import splashLogo from "./assets/splash-logo.png";
+import authEyeIcon from "./assets/auth-eye.svg";
+import authEyeOffIcon from "./assets/auth-eye-off.svg";
 import hero from "./assets/hero.jpg";
 import profilePhoto from "./assets/profile-photo.png";
 import compareIcon from "./assets/compare.svg";
@@ -37,7 +40,20 @@ import profileNavInactiveIcon from "./assets/profile-nav-inactive.svg";
 import profileNavActiveIcon from "./assets/profile-nav-active.svg";
 import profileMenuFavourite from "./assets/profile-menu-favourite.svg";
 import profileMenuSettings from "./assets/profile-menu-settings.svg";
+import profileMenuCars from "./assets/profile-menu-cars.svg";
+import profileMenuTestDrive from "./assets/profile-menu-testdrive.svg";
+import profileMenuBilling from "./assets/profile-menu-billing.svg";
 import profileMenuLanguage from "./assets/profile-menu-language.svg";
+import languageCheckIcon from "./assets/language-check.svg";
+import languageRadioIcon from "./assets/language-radio.svg";
+import aboutUsIntro from "./assets/about-us-intro.jpg";
+import aboutUsStory from "./assets/about-us-story.jpg";
+import aboutUsGoal from "./assets/about-us-goal.jpg";
+import blogByd from "./assets/blog-byd.webp";
+import blogSkodaEpiq from "./assets/blog-skoda-epiq.webp";
+import blogFerrari from "./assets/blog-ferrari.webp";
+import blogTeslaRoadster from "./assets/blog-tesla-roadster.webp";
+import blogSearchIcon from "./assets/blog-search.svg";
 import profileMenuChevron from "./assets/profile-menu-chevron.svg";
 import profileMenuAbout from "./assets/profile-menu-about.svg";
 import profileMenuBlog from "./assets/profile-menu-blog.svg";
@@ -45,12 +61,55 @@ import profileMenuContact from "./assets/profile-menu-contact.svg";
 import profileMenuTerms from "./assets/profile-menu-terms.svg";
 import profileMenuPrivacy from "./assets/profile-menu-privacy.svg";
 import profileMenuSignOut from "./assets/profile-menu-signout.svg";
+import signOutIcon from "./assets/sign-out-icon.svg";
+import contactEmailIcon from "./assets/contact-email.svg";
+import contactClockIcon from "./assets/contact-clock.svg";
+import contactLocationIcon from "./assets/contact-location.svg";
+import { TERMS_CONDITIONS_BODY, TERMS_CONDITIONS_CONTACT } from "./termsConditions";
+import { PRIVACY_POLICY_BODY, PRIVACY_POLICY_META } from "./privacyPolicy";
 import settingsLockIcon from "./assets/settings-lock.svg";
 import settingsEyeIcon from "./assets/settings-eye.svg";
 import settingsTrashIcon from "./assets/settings-trash.svg";
 import planLayersIcon from "./assets/plan-layers.svg";
-import planBenefitIcon from "./assets/plan-benefit.svg";
-
+import planBenefitFeesIcon from "./assets/plan-benefit-fees.svg";
+import planBenefitVisibleIcon from "./assets/plan-benefit-visible.svg";
+import planBenefitPaymentIcon from "./assets/plan-benefit-payment.svg";
+import subPlanCheckIcon from "./assets/subscription/check.svg";
+import subPlanLockSmIcon from "./assets/subscription/lock-sm.svg";
+import subPlanLockWhyIcon from "./assets/subscription/lock-why.svg";
+import subPlanLockWhyBlueIcon from "./assets/subscription/lock-why-blue.svg";
+import subPlanCarIcon from "./assets/subscription/car.svg";
+import subPlanCarBlueIcon from "./assets/subscription/car-blue.svg";
+import subPlanPaymentIcon from "./assets/subscription/payment.svg";
+import subPlanPaymentBlueIcon from "./assets/subscription/payment-blue.svg";
+import billingRefreshIcon from "./assets/subscription/refresh.svg";
+import paymentStripeIcon from "./assets/payment/stripe.svg";
+import paymentPaypalIcon from "./assets/payment/paypal.svg";
+import paymentFastpayIcon from "./assets/payment/fastpay.svg";
+import paymentSslcommerzIcon from "./assets/payment/sslcommerz.svg";
+import sellMenuIcon from "./assets/sell-menu.svg";
+import myCarsSearchIcon from "./assets/my-cars-search.svg";
+import myCarsSortIcon from "./assets/my-cars-sort.svg";
+import addVehicleCameraIcon from "./assets/add-vehicle-camera.svg";
+import addVehicleGalleryIcon from "./assets/add-vehicle-gallery.svg";
+import addVehicleChevronIcon from "./assets/add-vehicle-chevron.svg";
+import vehicleActionViewIcon from "./assets/vehicle-action-view.svg";
+import vehicleActionEditIcon from "./assets/vehicle-action-edit.svg";
+import vehicleActionPauseIcon from "./assets/vehicle-action-pause.svg";
+import vehicleActionSoldIcon from "./assets/vehicle-action-sold.svg";
+import vehicleActionDeleteIcon from "./assets/vehicle-action-delete.svg";
+import tdrCalendarIcon from "./assets/tdr-calendar.svg";
+import tdrDetailProfileIcon from "./assets/tdr-detail-profile.svg";
+import tdrDetailMailIcon from "./assets/tdr-detail-mail.svg";
+import tdrDetailCallIcon from "./assets/tdr-detail-call.svg";
+import tdrDetailCarIcon from "./assets/tdr-detail-car.svg";
+import tdrDetailCalendarIcon from "./assets/tdr-detail-calendar.svg";
+import tdrDetailRejectIcon from "./assets/tdr-detail-reject.svg";
+import tdrDetailAcceptIcon from "./assets/tdr-detail-accept.svg";
+import listingPauseIcon from "./assets/listing-pause-icon.svg";
+import listingDialogCloseIcon from "./assets/listing-dialog-close.svg";
+import listingDeleteAlertIcon from "./assets/listing-delete-alert.svg";
+import listingSoldCheckIcon from "./assets/listing-sold-check.svg";
 import brandBmw from "./assets/brand-bmw.png";
 import brandAudi from "./assets/brand-audi.png";
 import brandMercedes from "./assets/brand-mercedes.svg";
@@ -117,6 +176,30 @@ const MODELS: Record<BrandName, string[]> = {
   Volkswagen: ["Golf", "Tiguan"],
   Nissan: ["Qashqai", "Leaf"],
 };
+
+const BRAND_DEFAULT_IMAGE: Record<BrandName, string> = {
+  BMW: carBmwM4,
+  Audi: carAudi,
+  Mercedes: carMercedes,
+  Toyota: carBmwX5,
+  Honda: carBmwX3,
+  Ford: carBmw330i,
+  Volkswagen: carBmwX1,
+  Nissan: carBmwI4,
+};
+
+const VEHICLE_CONDITIONS = ["New", "Used", "Demonstration", "Classic"] as const;
+const VEHICLE_ACCIDENT = ["No", "Yes", "Repaired"] as const;
+const VEHICLE_BODY_TYPES = ["Sedan", "SUV", "Wagon", "Coupe", "Convertible", "Hatchback", "Van"] as const;
+const VEHICLE_WARRANTY = ["No warranty", "Factory warranty", "Dealer warranty"] as const;
+const VEHICLE_SERVICE = ["Full service history", "Partial", "None", "Unknown"] as const;
+const VEHICLE_IMPORT = ["No", "Yes"] as const;
+const VEHICLE_FUEL = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid", "Gas"] as const;
+const VEHICLE_DRIVE = ["FWD", "RWD", "AWD", "4x4"] as const;
+const VEHICLE_TRANS = ["Automatic", "Manual", "Semi-automatic"] as const;
+const VEHICLE_GEARS = ["5", "6", "7", "8", "9", "CVT"] as const;
+const VEHICLE_CYLINDERS = ["3", "4", "5", "6", "8", "10", "12"] as const;
+const VEHICLE_COLORS = ["Black", "White", "Silver", "Grey", "Blue", "Red", "Green", "Other"] as const;
 
 const PRICES = [
   { label: "CHF 20,000", value: 20000 },
@@ -643,9 +726,39 @@ type Screen =
   | "comparisons"
   | "my-profile"
   | "my-favourites"
+  | "my-cars"
+  | "test-drive-requests"
+  | "test-drive-request-details"
+  | "add-vehicle"
+  | "edit-vehicle"
   | "app-settings"
-  | "notifications";
+  | "select-language"
+  | "about-us"
+  | "contact"
+  | "terms"
+  | "privacy"
+  | "blog"
+  | "blog-article"
+  | "notifications"
+  | "subscription-plan"
+  | "subscription-billing";
 type SimpleSort = "price-asc" | "price-desc";
+type BillingInvoice = {
+  id: string;
+  dateLabel: string;
+  amountLabel: string;
+  description: string;
+  status: "paid";
+};
+type BillingPlan = {
+  name: string;
+  amountLabel: string;
+  periodSuffix: string;
+  periodStart: string;
+  nextRenewal: string;
+  autoRenewal: "Active" | "Off";
+  slotLimit: number;
+};
 type SimpleView = "full" | "filters";
 
 type AppNotification = {
@@ -726,29 +839,261 @@ const PROFILE_DEFAULTS = {
   email: "md.asadujjaman04@gmail.com",
   phone: "",
   gender: "",
+  occupation: "",
   birthDate: "",
   address: "",
   city: "",
   zip: "",
-  country: "Schweiz",
+  country: "Switzerland",
 };
+
+const PROFILE_GENDERS = ["Male", "Female", "Other", "Prefer not to say"];
+
+const PROFILE_CITIES = [
+  "Zürich",
+  "Bern",
+  "Genève",
+  "Basel",
+  "Lausanne",
+  "Luzern",
+  "St. Gallen",
+  "Winterthur",
+];
+
+const PROFILE_COUNTRIES = ["Switzerland", "Germany", "France", "Italy", "Austria"];
 
 function profileHubDisplayName(fullName: string) {
   const parts = fullName.replace(/^Md\.\s*/i, "").trim().split(/\s+/).filter(Boolean);
   return parts.find((part) => part.length > 3) ?? parts[0] ?? "Guest";
 }
 
-const PROFILE_MENU_PRIMARY = [
-  { id: "favourites", label: "My Favourite", icon: profileMenuFavourite },
-  { id: "settings", label: "App Settings", icon: profileMenuSettings },
-  { id: "language", label: "Select Language", icon: profileMenuLanguage, meta: "En" },
+type AppLanguageCode = "EN" | "DE" | "FR" | "IT";
+
+const APP_LANGUAGES: {
+  code: AppLanguageCode;
+  label: string;
+  subtitle: string;
+}[] = [
+  { code: "EN", label: "English", subtitle: "English" },
+  { code: "DE", label: "German", subtitle: "English" },
+  { code: "FR", label: "French", subtitle: "English" },
+  { code: "IT", label: "Italian", subtitle: "English" },
+];
+
+function appLanguageMenuMeta(code: AppLanguageCode) {
+  return code.charAt(0) + code.slice(1).toLowerCase();
+}
+
+const PROFILE_MENU_SELLER = [
+  { id: "cars", label: "My Cars", icon: profileMenuCars },
+  { id: "testdrive", label: "Test Drive Requests", icon: profileMenuTestDrive },
+  { id: "billing", label: "Subscription & Billing", icon: profileMenuBilling },
 ] as const;
 
+const PROFILE_MENU_PRIMARY = [
+  { id: "favourites", label: "My Favourites", icon: profileMenuFavourite },
+  { id: "settings", label: "App Settings", icon: profileMenuSettings },
+  { id: "language", label: "Select Language", icon: profileMenuLanguage },
+] as const;
+
+type AccountRole = "buyer" | "seller" | "dealer";
+type SellerListingStatus = "active" | "inactive" | "sold";
+type MyCarsStatusFilter = "all" | SellerListingStatus;
+type TestDriveRequestStatus = "upcoming" | "accepted" | "rejected" | "completed";
+type TestDriveRequest = {
+  id: string;
+  number: number;
+  status: TestDriveRequestStatus;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  customerAvatar: string;
+  vehicleId: string;
+  vehicleTitle: string;
+  vehicleSubtitle: string;
+  vehicleBrand: string;
+  vehicleModel: string;
+  vehicleYear: string;
+  vehicleImage: string;
+  vehiclePrice: number;
+  dateLabel: string;
+  dateDetailLabel: string;
+  driveDateIso: string;
+  cancelledByCustomer: boolean;
+};
+
+function parseDriveDateEnd(isoOrLabel: string) {
+  const isoMatch = isoOrLabel.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (isoMatch) {
+    return new Date(
+      Number(isoMatch[1]),
+      Number(isoMatch[2]) - 1,
+      Number(isoMatch[3]),
+      23,
+      59,
+      59,
+      999,
+    );
+  }
+  const parsed = new Date(isoOrLabel);
+  if (Number.isNaN(parsed.getTime())) return null;
+  parsed.setHours(23, 59, 59, 999);
+  return parsed;
+}
+
+function isTestDriveRequestLocked(request: TestDriveRequest) {
+  if (request.status !== "accepted") return false;
+  const end = parseDriveDateEnd(request.driveDateIso || request.dateDetailLabel);
+  if (!end) return true;
+  return Date.now() <= end.getTime();
+}
+
+function findActiveVehicleTestDriveLock(
+  requests: TestDriveRequest[],
+  vehicleId: string,
+  excludeRequestId?: string,
+) {
+  return (
+    requests.find(
+      (item) =>
+        item.vehicleId === vehicleId &&
+        item.id !== excludeRequestId &&
+        isTestDriveRequestLocked(item),
+    ) ?? null
+  );
+}
+type ListingActionDialog =
+  | { type: "pause"; vehicleId: string }
+  | { type: "sold"; vehicleId: string }
+  | { type: "delete"; vehicleId: string; step: "confirm" | "otp" };
+type MyCarsSort = "newest" | "oldest" | "price-asc" | "price-desc";
+type MyCarsPageSize = 10 | 25 | 50 | 100;
+
+function accountRoleLabel(role: AccountRole) {
+  if (role === "dealer") return "Dealer";
+  if (role === "seller") return "Seller";
+  return "Buyer";
+}
+
+function accountRoleBadgeClass(role: AccountRole) {
+  if (role === "dealer") return "profile-role profile-role-dealer";
+  if (role === "seller") return "profile-role profile-role-seller";
+  return "profile-role";
+}
+
+const ABOUT_US_SECTIONS = [
+  {
+    id: "about",
+    lead: "About",
+    accent: "Us",
+    image: aboutUsIntro,
+    tall: true,
+    body: `Welcome to our automotive platform – your reliable partner for all things related to vehicles, mobility, and driving pleasure. We connect buyers, sellers, and car enthusiasts, creating a modern platform for simple, secure, and transparent vehicle trading. Whether you're looking for a new or used car, financing, leasing, or personalized advice, you'll find everything you need in one place. Our goal is to make buying and selling a car as straightforward as possible. With innovative technologies, a user-friendly platform, and personalized service, we support our customers every step of the way. Trust, quality, and customer satisfaction are our top priorities. That's why we work daily to offer the best digital solution for modern mobility. Find your next vehicle – quickly, easily, and reliably.`,
+  },
+  {
+    id: "story",
+    lead: "Our",
+    accent: "story",
+    image: aboutUsStory,
+    tall: false,
+    body: `As newcomers to the automotive industry, we founded our platform with a clear vision: to make the vehicle market more modern, transparent, and efficient. What began as an idea fueled by a passion for cars and digital innovation quickly evolved into a platform that seamlessly connects buyers and sellers. From the outset, our goal has been to create a user-friendly solution that prioritizes trust, quality, and service. Even though we are still at the beginning of our journey, we work every day to set new standards in digital vehicle trading. With fresh ideas, cutting-edge technology, and a dedicated team, we aim to actively shape the future of mobility. Our story is just beginning – and we look forward to continuing to grow together with our customers.`,
+  },
+  {
+    id: "goal",
+    lead: "Our",
+    accent: "goal",
+    image: aboutUsGoal,
+    tall: false,
+    body: `As a young and modern automotive platform, our goal is to make car trading simpler, more transparent, and accessible to everyone. We want to help people quickly and easily find the right vehicle or sell their car safely. We rely on trust, modern technologies, and customer-oriented service. Our focus is on creating a platform that not only connects people with vehicles but is also a reliable partner for all mobility-related questions. Step by step, we are working to offer innovative solutions and help shape the future of digital car trading. We are still at the beginning – but our goal is clear: to build a strong, modern, and trustworthy platform for the next generation of car traders.`,
+  },
+] as const;
+
+type BlogCategory = "News";
+
+type BlogArticle = {
+  id: string;
+  date: string;
+  category: BlogCategory;
+  title: string;
+  excerpt: string;
+  image: string;
+  body: string[];
+};
+
+const BLOG_ARTICLES: BlogArticle[] = [
+  {
+    id: "byd-paris",
+    date: "01.10.2026",
+    category: "News",
+    title: "BYD stock: New model at the Paris Motor Show",
+    excerpt:
+      "Riding the wave of a recovery in Chinese automotive stocks, BYD shares rose 4.2 percent on Friday, closing at €8.65. After...",
+    image: blogByd,
+    body: [
+      "Riding the wave of a recovery in Chinese automotive stocks, BYD shares rose 4.2 percent on Friday, closing at €8.65. After a volatile trading year, investors are looking closely at BYD’s next model launches in Europe.",
+      "At the Paris Motor Show, BYD presented a new concept that highlights the brand’s push into premium electric mobility. Analysts say strong order books in China and expanding dealer networks in Switzerland could support further growth.",
+      "AutoPlaza will continue to track BYD listings as more Swiss dealers add electric models to their showrooms.",
+    ],
+  },
+  {
+    id: "skoda-epiq",
+    date: "10.10.2026",
+    category: "News",
+    title: "The new 100% electric Skoda Epiq",
+    excerpt:
+      'The first 100% electric city SUV crossover – perfect for the city and beyond. Say "Ooooh," feel "Wooow," drive the Epiq. The...',
+    image: blogSkodaEpiq,
+    body: [
+      'The first 100% electric city SUV crossover – perfect for the city and beyond. Say "Ooooh," feel "Wooow," drive the Epiq. The new Skoda Epiq brings a fresh silhouette to urban electric mobility with a focus on comfort, range, and straightforward technology.',
+      "Built on a dedicated electric platform, the Epiq combines a compact footprint with generous interior space. Skoda targets young families and commuters who need a practical daily car that still feels modern and refined on longer weekend trips.",
+      "Fast charging is a core part of the package: the brand promises competitive DC charging times and clear range figures for mixed city and motorway use. For Swiss buyers, transparent WLTP data and winter-range guidance matter as much as the sticker price.",
+      "Design-wise, the Epiq follows Skoda's new electric visual language—clean surfaces, a confident stance, and functional details such as useful storage points and an intuitive cockpit layout.",
+      "Skoda positions the Epiq as an accessible entry into its EV line-up within the wider Volkswagen Group portfolio. That means shared engineering standards, proven safety systems, and software updates over the life of the vehicle.",
+      "Dealers across Switzerland are preparing demos and pre-order lists as homologation wraps up. AutoPlaza will list Epiq offers as soon as Swiss showrooms confirm pricing and first delivery windows.",
+      "If you are comparing city EVs this season, the Epiq is worth a test drive for its balance of space, charging practicality, and everyday usability—whether your priority is school runs, commuting, or Alpine weekend routes.",
+    ],
+  },
+  {
+    id: "ferrari-maranello",
+    date: "10.10.2026",
+    category: "News",
+    title: "MADE IN MARANELLO",
+    excerpt:
+      "Designed, engineered, and manufactured in Maranello. The home of Ferrari expertise and excellence. 100% FERRARI. The electri...",
+    image: blogFerrari,
+    body: [
+      "Designed, engineered, and manufactured in Maranello. The home of Ferrari expertise and excellence. 100% FERRARI. The electric era at Ferrari balances tradition with new performance benchmarks.",
+      "Maranello remains the centre for development, testing, and craftsmanship. Each model reflects decades of motorsport experience translated into road-legal engineering.",
+      "Collectors and enthusiasts in Switzerland continue to follow Ferrari’s hybrid and electric strategy as new models are announced.",
+    ],
+  },
+  {
+    id: "tesla-roadster",
+    date: "22.10.2026",
+    category: "News",
+    title: "Tesla Roadster II unveiled: Quite a leap – thanks to rocket technology",
+    excerpt:
+      "Tesla unveiled the Roadster II with active ground effect, which presses the car to the road, and cold gas thrusters that allo...",
+    image: blogTeslaRoadster,
+    body: [
+      "Tesla is showing off the Roadster II with active ground effect, which presses the car to the ground, and cold gas thrusters that allow it to fly a little.",
+      "“This car really sucks,” said Elon Musk at the unveiling of the Tesla Roadster. He meant it literally: The Tesla Roadster uses a fan to suck itself to the road, generating a g-force of up to 2 g. The ground effect, which race cars have used for decades to generate downforce in fast corners, is artificially generated in this Tesla. With cold gas thrusters, the Roadster can even jump short distances. A prototype demonstrated this at the presentation: This thing is a cross between SpaceX rockets and the 80s TV series Knight Rider.",
+      "Elon Musk has announced that production will begin in 2028, with Tesla providing details on its official Roadster website. There will be three variants: the Tesla Roadster Performance, the Thrust, and the Rocket. To reserve a Roadster Performance with active ground effect, an initial deposit of $5,000 is required via credit card, with an additional $45,000 to be transferred within ten days. The final price of the models has not yet been revealed.",
+      "Reaching 60 mph in 0.81 seconds, the Thrust Roadster also features a horizontal acceleration booster powered by cold-gas engines. The reservation fee for this model rises to a total of $250,000. The promise: a sprint to 60 mph in under a second. During the presentation, the prototype achieved 0.81 seconds, although this likely refers to 60 mph (96 km/h) rather than 100 km/h.",
+      "The Tesla Roadster Rocket, capable of jumping, is produced by the company only “by invitation,” and this version is not approved for public road use. It thus serves as a fantasy or a mobile experiment for a select few of the super-rich. Elon Musk’s team wants to bring a piece of the aerospace company SpaceX to Earth. Designer Franz von Holzhausen has created an angular form whose surfaces are intended to evoke associations with space travel.",
+      "Upside Down Thanks to Gravity: Let’s return to reality and put the Tesla Roadster into perspective: Almost two decades after the brand’s first electric car, the Roadster I based on the Lotus Elise, Tesla is promising the Roadster II. The concept car for a successor, shown around ten years ago, was never produced. Instead, it’s now supposed to be a kind of electric Lamborghini with active ground effect.",
+      "The claim that it can hang upside down with 2g of gravity is believable. This system is well-known and proven: The McMurtry Speirling first caused a sensation five years ago at the Goodwood Festival of Speed in Great Britain. The Speirling accelerates to 60 mph in 1.4 seconds, and Tesla was clearly inspired by it.",
+      "Tesla hasn’t yet revealed exactly how the cold gas engines in the Roadster Thrust and Rocket work – for example, which gas is used. What is clear is that Tesla, through SpaceX, has mastered the microcontrol of rockets. The jumps and rotations around its own axis, which the Roadster Rocket prototype demonstrated at its unveiling and which resembled a skateboard, are real.",
+      "Musk: “Where we’re going, we don’t need wheels.” As has often been the case in the past, it’s worth paying attention to what Elon Musk says in passing. He clarifies that, in the long term, the Roadster is the only Tesla that can be driven by humans. Tesla is exclusively focused on autonomous vehicles. The Roadster’s steering wheel operates via steer-by-wire, meaning without a mechanical connection; this technology is considered a prerequisite for either manual or autonomous driving. The Roadster’s top speed could reach Mach 0.5 and even higher, says Elon Musk, which is half the speed of sound, and he adds: “Where we’re going, we don’t need wheels.”",
+    ],
+  },
+];
+
 const PROFILE_MENU_SECONDARY = [
-  { id: "about", label: "About US", icon: profileMenuAbout },
+  { id: "about", label: "About Us", icon: profileMenuAbout },
   { id: "blog", label: "Blog", icon: profileMenuBlog },
   { id: "contact", label: "Contact", icon: profileMenuContact },
-  { id: "terms", label: "Teams & Conditions", icon: profileMenuTerms },
+  { id: "terms", label: "Terms & Conditions", icon: profileMenuTerms },
   { id: "privacy", label: "Privacy policy", icon: profileMenuPrivacy },
 ] as const;
 
@@ -810,16 +1155,162 @@ const PLAN_BENEFITS = [
   {
     title: "No hidden fees",
     copy: "Transparent pricing in Swiss francs (CHF). No automatic renewal for private listings – you decide.",
+    icon: planBenefitFeesIcon,
   },
   {
     title: "Instantly online & visible",
     copy: "Your listing goes live immediately after checkout. Your vehicles will be presented to thousands of Swiss car buyers.",
+    icon: planBenefitVisibleIcon,
   },
   {
     title: "Secure Stripe payment",
     copy: "Pay with all common payment methods: credit card, TWINT, Apple Pay or Google Pay with standard bank encryption.",
+    icon: planBenefitPaymentIcon,
   },
 ] as const;
+
+const PRIVATE_PLAN_FEATURES = [
+  "1 vehicle listing",
+  "30 days online",
+  "Unlimited vehicle photos",
+  "Detailed vehicle description",
+  "Edit listing at any time",
+  "Be contacted by interested buyers",
+  "Receive test drive requests",
+  "Fair and transparent pricing",
+] as const;
+
+const DEALER_PLAN_FEATURES = [
+  "Bulk vehicle listings",
+  "Priority placement in search results",
+  "Dealer profile with branding",
+  "Performance analytics dashboard",
+  "Dedicated account manager",
+  "Unlimited photos per vehicle",
+  "Fair and transparent pricing",
+] as const;
+
+const DEALER_VEHICLE_OPTIONS = [5, 15, 10, 20, 30, 25, 50, 100, 150, 200, 250, 300, 400, 500, 1000] as const;
+
+const DEALER_PLAN_PRICES: Record<number, number> = {
+  5: 49,
+  10: 89,
+  15: 119,
+  20: 149,
+  25: 179,
+  30: 209,
+  50: 299,
+  100: 499,
+  150: 699,
+  200: 899,
+  250: 1099,
+  300: 1299,
+  400: 1599,
+  500: 1899,
+  1000: 2999,
+};
+
+type SubscriptionAudience = "private" | "dealers";
+
+type PaymentGatewayId = "stripe" | "paypal" | "fastpay" | "sslcommerz";
+type PaymentGatewayStep = "choose" | "pay";
+
+const PAYMENT_GATEWAYS: {
+  id: PaymentGatewayId;
+  name: string;
+  subtitle: string;
+  tone: "stripe" | "paypal" | "fastpay" | "ssl";
+  icon: string;
+}[] = [
+  {
+    id: "stripe",
+    name: "Stripe",
+    subtitle: "Cards, Apple Pay, Google Pay",
+    tone: "stripe",
+    icon: paymentStripeIcon,
+  },
+  {
+    id: "paypal",
+    name: "PayPal",
+    subtitle: "Pay with your PayPal balance",
+    tone: "paypal",
+    icon: paymentPaypalIcon,
+  },
+  {
+    id: "fastpay",
+    name: "FastPay",
+    subtitle: "Quick mobile wallet checkout",
+    tone: "fastpay",
+    icon: paymentFastpayIcon,
+  },
+  {
+    id: "sslcommerz",
+    name: "SSLCommerz",
+    subtitle: "Local cards, bKash & more",
+    tone: "ssl",
+    icon: paymentSslcommerzIcon,
+  },
+];
+
+function formatDealerPrice(count: number) {
+  const amount = DEALER_PLAN_PRICES[count] ?? Math.round(count * 8.9);
+  return amount.toFixed(2);
+}
+
+const DEMO_BILLING_PLAN: BillingPlan = {
+  name: "DEALER PRO",
+  amountLabel: "CHF 200.00",
+  periodSuffix: "/ 30 days",
+  periodStart: "Oct 5, 2026",
+  nextRenewal: "Nov 5, 2026",
+  autoRenewal: "Active",
+  slotLimit: 200,
+};
+
+const DEMO_BILLING_INVOICES: BillingInvoice[] = [
+  {
+    id: "YZA80AMK-0001",
+    dateLabel: "Oct 5, 2026",
+    amountLabel: "CHF 200.00",
+    description: "1 × DEALER PRO (at CHF 200.00 / 30 days)",
+    status: "paid",
+  },
+  {
+    id: "YZA32AMK-01251",
+    dateLabel: "Oct 5, 2026",
+    amountLabel: "CHF 200.00",
+    description: "1 × DEALER PRO (at CHF 200.00 / 30 days)",
+    status: "paid",
+  },
+];
+
+function formatBillingDateLabel(date = new Date()) {
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function addBillingDays(date: Date, days: number) {
+  const next = new Date(date);
+  next.setDate(next.getDate() + days);
+  return next;
+}
+
+function formatCardNumberInput(value: string) {
+  return value
+    .replace(/\D/g, "")
+    .slice(0, 16)
+    .replace(/(\d{4})(?=\d)/g, "$1 ")
+    .trim();
+}
+
+function formatCardExpiryInput(value: string) {
+  const digits = value.replace(/\D/g, "").slice(0, 4);
+  if (digits.length <= 2) return digits;
+  return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+}
 
 const DESTINATIONS: Destination[] = [
   {
@@ -1179,14 +1670,49 @@ function buildCompareVehicle(car: Listing, dealer: Dealer): CompareVehicle {
   };
 }
 
-function getListingExtras(car: Listing, dealer: Dealer) {
+type ListingDetailOverride = Partial<{
+  bodyType: string;
+  gearbox: string;
+  fuel: string;
+  power: string;
+  drive: string;
+  description: string;
+  color: string;
+  doors: string;
+  seats: string;
+  condition: string;
+  accident: string;
+  directImport: string;
+  serviceHistory: string;
+  warranty: string;
+  lastMfk: string;
+  fuelConsumption: string;
+  co2: string;
+  euroStandard: string;
+  battery: string;
+  range: string;
+  curbWeight: string;
+  totalWeight: string;
+  towing: string;
+  engine: string;
+  cylinders: string;
+  gears: string;
+  transmission: string;
+  equipment: Record<string, boolean>;
+}>;
+
+function getListingExtras(
+  car: Listing,
+  dealer: Dealer,
+  override?: ListingDetailOverride | null,
+) {
   const cantonName =
     CANTONS.find((item) => item.value === car.canton)?.label.replace(/\s*\([^)]*\)/, "").trim() ??
     car.canton;
   const year = listingYear(car.date);
   const sporty = car.name.includes("M") || car.name.includes("RS") || car.name.includes("AMG");
   const hybrid = !sporty;
-  return {
+  const base = {
     bodyType: car.brand === "BMW" || car.brand === "Mercedes" ? "Sedan" : "SUV",
     gearbox: "Automatic",
     fuel: sporty ? "Petrol" : "Hybrid",
@@ -1201,7 +1727,7 @@ function getListingExtras(car: Listing, dealer: Dealer) {
     accident: "No",
     directImport: "No",
     serviceHistory: "Yes",
-    warranty: "3 Monate",
+    warranty: "3 months",
     lastMfk: `16.01.${year}`,
     interiorColor: "Black",
     fuelConsumption: sporty ? "8.5 l/100 km" : "6 l/100 km",
@@ -1219,6 +1745,23 @@ function getListingExtras(car: Listing, dealer: Dealer) {
     gears: sporty ? "8" : "5",
     transmission: "Automatic",
   };
+  if (!override) return base;
+  const merged = { ...base };
+  (Object.keys(override) as (keyof ListingDetailOverride)[]).forEach((key) => {
+    if (key === "equipment") return;
+    const value = override[key];
+    if (typeof value === "string" && value.trim()) {
+      (merged as Record<string, string>)[key] = value;
+    }
+  });
+  return merged;
+}
+
+function matchVehicleOption(value: string, options: readonly string[]) {
+  if (!value) return "";
+  if (options.includes(value)) return value;
+  const lower = value.toLowerCase();
+  return options.find((item) => lower.includes(item.toLowerCase()) || item.toLowerCase().includes(lower)) ?? "";
 }
 
 function renderVehicleDetailTable(title: string, rows: { label: string; value: string }[]) {
@@ -1354,6 +1897,48 @@ function IconShareLink() {
   );
 }
 
+function BlogArticleCard({
+  article,
+  compact = false,
+  onSelect,
+}: {
+  article: BlogArticle;
+  compact?: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <article
+      className={compact ? "blog-card blog-card-compact" : "blog-card"}
+      tabIndex={0}
+      role="link"
+      onClick={onSelect}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onSelect();
+        }
+      }}
+    >
+      <div className="blog-card-figure">
+        <img className="blog-card-photo" src={article.image} alt="" />
+      </div>
+      <div className="blog-card-body">
+        <p className="blog-card-meta">
+          <img src={calendarIcon} width={14} height={14} alt="" />
+          <time dateTime={article.date.replace(/\./g, "-")}>{article.date}</time>
+          <span className="blog-card-category">· {article.category}</span>
+        </p>
+        <h3 className="blog-card-title">{article.title}</h3>
+        <p className="blog-card-excerpt">{article.excerpt}</p>
+        <span className="blog-card-read">
+          Read more
+          <IconChevronRight />
+        </span>
+      </div>
+    </article>
+  );
+}
+
 function IconPinSmall() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -1434,6 +2019,37 @@ function DestinationGlyph({ icon }: { icon: Destination["icon"] }) {
   );
 }
 
+function PasswordVisibilityButton({
+  visible,
+  onToggle,
+}: {
+  visible: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className="app-settings-eye auth-eye-btn"
+      aria-label={visible ? "Hide password" : "Show password"}
+      aria-pressed={visible}
+      onMouseDown={(event) => event.preventDefault()}
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        onToggle();
+      }}
+    >
+      <img
+        src={visible ? authEyeOffIcon : authEyeIcon}
+        width={18}
+        height={18}
+        alt=""
+        aria-hidden="true"
+      />
+    </button>
+  );
+}
+
 export default function App() {
   const [brand, setBrand] = useState<string>(DEFAULTS.brand);
   const [model, setModel] = useState(DEFAULTS.model);
@@ -1444,6 +2060,134 @@ export default function App() {
   const [saved, setSaved] = useState<Record<string, boolean>>({ "bmw-m4": true });
   const [tab, setTab] = useState<TabId>("home");
   const [screen, setScreen] = useState<Screen>("home");
+  const [showSplash, setShowSplash] = useState(true);
+  const [splashLeaving, setSplashLeaving] = useState(false);
+  const [splashKey, setSplashKey] = useState(0);
+  const [authGate, setAuthGate] = useState<
+    | "login"
+    | "register"
+    | "personal-info"
+    | "buy-subscription"
+    | "forgot"
+    | "reset-code"
+    | "reset-password"
+    | "app"
+  >("login");
+  const [authEmail, setAuthEmail] = useState("");
+  const [authPassword, setAuthPassword] = useState("");
+  const [authShowPassword, setAuthShowPassword] = useState(false);
+  const [authRememberMe, setAuthRememberMe] = useState(false);
+  const [registerName, setRegisterName] = useState("");
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+  const [registerConfirmPassword, setRegisterConfirmPassword] = useState("");
+  const [registerShowPassword, setRegisterShowPassword] = useState(false);
+  const [registerShowConfirm, setRegisterShowConfirm] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotNote, setForgotNote] = useState<string | null>(null);
+  const [forgotOtpCode, setForgotOtpCode] = useState("");
+  const [forgotOtpInput, setForgotOtpInput] = useState("");
+  const [forgotOtpSeconds, setForgotOtpSeconds] = useState(180);
+  const [subscriptionAudience, setSubscriptionAudience] =
+    useState<SubscriptionAudience>("private");
+  const [dealerVehicleCount, setDealerVehicleCount] = useState(10);
+  const [subscriptionNote, setSubscriptionNote] = useState<string | null>(null);
+  const [activeSubscription, setActiveSubscription] = useState<string | null>(null);
+  const [billingPlan, setBillingPlan] = useState<BillingPlan | null>(DEMO_BILLING_PLAN);
+  const [billingInvoices, setBillingInvoices] =
+    useState<BillingInvoice[]>(DEMO_BILLING_INVOICES);
+  const [billingNote, setBillingNote] = useState<string | null>(null);
+  const [accountRole, setAccountRole] = useState<AccountRole>("buyer");
+  const [sellerSlotLimit, setSellerSlotLimit] = useState(0);
+  const [sellerListingIds, setSellerListingIds] = useState<string[]>([]);
+  const [sellerListingStatus, setSellerListingStatus] = useState<
+    Record<string, SellerListingStatus>
+  >({});
+  const [sellPageSize, setSellPageSize] = useState<1 | 2 | 3>(1);
+  const [sellPage, setSellPage] = useState(1);
+  const [sellMenuOpenId, setSellMenuOpenId] = useState<string | null>(null);
+  const [ownerDetailsMenuOpen, setOwnerDetailsMenuOpen] = useState(false);
+  const [listingActionDialog, setListingActionDialog] = useState<ListingActionDialog | null>(
+    null,
+  );
+  const [listingDeleteOtpCode, setListingDeleteOtpCode] = useState("");
+  const [listingDeleteOtpInput, setListingDeleteOtpInput] = useState("");
+  const [listingDeleteOtpError, setListingDeleteOtpError] = useState<string | null>(null);
+  const [sellNote, setSellNote] = useState<string | null>(null);
+  const [myCarsQuery, setMyCarsQuery] = useState("");
+  const [myCarsStatus, setMyCarsStatus] = useState<MyCarsStatusFilter>("all");
+  const [myCarsSort, setMyCarsSort] = useState<MyCarsSort>("newest");
+  const [myCarsPageSize, setMyCarsPageSize] = useState<MyCarsPageSize>(25);
+  const [myCarsPage, setMyCarsPage] = useState(1);
+  const [myCarsNote, setMyCarsNote] = useState<string | null>(null);
+  const [customListings, setCustomListings] = useState<Listing[]>([]);
+  const [listingDetailOverrides, setListingDetailOverrides] = useState<
+    Record<string, ListingDetailOverride>
+  >({});
+  const [editingVehicleId, setEditingVehicleId] = useState<string | null>(null);
+  const [editVehicleReturnTo, setEditVehicleReturnTo] = useState<"my-cars" | "vehicle-details">(
+    "my-cars",
+  );
+  const [addVehicleError, setAddVehicleError] = useState<string | null>(null);
+  const [avTitle, setAvTitle] = useState("");
+  const [avBrand, setAvBrand] = useState<BrandName | "">("");
+  const [avModel, setAvModel] = useState("");
+  const [avYear, setAvYear] = useState("2014");
+  const [avCondition, setAvCondition] = useState("");
+  const [avMileage, setAvMileage] = useState("120000");
+  const [avAccident, setAvAccident] = useState("");
+  const [avBody, setAvBody] = useState("");
+  const [avMfk, setAvMfk] = useState("");
+  const [avWarranty, setAvWarranty] = useState("No warranty");
+  const [avService, setAvService] = useState("");
+  const [avImport, setAvImport] = useState("");
+  const [avAbout, setAvAbout] = useState("");
+  const [avPrice, setAvPrice] = useState("");
+  const [avFuel, setAvFuel] = useState("");
+  const [avDrive, setAvDrive] = useState("");
+  const [avTrans, setAvTrans] = useState("");
+  const [avGears, setAvGears] = useState("");
+  const [avHp, setAvHp] = useState("150");
+  const [avCc, setAvCc] = useState("2000");
+  const [avCylinders, setAvCylinders] = useState("");
+  const [avReach, setAvReach] = useState("");
+  const [avBattery, setAvBattery] = useState("");
+  const [avEmptyWeight, setAvEmptyWeight] = useState("");
+  const [avTotalWeight, setAvTotalWeight] = useState("");
+  const [avTowing, setAvTowing] = useState("");
+  const [avColor, setAvColor] = useState("");
+  const [avSeats, setAvSeats] = useState("5");
+  const [avDoors, setAvDoors] = useState("4");
+  const [avConsumption, setAvConsumption] = useState("");
+  const [avCo2, setAvCo2] = useState("");
+  const [avEuro, setAvEuro] = useState("");
+  const [avEquipment, setAvEquipment] = useState<Record<string, boolean>>({});
+  const [avMainPhoto, setAvMainPhoto] = useState<string | null>(null);
+  const [avExtraPhotos, setAvExtraPhotos] = useState<(string | null)[]>([null, null, null]);
+  const avMainPhotoInputRef = useRef<HTMLInputElement | null>(null);
+  const avExtraPhotoInputRefs = useRef<Array<HTMLInputElement | null>>([null, null, null]);
+  const canSell = accountRole === "seller" || accountRole === "dealer";
+  const isSeller = canSell;
+  const [paymentGatewayOpen, setPaymentGatewayOpen] = useState(false);
+  const [paymentGatewayStep, setPaymentGatewayStep] = useState<PaymentGatewayStep>("choose");
+  const [selectedPaymentGateway, setSelectedPaymentGateway] =
+    useState<PaymentGatewayId | null>(null);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
+  const [payCardName, setPayCardName] = useState("");
+  const [payCardNumber, setPayCardNumber] = useState("");
+  const [payCardExpiry, setPayCardExpiry] = useState("");
+  const [payCardCvc, setPayCardCvc] = useState("");
+  const [payPaypalEmail, setPayPaypalEmail] = useState("");
+  const [payPaypalPassword, setPayPaypalPassword] = useState("");
+  const [payFastpayMobile, setPayFastpayMobile] = useState("");
+  const [payFastpayPin, setPayFastpayPin] = useState("");
+  const [paySslMobile, setPaySslMobile] = useState("");
+  const [paySslMethod, setPaySslMethod] = useState("card");
+  const [resetPassword, setResetPassword] = useState("");
+  const [resetConfirmPassword, setResetConfirmPassword] = useState("");
+  const [resetShowPassword, setResetShowPassword] = useState(false);
+  const [resetShowConfirm, setResetShowConfirm] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
   const [, setHistory] = useState<Screen[]>([]);
   const [hubQuery, setHubQuery] = useState("");
   const [dealerLocation, setDealerLocation] = useState("");
@@ -1455,10 +2199,63 @@ export default function App() {
   const [testDriveEmail, setTestDriveEmail] = useState("");
   const [testDriveDate, setTestDriveDate] = useState("");
   const [testDriveNote, setTestDriveNote] = useState("");
+  const [selectedTestDriveRequestId, setSelectedTestDriveRequestId] = useState<string | null>(
+    null,
+  );
+  const [testDriveRequestNote, setTestDriveRequestNote] = useState<string | null>(null);
+  const [testDriveRequests, setTestDriveRequests] = useState<TestDriveRequest[]>(() => {
+    const bmw = LISTINGS.find((car) => car.id === "bmw-m4");
+    const bmwImage = bmw?.image ?? carBmwM4;
+    return [
+      {
+        id: "tdr-demo-1",
+        number: 1,
+        status: "upcoming",
+        customerName: "Md.Asadujjaman Mahfuz",
+        customerEmail: "mdasadujjaman101@gmail.com",
+        customerPhone: "01953512253",
+        customerAvatar: profilePhoto,
+        vehicleId: "bmw-m4",
+        vehicleTitle: "BMWW",
+        vehicleSubtitle: "BMW - BMW M5",
+        vehicleBrand: "BMW",
+        vehicleModel: "BMW M5",
+        vehicleYear: "2004",
+        vehicleImage: bmwImage,
+        vehiclePrice: 731,
+        dateLabel: "28 Nov 2026",
+        dateDetailLabel: "28 November 2026",
+        driveDateIso: "2026-11-28",
+        cancelledByCustomer: false,
+      },
+      {
+        id: "tdr-demo-2",
+        number: 2,
+        status: "upcoming",
+        customerName: "Sara Keller",
+        customerEmail: "sara.keller@example.com",
+        customerPhone: "079 555 12 34",
+        customerAvatar: profilePhoto,
+        vehicleId: "bmw-m4",
+        vehicleTitle: "BMW M4",
+        vehicleSubtitle: "BMW - M4 Competition xDrive",
+        vehicleBrand: "BMW",
+        vehicleModel: "M4 Competition xDrive",
+        vehicleYear: listingYear(bmw?.date ?? "02.2020"),
+        vehicleImage: bmwImage,
+        vehiclePrice: bmw?.price ?? 15000,
+        dateLabel: "05 Dec 2026",
+        dateDetailLabel: "05 December 2026",
+        driveDateIso: "2026-12-05",
+        cancelledByCustomer: false,
+      },
+    ];
+  });
   const [profileFullName, setProfileFullName] = useState(PROFILE_DEFAULTS.fullName);
   const [profileEmail, setProfileEmail] = useState(PROFILE_DEFAULTS.email);
   const [profilePhone, setProfilePhone] = useState(PROFILE_DEFAULTS.phone);
   const [profileGender, setProfileGender] = useState(PROFILE_DEFAULTS.gender);
+  const [profileOccupation, setProfileOccupation] = useState(PROFILE_DEFAULTS.occupation);
   const [profileBirthDate, setProfileBirthDate] = useState(PROFILE_DEFAULTS.birthDate);
   const [profileAddress, setProfileAddress] = useState(PROFILE_DEFAULTS.address);
   const [profileCity, setProfileCity] = useState(PROFILE_DEFAULTS.city);
@@ -1474,6 +2271,23 @@ export default function App() {
   const [settingsShowConfirm, setSettingsShowConfirm] = useState(false);
   const [settingsMessage, setSettingsMessage] = useState<string | null>(null);
   const [settingsMessageTone, setSettingsMessageTone] = useState<"success" | "error">("success");
+  const [settingsOtpOpen, setSettingsOtpOpen] = useState(false);
+  const [settingsOtpPurpose, setSettingsOtpPurpose] = useState<"password" | "delete" | null>(null);
+  const [settingsOtpCode, setSettingsOtpCode] = useState("");
+  const [settingsOtpInput, setSettingsOtpInput] = useState("");
+  const [settingsOtpError, setSettingsOtpError] = useState<string | null>(null);
+  const [settingsPendingNewPassword, setSettingsPendingNewPassword] = useState("");
+  const [appLanguageCode, setAppLanguageCode] = useState<AppLanguageCode>("EN");
+  const [contactFullName, setContactFullName] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactMessage, setContactMessage] = useState("");
+  const [contactNote, setContactNote] = useState<string | null>(null);
+  const [contactNoteTone, setContactNoteTone] = useState<"success" | "error">("success");
+  const [signOutOpen, setSignOutOpen] = useState(false);
+  const [blogQuery, setBlogQuery] = useState("");
+  const [blogCategory, setBlogCategory] = useState<"all" | "news">("all");
+  const [selectedBlogArticleId, setSelectedBlogArticleId] = useState<string | null>(null);
   const [profileMapCoords, setProfileMapCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [notifications, setNotifications] = useState<AppNotification[]>(INITIAL_NOTIFICATIONS);
   const [activeNotificationId, setActiveNotificationId] = useState<string | null>(null);
@@ -1540,8 +2354,45 @@ export default function App() {
   const cardRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const resultsInputRef = useRef<HTMLInputElement>(null);
+  const mainScrollRef = useRef<HTMLElement>(null);
   const screenRef = useRef<Screen>(screen);
   screenRef.current = screen;
+
+  useEffect(() => {
+    document.documentElement.lang = "en";
+  }, [appLanguageCode]);
+
+  useEffect(() => {
+    setShowSplash(true);
+    setSplashLeaving(false);
+    const fadeTimer = window.setTimeout(() => setSplashLeaving(true), 5200);
+    const hideTimer = window.setTimeout(() => {
+      setShowSplash(false);
+      setAuthGate("login");
+    }, 5600);
+    return () => {
+      window.clearTimeout(fadeTimer);
+      window.clearTimeout(hideTimer);
+    };
+  }, [splashKey]);
+
+  useEffect(() => {
+    mainScrollRef.current?.scrollTo({ top: 0, behavior: "auto" });
+  }, [screen]);
+
+  useEffect(() => {
+    if (authGate === "app" || showSplash) return;
+    const node = document.querySelector(".auth-page");
+    if (node instanceof HTMLElement) node.scrollTo({ top: 0, behavior: "auto" });
+  }, [authGate, showSplash]);
+
+  useEffect(() => {
+    if (authGate !== "reset-code") return;
+    const timer = window.setInterval(() => {
+      setForgotOtpSeconds((seconds) => (seconds <= 0 ? 0 : seconds - 1));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [authGate, forgotOtpCode]);
 
   useEffect(() => {
     function onPointer(event: PointerEvent) {
@@ -1641,11 +2492,33 @@ export default function App() {
 
   function goBack() {
     const leaving = screenRef.current;
+    setOwnerDetailsMenuOpen(false);
     setHistory((stack) => {
       if (stack.length === 0) {
         setScreen("home");
         screenRef.current = "home";
-        setTab("home");
+        setTab(
+          leaving === "subscription-plan"
+            ? "plan"
+            : leaving === "my-cars" ||
+                leaving === "test-drive-requests" ||
+                leaving === "test-drive-request-details" ||
+                leaving === "add-vehicle" ||
+                leaving === "edit-vehicle" ||
+                leaving === "my-favourites" ||
+                leaving === "my-profile" ||
+                leaving === "app-settings" ||
+                leaving === "select-language" ||
+                leaving === "about-us" ||
+                leaving === "contact" ||
+                leaving === "terms" ||
+                leaving === "privacy" ||
+                leaving === "blog" ||
+                leaving === "blog-article" ||
+                leaving === "subscription-billing"
+              ? "profile"
+              : "home",
+        );
         setHubQuery("");
         return [];
       }
@@ -1656,12 +2529,44 @@ export default function App() {
         previous === "home" || previous === "popular-brands"
           ? leaving === "my-profile" ||
               leaving === "my-favourites" ||
-              leaving === "app-settings"
+              leaving === "my-cars" ||
+              leaving === "test-drive-requests" ||
+              leaving === "test-drive-request-details" ||
+              leaving === "add-vehicle" ||
+              leaving === "edit-vehicle" ||
+              leaving === "app-settings" ||
+              leaving === "select-language" ||
+              leaving === "about-us" ||
+              leaving === "contact" ||
+              leaving === "terms" ||
+              leaving === "privacy" ||
+              leaving === "blog" ||
+              leaving === "blog-article" ||
+              leaving === "subscription-billing"
             ? "profile"
-            : "home"
-          : previous === "my-profile"
+            : leaving === "subscription-plan"
+              ? "plan"
+              : "home"
+          : previous === "my-profile" ||
+              previous === "blog" ||
+              previous === "blog-article" ||
+              previous === "about-us" ||
+              previous === "contact" ||
+              previous === "terms" ||
+              previous === "privacy" ||
+              previous === "select-language" ||
+              previous === "app-settings" ||
+              previous === "my-favourites" ||
+              previous === "my-cars" ||
+              previous === "test-drive-requests" ||
+              previous === "test-drive-request-details" ||
+              previous === "add-vehicle" ||
+              previous === "edit-vehicle" ||
+              previous === "subscription-billing"
             ? "profile"
-            : "search",
+            : previous === "subscription-plan"
+              ? "plan"
+              : "search",
       );
       return stack.slice(0, -1);
     });
@@ -1683,6 +2588,7 @@ export default function App() {
     setHistory([]);
     setHubQuery("");
     setTab("plan");
+    setSellMenuOpenId(null);
     setOpen(null);
   }
 
@@ -1704,13 +2610,1133 @@ export default function App() {
     navigateTo("my-favourites", "profile");
   }
 
+  function openMyCars() {
+    setMyCarsQuery("");
+    setMyCarsStatus("all");
+    setMyCarsSort("newest");
+    setMyCarsPageSize(25);
+    setMyCarsPage(1);
+    setMyCarsNote(null);
+    setSellMenuOpenId(null);
+    navigateTo("my-cars", "profile");
+  }
+
+  function openTestDriveRequests() {
+    setMyCarsNote(null);
+    navigateTo("test-drive-requests", "profile");
+  }
+
+  function openTestDriveRequestDetails(requestId: string) {
+    setSelectedTestDriveRequestId(requestId);
+    setTestDriveRequestNote(null);
+    setMyCarsNote(null);
+    navigateTo("test-drive-request-details", "profile");
+  }
+
+  function formatTestDriveDateLabel(value: string, style: "short" | "long" = "short") {
+    if (!value) return "Date TBD";
+    const parsed = new Date(`${value}T12:00:00`);
+    if (Number.isNaN(parsed.getTime())) return value;
+    return parsed.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: style === "long" ? "long" : "short",
+      year: "numeric",
+    });
+  }
+
+  function acceptTestDriveRequest(requestId: string) {
+    const request = testDriveRequests.find((item) => item.id === requestId);
+    if (!request || request.status !== "upcoming") return;
+
+    const existingLock = findActiveVehicleTestDriveLock(
+      testDriveRequests,
+      request.vehicleId,
+      requestId,
+    );
+    if (existingLock) {
+      setTestDriveRequestNote(
+        `This car is already locked for ${existingLock.customerName} until ${existingLock.dateDetailLabel}.`,
+      );
+      return;
+    }
+
+    setTestDriveRequests((current) =>
+      current.map((item) =>
+        item.id === requestId ? { ...item, status: "accepted" as const } : item,
+      ),
+    );
+    setTestDriveRequestNote(null);
+  }
+
+  function rejectTestDriveRequest(requestId: string) {
+    const request = testDriveRequests.find((item) => item.id === requestId);
+    if (!request || request.status !== "upcoming") return;
+
+    setTestDriveRequests((current) => current.filter((item) => item.id !== requestId));
+    setSelectedTestDriveRequestId(null);
+    setTestDriveRequestNote(null);
+    setMyCarsNote(`Test drive request #${request.number} was rejected and removed.`);
+    if (screenRef.current === "test-drive-request-details") {
+      goBack();
+    }
+  }
+
+  function completeTestDriveRequest(requestId: string) {
+    const request = testDriveRequests.find((item) => item.id === requestId);
+    if (!request || request.status !== "accepted") return;
+
+    setTestDriveRequests((current) =>
+      current.map((item) =>
+        item.id === requestId ? { ...item, status: "completed" as const } : item,
+      ),
+    );
+    setSelectedTestDriveRequestId(null);
+    setTestDriveRequestNote(null);
+    setMyCarsNote(`Test drive #${request.number} marked as completed.`);
+    if (screenRef.current === "test-drive-request-details") {
+      goBack();
+    }
+  }
+
+  function resetAddVehicleForm() {
+    setAddVehicleError(null);
+    setEditingVehicleId(null);
+    setEditVehicleReturnTo("my-cars");
+    setAvTitle("");
+    setAvBrand("");
+    setAvModel("");
+    setAvYear("2014");
+    setAvCondition("");
+    setAvMileage("120000");
+    setAvAccident("");
+    setAvBody("");
+    setAvMfk("");
+    setAvWarranty("No warranty");
+    setAvService("");
+    setAvImport("");
+    setAvAbout("");
+    setAvPrice("");
+    setAvFuel("");
+    setAvDrive("");
+    setAvTrans("");
+    setAvGears("");
+    setAvHp("150");
+    setAvCc("2000");
+    setAvCylinders("");
+    setAvReach("");
+    setAvBattery("");
+    setAvEmptyWeight("");
+    setAvTotalWeight("");
+    setAvTowing("");
+    setAvColor("");
+    setAvSeats("5");
+    setAvDoors("4");
+    setAvConsumption("");
+    setAvCo2("");
+    setAvEuro("");
+    setAvEquipment({});
+    setAvMainPhoto(null);
+    setAvExtraPhotos([null, null, null]);
+  }
+
+  function findSellerListingById(vehicleId: string) {
+    return (
+      customListings.find((car) => car.id === vehicleId) ??
+      LISTINGS.find((car) => car.id === vehicleId) ??
+      null
+    );
+  }
+
+  function fillVehicleFormFromListing(car: Listing) {
+    const dealer =
+      DEALERS.find((item) => item.vehicleIds.includes(car.id)) ?? DEALERS[0];
+    const extras = getListingExtras(car, dealer, listingDetailOverrides[car.id]);
+    const override = listingDetailOverrides[car.id];
+    setAddVehicleError(null);
+    setEditingVehicleId(car.id);
+    setAvTitle(car.name);
+    setAvBrand(car.brand);
+    setAvModel(car.model);
+    setAvYear(listingYear(car.date));
+    setAvCondition(matchVehicleOption(extras.condition, VEHICLE_CONDITIONS));
+    setAvMileage(car.mileage.replace(/[^\d]/g, "") || "0");
+    setAvAccident(matchVehicleOption(extras.accident, VEHICLE_ACCIDENT));
+    setAvBody(matchVehicleOption(extras.bodyType, VEHICLE_BODY_TYPES));
+    setAvMfk(extras.lastMfk);
+    setAvWarranty(
+      matchVehicleOption(extras.warranty, VEHICLE_WARRANTY) ||
+        (extras.warranty.toLowerCase().includes("no") ? "No warranty" : "Dealer warranty"),
+    );
+    setAvService(
+      matchVehicleOption(extras.serviceHistory, VEHICLE_SERVICE) ||
+        (extras.serviceHistory === "Yes" ? "Full service history" : ""),
+    );
+    setAvImport(matchVehicleOption(extras.directImport, VEHICLE_IMPORT));
+    setAvAbout(extras.description);
+    setAvPrice(String(car.price));
+    setAvFuel(matchVehicleOption(extras.fuel, VEHICLE_FUEL));
+    setAvDrive(matchVehicleOption(extras.drive, VEHICLE_DRIVE));
+    setAvTrans(matchVehicleOption(extras.transmission, VEHICLE_TRANS));
+    setAvGears(matchVehicleOption(extras.gears, VEHICLE_GEARS));
+    setAvHp(extras.power.replace(/[^\d]/g, "") || "150");
+    setAvCc(extras.engine.replace(/[^\d]/g, "") || "2000");
+    setAvCylinders(matchVehicleOption(extras.cylinders, VEHICLE_CYLINDERS));
+    setAvReach(extras.range === "—" ? "" : extras.range.replace(/[^\d]/g, ""));
+    setAvBattery(extras.battery === "—" ? "" : extras.battery.replace(/[^\d.]/g, ""));
+    setAvEmptyWeight(extras.curbWeight.replace(/[^\d]/g, ""));
+    setAvTotalWeight(extras.totalWeight.replace(/[^\d]/g, ""));
+    setAvTowing(extras.towing.replace(/[^\d]/g, ""));
+    setAvColor(matchVehicleOption(extras.color, VEHICLE_COLORS));
+    setAvSeats(extras.seats.replace(/[^\d]/g, "") || "5");
+    setAvDoors(extras.doors.replace(/[^\d]/g, "") || "4");
+    setAvConsumption(extras.fuelConsumption.replace(/[^\d.]/g, ""));
+    setAvCo2(extras.co2.replace(/[^\d]/g, ""));
+    setAvEuro(extras.euroStandard);
+    setAvEquipment(override?.equipment ?? {});
+    setAvMainPhoto(car.image);
+    setAvExtraPhotos([null, null, null]);
+  }
+
+  function openAddVehicle() {
+    setMyCarsNote(null);
+    setSellMenuOpenId(null);
+    setOwnerDetailsMenuOpen(false);
+    resetAddVehicleForm();
+    if (sellerListingIds.length >= sellerSlotLimit) {
+      setAddVehicleError(
+        "No remaining slots on your plan. You can still review the form, then View Plans from Sell to add more listings.",
+      );
+    }
+    navigateTo("add-vehicle", "profile");
+  }
+
+  function openEditVehicle(vehicleId: string) {
+    const car = findSellerListingById(vehicleId);
+    if (!car) return;
+    setMyCarsNote(null);
+    setSellNote(null);
+    setSellMenuOpenId(null);
+    setOwnerDetailsMenuOpen(false);
+    setEditVehicleReturnTo(
+      screenRef.current === "vehicle-details" ? "vehicle-details" : "my-cars",
+    );
+    fillVehicleFormFromListing(car);
+    navigateTo("edit-vehicle", "profile");
+  }
+
+  function buildVehicleFormOverride(): ListingDetailOverride {
+    const hpDigits = avHp.replace(/[^\d]/g, "");
+    const ccDigits = avCc.replace(/[^\d]/g, "");
+    return {
+      bodyType: avBody || undefined,
+      gearbox: avTrans || undefined,
+      fuel: avFuel || undefined,
+      power: hpDigits ? `${hpDigits} PS` : undefined,
+      drive: avDrive || undefined,
+      description: avAbout.trim() || undefined,
+      color: avColor || undefined,
+      doors: avDoors || undefined,
+      seats: avSeats || undefined,
+      condition: avCondition || undefined,
+      accident: avAccident || undefined,
+      directImport: avImport || undefined,
+      serviceHistory: avService || undefined,
+      warranty: avWarranty || undefined,
+      lastMfk: avMfk.trim() || undefined,
+      fuelConsumption: avConsumption.trim() ? `${avConsumption.trim()} l/100 km` : undefined,
+      co2: avCo2.trim() ? `${avCo2.trim()} g/km` : undefined,
+      euroStandard: avEuro || undefined,
+      battery: avBattery.trim() ? `${avBattery.trim()} kWh` : undefined,
+      range: avReach.trim() ? `${avReach.trim()} km` : undefined,
+      curbWeight: avEmptyWeight.trim() ? `${Number(avEmptyWeight.replace(/\D/g, "") || 0).toLocaleString("en-US")} kg` : undefined,
+      totalWeight: avTotalWeight.trim() ? `${Number(avTotalWeight.replace(/\D/g, "") || 0).toLocaleString("en-US")} kg` : undefined,
+      towing: avTowing.trim() ? `${Number(avTowing.replace(/\D/g, "") || 0).toLocaleString("en-US")} kg` : undefined,
+      engine: ccDigits ? `${ccDigits} cm³` : undefined,
+      cylinders: avCylinders || undefined,
+      gears: avGears || undefined,
+      transmission: avTrans || undefined,
+      equipment: avEquipment,
+    };
+  }
+
+  function readVehiclePhoto(file: File | undefined, onDone: (url: string) => void) {
+    if (!file || !file.type.startsWith("image/")) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string") onDone(reader.result);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function validateVehicleForm() {
+    setAddVehicleError(null);
+    if (!avBrand) {
+      setAddVehicleError("Please select a brand.");
+      return null;
+    }
+    if (!avModel.trim()) {
+      setAddVehicleError("Please select or enter a model.");
+      return null;
+    }
+    const priceValue = Number(avPrice.replace(/[^\d.]/g, ""));
+    if (!Number.isFinite(priceValue) || priceValue <= 0) {
+      setAddVehicleError("Please enter a valid price.");
+      return null;
+    }
+    const title = avTitle.trim() || `${avBrand} ${avModel}`.trim();
+    const year = avYear.replace(/\D/g, "").slice(0, 4) || "2020";
+    const mileageDigits = avMileage.replace(/\D/g, "") || "0";
+    const mileageLabel = `${Number(mileageDigits).toLocaleString("en-US")} km`;
+    return {
+      brand: avBrand,
+      model: avModel.trim(),
+      name: title,
+      price: Math.round(priceValue),
+      year,
+      mileageLabel,
+    };
+  }
+
+  function finishVehicleForm(destination: "my-cars" | "vehicle-details" = "my-cars") {
+    resetAddVehicleForm();
+    setScreen(destination);
+    screenRef.current = destination;
+    setHistory((stack) => {
+      const withoutForm = stack.filter(
+        (item) => item !== "add-vehicle" && item !== "edit-vehicle",
+      );
+      if (destination === "my-cars") {
+        if (withoutForm[withoutForm.length - 1] === "my-cars") return withoutForm.slice(0, -1);
+        if (withoutForm.includes("home") || withoutForm.length === 0) return withoutForm;
+        return withoutForm;
+      }
+      return withoutForm.filter((item) => item !== "vehicle-details");
+    });
+    setTab("profile");
+  }
+
+  function confirmAddVehicle() {
+    if (sellerListingIds.length >= sellerSlotLimit) {
+      setAddVehicleError("No remaining slots. Go back and view plans to add more listings.");
+      return;
+    }
+    const parsed = validateVehicleForm();
+    if (!parsed) return;
+    const id = `custom-${Date.now()}`;
+    const listing: Listing = {
+      id,
+      brand: parsed.brand,
+      model: parsed.model,
+      name: parsed.name,
+      price: parsed.price,
+      was: Math.round(parsed.price * 1.08),
+      date: `01.${parsed.year}`,
+      mileage: parsed.mileageLabel,
+      image: avMainPhoto ?? BRAND_DEFAULT_IMAGE[parsed.brand],
+      canton: "ZH",
+    };
+    const override = buildVehicleFormOverride();
+    setCustomListings((current) => [listing, ...current]);
+    setListingDetailOverrides((current) => ({ ...current, [id]: override }));
+    setSellerListingIds((ids) => [...ids, id]);
+    setSellerListingStatus((current) => ({ ...current, [id]: "active" }));
+    setMyCarsNote(`${listing.name} added to your listings.`);
+    setSellNote(`${listing.name} added to your listings.`);
+    finishVehicleForm("my-cars");
+  }
+
+  function confirmSaveEditVehicle() {
+    if (!editingVehicleId) {
+      setAddVehicleError("No vehicle selected to edit.");
+      return;
+    }
+    const parsed = validateVehicleForm();
+    if (!parsed) return;
+    const existing = findSellerListingById(editingVehicleId);
+    if (!existing) {
+      setAddVehicleError("Vehicle could not be found.");
+      return;
+    }
+    const listing: Listing = {
+      ...existing,
+      brand: parsed.brand,
+      model: parsed.model,
+      name: parsed.name,
+      price: parsed.price,
+      was: Math.max(existing.was, Math.round(parsed.price * 1.08)),
+      date: `01.${parsed.year}`,
+      mileage: parsed.mileageLabel,
+      image: avMainPhoto ?? existing.image ?? BRAND_DEFAULT_IMAGE[parsed.brand],
+    };
+    const override = buildVehicleFormOverride();
+    setCustomListings((current) => {
+      const without = current.filter((car) => car.id !== listing.id);
+      return [listing, ...without];
+    });
+    setListingDetailOverrides((current) => ({ ...current, [listing.id]: override }));
+    setSelectedVehicleId(listing.id);
+    setMyCarsNote(`${listing.name} updated.`);
+    setSellNote(`${listing.name} updated.`);
+    finishVehicleForm(editVehicleReturnTo);
+  }
+
   function openAppSettings() {
     setSettingsMessage(null);
+    setSettingsOtpOpen(false);
+    setSettingsOtpPurpose(null);
+    setSettingsOtpInput("");
+    setSettingsOtpError(null);
+    setSettingsPendingNewPassword("");
     navigateTo("app-settings", "profile");
+  }
+
+  function openSelectLanguage() {
+    navigateTo("select-language", "profile");
+  }
+
+  function openAboutUs() {
+    navigateTo("about-us", "profile");
+  }
+
+  function openContact() {
+    setContactNote(null);
+    setContactFullName(profileFullName);
+    setContactPhone(profilePhone);
+    setContactEmail(profileEmail);
+    setContactMessage("");
+    navigateTo("contact", "profile");
+  }
+
+  function openTerms() {
+    navigateTo("terms", "profile");
+  }
+
+  function openPrivacy() {
+    navigateTo("privacy", "profile");
+  }
+
+  function openSignOutConfirm() {
+    setSignOutOpen(true);
+  }
+
+  function closeSignOutConfirm() {
+    setSignOutOpen(false);
+  }
+
+  function confirmSignOut() {
+    setSignOutOpen(false);
+    setAuthError(null);
+    setAuthPassword("");
+    setRegisterPassword("");
+    setRegisterConfirmPassword("");
+    setScreen("home");
+    screenRef.current = "home";
+    setHistory([]);
+    setTab("home");
+    setHubQuery("");
+    setOpen(null);
+    setAuthGate("login");
+    setSplashKey((key) => key + 1);
+  }
+
+  function enterAppFromAuth() {
+    setAuthError(null);
+    setAuthGate("app");
+    setScreen("home");
+    screenRef.current = "home";
+    setHistory([]);
+    setTab("home");
+  }
+
+  function submitLogin() {
+    const email = authEmail.trim();
+    if (email) setProfileEmail(email);
+    enterAppFromAuth();
+  }
+
+  function clearForgotResetState() {
+    setForgotNote(null);
+    setForgotOtpCode("");
+    setForgotOtpInput("");
+    setForgotOtpSeconds(180);
+    setResetPassword("");
+    setResetConfirmPassword("");
+    setResetShowPassword(false);
+    setResetShowConfirm(false);
+  }
+
+  function openAuthRegister() {
+    setAuthError(null);
+    clearForgotResetState();
+    setAuthGate("register");
+  }
+
+  function openAuthLogin() {
+    setAuthError(null);
+    clearForgotResetState();
+    setAuthGate("login");
+  }
+
+  function openForgotPassword() {
+    setAuthError(null);
+    clearForgotResetState();
+    setForgotEmail(authEmail);
+    setAuthGate("forgot");
+  }
+
+  function formatOtpCountdown(totalSeconds: number) {
+    const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+    const seconds = String(totalSeconds % 60).padStart(2, "0");
+    return `${minutes}:${seconds}s`;
+  }
+
+  function issueForgotOtp() {
+    const code = generateEmailOtp();
+    setForgotOtpCode(code);
+    setForgotOtpInput("");
+    setForgotOtpSeconds(180);
+    setAuthError(null);
+  }
+
+  function submitForgotPassword() {
+    setAuthError(null);
+    setForgotNote(null);
+    const email = forgotEmail.trim();
+    if (!email) {
+      setAuthError("Please enter your email address.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setAuthError("Please enter a valid email address.");
+      return;
+    }
+    setAuthEmail(email);
+    issueForgotOtp();
+    setAuthGate("reset-code");
+  }
+
+  function resendForgotOtp() {
+    issueForgotOtp();
+  }
+
+  function submitForgotOtp() {
+    const entered = forgotOtpInput.trim();
+    if (!/^\d{6}$/.test(entered)) {
+      setAuthError("Enter the 6-digit verification code.");
+      return;
+    }
+    if (forgotOtpSeconds <= 0) {
+      setAuthError("This code has expired. Please resend a new code.");
+      return;
+    }
+    if (entered !== forgotOtpCode) {
+      setAuthError("Incorrect verification code. Please try again.");
+      return;
+    }
+    setAuthError(null);
+    setResetPassword("");
+    setResetConfirmPassword("");
+    setResetShowPassword(false);
+    setResetShowConfirm(false);
+    setAuthGate("reset-password");
+  }
+
+  function submitResetPassword() {
+    const nextPassword = resetPassword.trim();
+    const confirm = resetConfirmPassword.trim();
+    if (nextPassword && confirm && nextPassword !== confirm) {
+      setAuthError("Passwords do not match.");
+      return;
+    }
+    if (nextPassword) {
+      setAccountPassword(nextPassword);
+      setAuthPassword(nextPassword);
+    }
+    openAuthLogin();
+  }
+
+  function submitRegister() {
+    setAuthError(null);
+    const name = registerName.trim();
+    const email = registerEmail.trim();
+    const password = registerPassword.trim();
+    const confirm = registerConfirmPassword.trim();
+    if (!name) {
+      setAuthError("Please enter a user name.");
+      return;
+    }
+    if (!email) {
+      setAuthError("Please enter your email.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setAuthError("Please enter a valid email address.");
+      return;
+    }
+    if (password && confirm && password !== confirm) {
+      setAuthError("Passwords do not match.");
+      return;
+    }
+    setProfileFullName(name);
+    setProfileEmail(email);
+    setAuthEmail(email);
+    if (password) setAccountPassword(password);
+    setProfilePhone("");
+    setProfileGender("");
+    setProfileOccupation("");
+    setProfileBirthDate("");
+    setProfileAddress("");
+    setProfileCity("");
+    setProfileZip("");
+    setProfileCountry(PROFILE_DEFAULTS.country);
+    setAuthGate("personal-info");
+  }
+
+  function submitPersonalInformation() {
+    setAuthError(null);
+    setAuthGate("buy-subscription");
+  }
+
+  function skipBuySubscription() {
+    enterAppFromAuth();
+  }
+
+  function openSubscriptionBilling() {
+    setBillingNote(null);
+    navigateTo("subscription-billing", "profile");
+  }
+
+  function openSubscriptionPlans() {
+    setSubscriptionAudience("private");
+    setDealerVehicleCount(10);
+    setSubscriptionNote(null);
+    navigateTo("subscription-plan", "plan");
+  }
+
+  function openSubscriptionPlansFromBilling() {
+    setSubscriptionAudience(accountRole === "dealer" ? "dealers" : "private");
+    setSubscriptionNote(null);
+    navigateTo("subscription-plan", "plan");
+  }
+
+  function refreshSubscriptionBilling() {
+    setBillingNote("Billing overview refreshed.");
+  }
+
+  function downloadBillingInvoice(invoiceId: string) {
+    setBillingNote(`Invoice ${invoiceId} PDF is ready to download.`);
+  }
+
+  function viewPlansFromOnboarding() {
+    setAuthError(null);
+    setAuthGate("app");
+    setSubscriptionAudience("private");
+    setDealerVehicleCount(10);
+    setSubscriptionNote(null);
+    setScreen("subscription-plan");
+    screenRef.current = "subscription-plan";
+    setHistory([]);
+    setTab("plan");
+  }
+
+  function subscriptionCheckoutAmount() {
+    if (subscriptionAudience === "private") return "CHF 14.90";
+    return `CHF ${formatDealerPrice(dealerVehicleCount)}`;
+  }
+
+  function subscriptionPackageLabel() {
+    if (subscriptionAudience === "private") {
+      return "Private Sale · 1 vehicle / month";
+    }
+    return `Dealers · ${dealerVehicleCount} vehicles / month`;
+  }
+
+  function resetPaymentFormFields() {
+    setPaymentError(null);
+    setPayCardName("");
+    setPayCardNumber("");
+    setPayCardExpiry("");
+    setPayCardCvc("");
+    setPayPaypalEmail("");
+    setPayPaypalPassword("");
+    setPayFastpayMobile("");
+    setPayFastpayPin("");
+    setPaySslMobile("");
+    setPaySslMethod("card");
+  }
+
+  function openPaymentGateway() {
+    setSubscriptionNote(null);
+    setSelectedPaymentGateway(null);
+    setPaymentGatewayStep("choose");
+    resetPaymentFormFields();
+    setPaymentGatewayOpen(true);
+  }
+
+  function closePaymentGateway() {
+    setPaymentGatewayOpen(false);
+    setPaymentGatewayStep("choose");
+    setSelectedPaymentGateway(null);
+    resetPaymentFormFields();
+  }
+
+  function confirmSubscriptionPlan() {
+    openPaymentGateway();
+  }
+
+  function openGatewayPaymentPage(gatewayId: PaymentGatewayId) {
+    setSelectedPaymentGateway(gatewayId);
+    setPaymentGatewayStep("pay");
+    resetPaymentFormFields();
+  }
+
+  function backToPaymentGatewayList() {
+    setPaymentGatewayStep("choose");
+    setSelectedPaymentGateway(null);
+    resetPaymentFormFields();
+  }
+
+  function confirmPaymentPurchase() {
+    const gateway = PAYMENT_GATEWAYS.find((item) => item.id === selectedPaymentGateway);
+    if (!gateway) {
+      setPaymentError("Please choose a payment gateway.");
+      return;
+    }
+
+    if (gateway.id === "stripe") {
+      if (!payCardName.trim()) {
+        setPaymentError("Please enter the cardholder name.");
+        return;
+      }
+      if (payCardNumber.replace(/\s/g, "").length < 16) {
+        setPaymentError("Please enter a valid 16-digit card number.");
+        return;
+      }
+      if (!/^\d{2}\/\d{2}$/.test(payCardExpiry)) {
+        setPaymentError("Please enter expiry as MM/YY.");
+        return;
+      }
+      if (payCardCvc.replace(/\D/g, "").length < 3) {
+        setPaymentError("Please enter a valid CVC.");
+        return;
+      }
+    }
+
+    if (gateway.id === "paypal") {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payPaypalEmail.trim())) {
+        setPaymentError("Please enter a valid PayPal email.");
+        return;
+      }
+      if (payPaypalPassword.trim().length < 4) {
+        setPaymentError("Please enter your PayPal password.");
+        return;
+      }
+    }
+
+    if (gateway.id === "fastpay") {
+      if (payFastpayMobile.replace(/\D/g, "").length < 10) {
+        setPaymentError("Please enter a valid FastPay mobile number.");
+        return;
+      }
+      if (payFastpayPin.replace(/\D/g, "").length < 4) {
+        setPaymentError("Please enter your FastPay PIN.");
+        return;
+      }
+    }
+
+    if (gateway.id === "sslcommerz") {
+      if (paySslMobile.replace(/\D/g, "").length < 10) {
+        setPaymentError("Please enter a valid mobile number for SSLCommerz.");
+        return;
+      }
+    }
+
+    const amount = subscriptionCheckoutAmount();
+    const packageLabel = subscriptionPackageLabel();
+    const nextRole: AccountRole = subscriptionAudience === "dealers" ? "dealer" : "seller";
+    const roleLabel = accountRoleLabel(nextRole);
+    const addedSlots = subscriptionAudience === "private" ? 1 : dealerVehicleCount;
+    const nextLimit = sellerSlotLimit + addedSlots;
+    const periodStart = new Date();
+    const nextRenewal = addBillingDays(periodStart, 30);
+    const planName =
+      subscriptionAudience === "dealers"
+        ? `DEALER PRO · ${dealerVehicleCount}`
+        : "PRIVATE SALE";
+    setActiveSubscription(`${packageLabel} · ${amount}`);
+    setBillingPlan({
+      name: planName,
+      amountLabel: amount,
+      periodSuffix: "/ 30 days",
+      periodStart: formatBillingDateLabel(periodStart),
+      nextRenewal: formatBillingDateLabel(nextRenewal),
+      autoRenewal: "Active",
+      slotLimit: nextLimit,
+    });
+    setBillingInvoices((current) => [
+      {
+        id: `YZA${Date.now().toString(36).toUpperCase().slice(-6)}-${String(current.length + 1).padStart(4, "0")}`,
+        dateLabel: formatBillingDateLabel(periodStart),
+        amountLabel: amount,
+        description: `1 × ${planName} (at ${amount} / 30 days)`,
+        status: "paid",
+      },
+      ...current,
+    ]);
+    setSellerSlotLimit(nextLimit);
+    if (!canSell) {
+      const seedIds = LISTINGS.slice(0, Math.min(2, nextLimit)).map((car) => car.id);
+      setSellerListingIds(seedIds);
+      setSellerListingStatus(
+        Object.fromEntries(seedIds.map((id) => [id, "active" as SellerListingStatus])),
+      );
+      setSellPage(1);
+    }
+    setAccountRole(nextRole);
+    setSubscriptionNote(
+      `Payment confirmed with ${gateway.name}. Your package is active: ${packageLabel} for ${amount}. Your account is now ${roleLabel}.`,
+    );
+    setSellNote(null);
+    closePaymentGateway();
+    setHistory([]);
+    setScreen("home");
+    screenRef.current = "home";
+    setTab("profile");
+  }
+
+  function closeListingActionDialog() {
+    setListingActionDialog(null);
+    setListingDeleteOtpCode("");
+    setListingDeleteOtpInput("");
+    setListingDeleteOtpError(null);
+  }
+
+  function openPauseListingDialog(vehicleId: string) {
+    setSellMenuOpenId(null);
+    setOwnerDetailsMenuOpen(false);
+    setListingActionDialog({ type: "pause", vehicleId });
+  }
+
+  function openSoldListingDialog(vehicleId: string) {
+    setSellMenuOpenId(null);
+    setOwnerDetailsMenuOpen(false);
+    setListingActionDialog({ type: "sold", vehicleId });
+  }
+
+  function openDeleteListingDialog(vehicleId: string) {
+    setSellMenuOpenId(null);
+    setOwnerDetailsMenuOpen(false);
+    setListingDeleteOtpCode("");
+    setListingDeleteOtpInput("");
+    setListingDeleteOtpError(null);
+    setListingActionDialog({ type: "delete", vehicleId, step: "confirm" });
+  }
+
+  function goToMyCarsWithStatus(status: MyCarsStatusFilter, note: string) {
+    setMyCarsQuery("");
+    setMyCarsStatus(status);
+    setMyCarsSort("newest");
+    setMyCarsPageSize(25);
+    setMyCarsPage(1);
+    setMyCarsNote(note);
+    setSellNote(note);
+    setSellMenuOpenId(null);
+    setOwnerDetailsMenuOpen(false);
+    if (screenRef.current !== "my-cars") {
+      navigateTo("my-cars", "profile");
+    }
+  }
+
+  function removeSellerVehicle(vehicleId: string) {
+    const wasOnDetails =
+      screenRef.current === "vehicle-details" && selectedVehicleId === vehicleId;
+    setSellerListingIds((ids) => ids.filter((id) => id !== vehicleId));
+    setSellerListingStatus((current) => {
+      const next = { ...current };
+      delete next[vehicleId];
+      return next;
+    });
+    setCustomListings((current) => current.filter((car) => car.id !== vehicleId));
+    setListingDetailOverrides((current) => {
+      const next = { ...current };
+      delete next[vehicleId];
+      return next;
+    });
+    setSellMenuOpenId(null);
+    setOwnerDetailsMenuOpen(false);
+    closeListingActionDialog();
+    setSellNote("Vehicle removed from your listings.");
+    setMyCarsNote("Vehicle removed from your listings.");
+    if (wasOnDetails) {
+      goBack();
+    } else if (screenRef.current !== "my-cars") {
+      navigateTo("my-cars", "profile");
+    }
+  }
+
+  function setSellerVehicleStatus(vehicleId: string, status: SellerListingStatus) {
+    setSellerListingStatus((current) => ({ ...current, [vehicleId]: status }));
+    setSellMenuOpenId(null);
+    setOwnerDetailsMenuOpen(false);
+    const label = status.charAt(0).toUpperCase() + status.slice(1);
+    const note = `Listing marked as ${label}.`;
+    if (status === "inactive" || status === "sold") {
+      goToMyCarsWithStatus(status, note);
+      return;
+    }
+    setMyCarsNote(note);
+    setSellNote(note);
+  }
+
+  function confirmPauseListing() {
+    if (!listingActionDialog || listingActionDialog.type !== "pause") return;
+    const vehicleId = listingActionDialog.vehicleId;
+    setSellerListingStatus((current) => ({ ...current, [vehicleId]: "inactive" }));
+    closeListingActionDialog();
+    goToMyCarsWithStatus("inactive", "Listing paused. You can reactivate it anytime.");
+  }
+
+  function confirmSoldListing() {
+    if (!listingActionDialog || listingActionDialog.type !== "sold") return;
+    const vehicleId = listingActionDialog.vehicleId;
+    setSellerListingStatus((current) => ({ ...current, [vehicleId]: "sold" }));
+    closeListingActionDialog();
+    goToMyCarsWithStatus("sold", "Listing marked as Sold.");
+  }
+
+  function requestDeleteListingOtp() {
+    if (!listingActionDialog || listingActionDialog.type !== "delete") return;
+    if (!profileEmail.trim()) {
+      setListingDeleteOtpError("Add your registered email on My Profile first.");
+      return;
+    }
+    const code = generateEmailOtp();
+    setListingDeleteOtpCode(code);
+    setListingDeleteOtpInput("");
+    setListingDeleteOtpError(null);
+    setListingActionDialog({
+      type: "delete",
+      vehicleId: listingActionDialog.vehicleId,
+      step: "otp",
+    });
+  }
+
+  function confirmDeleteListingOtp() {
+    if (!listingActionDialog || listingActionDialog.type !== "delete") return;
+    const entered = listingDeleteOtpInput.trim();
+    if (entered.length !== 6) {
+      setListingDeleteOtpError("Enter the 6-digit verification code.");
+      return;
+    }
+    if (entered !== listingDeleteOtpCode) {
+      setListingDeleteOtpError("Invalid verification code. Check your email and try again.");
+      return;
+    }
+    removeSellerVehicle(listingActionDialog.vehicleId);
+  }
+
+  function bulkUpdateSellerVehicles() {
+    setSellMenuOpenId(null);
+    if (sellerListingIds.length === 0) {
+      const message = "Add vehicles first, then use Bulk Update.";
+      setSellNote(message);
+      setMyCarsNote(message);
+      return;
+    }
+    const message = `Bulk update ready for ${sellerListingIds.length} vehicle(s).`;
+    setSellNote(message);
+    setMyCarsNote(message);
+  }
+
+  function handleSellerMenu(id: (typeof PROFILE_MENU_SELLER)[number]["id"]) {
+    switch (id) {
+      case "cars":
+        openMyCars();
+        break;
+      case "testdrive":
+        openTestDriveRequests();
+        break;
+      case "billing":
+        openSubscriptionBilling();
+        break;
+      default:
+        break;
+    }
+  }
+
+  function handleProfileSecondaryMenu(id: (typeof PROFILE_MENU_SECONDARY)[number]["id"]) {
+    switch (id) {
+      case "about":
+        openAboutUs();
+        break;
+      case "blog":
+        openBlog();
+        break;
+      case "contact":
+        openContact();
+        break;
+      case "terms":
+        openTerms();
+        break;
+      case "privacy":
+        openPrivacy();
+        break;
+      default:
+        break;
+    }
+  }
+
+  function sendContactMessage() {
+    setContactNote(null);
+    const name = contactFullName.trim();
+    const phone = contactPhone.trim();
+    const email = contactEmail.trim();
+    const message = contactMessage.trim();
+    if (!name) {
+      setContactNoteTone("error");
+      setContactNote("Please enter your full name.");
+      return;
+    }
+    if (!phone) {
+      setContactNoteTone("error");
+      setContactNote("Please enter your phone number.");
+      return;
+    }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setContactNoteTone("error");
+      setContactNote("Please enter a valid email address.");
+      return;
+    }
+    if (!message) {
+      setContactNoteTone("error");
+      setContactNote("Please enter a message.");
+      return;
+    }
+    setContactNoteTone("success");
+    setContactNote("Thank you. Your message has been sent. Our team will get back to you soon.");
+    setContactMessage("");
+  }
+
+  function openBlog() {
+    setBlogQuery("");
+    setBlogCategory("all");
+    setSelectedBlogArticleId(null);
+    navigateTo("blog", "profile");
+  }
+
+  function openBlogArticle(articleId: string) {
+    setSelectedBlogArticleId(articleId);
+    if (screenRef.current !== "blog-article") {
+      navigateTo("blog-article", "profile");
+    }
+  }
+
+  async function shareBlogArticle(article: BlogArticle) {
+    const shareText = `${article.title}\n\n${article.excerpt}`;
+    if (typeof navigator.share === "function") {
+      try {
+        await navigator.share({ title: article.title, text: shareText });
+      } catch {
+        /* user dismissed share */
+      }
+      return;
+    }
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(shareText);
+    }
+  }
+
+  function selectAppLanguage(code: AppLanguageCode) {
+    setAppLanguageCode(code);
+  }
+
+  function generateEmailOtp() {
+    return String(Math.floor(100000 + Math.random() * 900000));
+  }
+
+  function clearPasswordFieldsAfterUpdate() {
+    setSettingsCurrentPassword("");
+    setSettingsNewPassword("");
+    setSettingsConfirmPassword("");
+    setSettingsShowCurrent(false);
+    setSettingsShowNew(false);
+    setSettingsShowConfirm(false);
+    setSettingsPendingNewPassword("");
+    setSettingsOtpCode("");
+    setSettingsOtpInput("");
+    setSettingsOtpError(null);
+    setSettingsOtpOpen(false);
+    setSettingsOtpPurpose(null);
+  }
+
+  function closeSettingsOtpModal() {
+    setSettingsOtpOpen(false);
+    setSettingsOtpPurpose(null);
+    setSettingsOtpInput("");
+    setSettingsOtpError(null);
+    setSettingsPendingNewPassword("");
+    setSettingsOtpCode("");
+  }
+
+  function performAccountDeletion() {
+    setProfileFullName(PROFILE_DEFAULTS.fullName);
+    setProfileEmail(PROFILE_DEFAULTS.email);
+    setProfilePhone(PROFILE_DEFAULTS.phone);
+    setProfileGender(PROFILE_DEFAULTS.gender);
+    setProfileOccupation(PROFILE_DEFAULTS.occupation);
+    setProfileBirthDate(PROFILE_DEFAULTS.birthDate);
+    setProfileAddress(PROFILE_DEFAULTS.address);
+    setProfileCity(PROFILE_DEFAULTS.city);
+    setProfileZip(PROFILE_DEFAULTS.zip);
+    setProfileCountry(PROFILE_DEFAULTS.country);
+    setProfileMapCoords(null);
+    setSaved({});
+    setNotifications([]);
+    setCompareIds([]);
+    setCompareCatalog({});
+    setAccountPassword("");
+    setSettingsCurrentPassword("");
+    setSettingsNewPassword("");
+    setSettingsConfirmPassword("");
+    setSettingsShowCurrent(false);
+    setSettingsShowNew(false);
+    setSettingsShowConfirm(false);
+    setSettingsMessage(null);
+    setActiveSubscription(null);
+    setBillingPlan(null);
+    setBillingInvoices([]);
+    setBillingNote(null);
+    setAccountRole("buyer");
+    setSellerSlotLimit(0);
+    setSellerListingIds([]);
+    setSellerListingStatus({});
+    setCustomListings([]);
+    setListingDetailOverrides({});
+    setTestDriveRequests([]);
+    setSelectedTestDriveRequestId(null);
+    setSellPage(1);
+    setSellMenuOpenId(null);
+    setSellNote(null);
+    setMyCarsQuery("");
+    setMyCarsStatus("all");
+    setMyCarsPage(1);
+    setMyCarsNote(null);
+    closeListingActionDialog();
+    resetAddVehicleForm();
+    setSubscriptionNote(null);
+    closeSettingsOtpModal();
+    goHome();
   }
 
   function updateAccountPassword() {
     setSettingsMessage(null);
+    setSettingsOtpError(null);
+
+    if (!profileEmail.trim()) {
+      setSettingsMessageTone("error");
+      setSettingsMessage("Add your registered email on My Profile first.");
+      return;
+    }
     if (accountPassword && settingsCurrentPassword !== accountPassword) {
       setSettingsMessageTone("error");
       setSettingsMessage("Current password is incorrect.");
@@ -1731,41 +3757,53 @@ export default function App() {
       setSettingsMessage("New passwords do not match.");
       return;
     }
-    setAccountPassword(settingsNewPassword);
-    setSettingsCurrentPassword("");
-    setSettingsNewPassword("");
-    setSettingsConfirmPassword("");
-    setSettingsShowCurrent(false);
-    setSettingsShowNew(false);
-    setSettingsShowConfirm(false);
-    setSettingsMessageTone("success");
-    setSettingsMessage("Password updated successfully.");
+
+    const code = generateEmailOtp();
+    setSettingsOtpPurpose("password");
+    setSettingsPendingNewPassword(settingsNewPassword);
+    setSettingsOtpCode(code);
+    setSettingsOtpInput("");
+    setSettingsOtpOpen(true);
   }
 
-  function deleteAccount() {
-    const confirmed = window.confirm(
-      "Delete your account permanently? All saved data will be removed.",
-    );
-    if (!confirmed) return;
-    setProfileFullName(PROFILE_DEFAULTS.fullName);
-    setProfileEmail(PROFILE_DEFAULTS.email);
-    setProfilePhone(PROFILE_DEFAULTS.phone);
-    setProfileGender(PROFILE_DEFAULTS.gender);
-    setProfileBirthDate(PROFILE_DEFAULTS.birthDate);
-    setProfileAddress(PROFILE_DEFAULTS.address);
-    setProfileCity(PROFILE_DEFAULTS.city);
-    setProfileZip(PROFILE_DEFAULTS.zip);
-    setProfileCountry(PROFILE_DEFAULTS.country);
-    setSaved({});
-    setNotifications([]);
-    setCompareIds([]);
-    setCompareCatalog({});
-    setAccountPassword("");
-    setSettingsCurrentPassword("");
-    setSettingsNewPassword("");
-    setSettingsConfirmPassword("");
+  function requestDeleteAccount() {
     setSettingsMessage(null);
-    goHome();
+    setSettingsOtpError(null);
+
+    if (!profileEmail.trim()) {
+      setSettingsMessageTone("error");
+      setSettingsMessage("Add your registered email on My Profile first.");
+      return;
+    }
+
+    const code = generateEmailOtp();
+    setSettingsOtpPurpose("delete");
+    setSettingsPendingNewPassword("");
+    setSettingsOtpCode(code);
+    setSettingsOtpInput("");
+    setSettingsOtpOpen(true);
+  }
+
+  function confirmSettingsOtp() {
+    const entered = settingsOtpInput.trim();
+    if (entered.length !== 6) {
+      setSettingsOtpError("Enter the 6-digit verification code.");
+      return;
+    }
+    if (entered !== settingsOtpCode) {
+      setSettingsOtpError("Invalid verification code. Check your email and try again.");
+      return;
+    }
+
+    if (settingsOtpPurpose === "delete") {
+      performAccountDeletion();
+      return;
+    }
+
+    setAccountPassword(settingsPendingNewPassword);
+    clearPasswordFieldsAfterUpdate();
+    setSettingsMessageTone("success");
+    setSettingsMessage("Password updated successfully.");
   }
 
   function openNotifications() {
@@ -1802,14 +3840,14 @@ export default function App() {
         (position) => {
           const { latitude, longitude } = position.coords;
           setProfileMapCoords({ lat: latitude, lng: longitude });
-          setProfileCountry((current) => current || "Schweiz");
+          setProfileCountry((current) => current || "Switzerland");
           setProfileCity((current) => current || "Current location");
         },
         () => {
           setProfileMapCoords(null);
           setProfileCity("Zürich");
           setProfileZip("8001");
-          setProfileCountry("Schweiz");
+          setProfileCountry("Switzerland");
           setProfileAddress((current) => current || "Bahnhofstrasse 1");
         },
         { enableHighAccuracy: true, timeout: 8000 },
@@ -1819,7 +3857,7 @@ export default function App() {
     setProfileMapCoords(null);
     setProfileCity("Zürich");
     setProfileZip("8001");
-    setProfileCountry("Schweiz");
+    setProfileCountry("Switzerland");
     setProfileAddress((current) => current || "Bahnhofstrasse 1");
   }
 
@@ -1896,6 +3934,8 @@ export default function App() {
   function openVehicleDetails(vehicleId: string) {
     setSelectedVehicleId(vehicleId);
     setVehiclePhotoIndex(0);
+    setSellMenuOpenId(null);
+    setOwnerDetailsMenuOpen(false);
     navigateTo("vehicle-details");
   }
 
@@ -1909,7 +3949,52 @@ export default function App() {
   }
 
   function confirmTestDrive() {
-    const vehicleLabel = selectedVehicle?.name ?? "this vehicle";
+    const vehicle = selectedVehicle;
+    const vehicleLabel = vehicle?.name ?? "this vehicle";
+    if (!vehicle) {
+      setTestDriveNote("Select a vehicle before requesting a test drive.");
+      return;
+    }
+
+    const activeLock = findActiveVehicleTestDriveLock(testDriveRequests, vehicle.id);
+    if (activeLock) {
+      setTestDriveNote(
+        `This car is locked for ${activeLock.customerName} until ${activeLock.dateDetailLabel}.`,
+      );
+      return;
+    }
+
+    if (!testDriveDate.trim()) {
+      setTestDriveNote("Please choose a test drive date.");
+      return;
+    }
+
+    setTestDriveRequests((current) => {
+      const nextNumber =
+        current.reduce((max, item) => Math.max(max, item.number), 0) + 1;
+      const request: TestDriveRequest = {
+        id: `tdr-${Date.now()}`,
+        number: nextNumber,
+        status: "upcoming",
+        customerName: testDriveName.trim() || profileFullName || "Guest",
+        customerEmail: testDriveEmail.trim() || profileEmail || "—",
+        customerPhone: testDrivePhone.trim() || profilePhone || "—",
+        customerAvatar: profilePhoto,
+        vehicleId: vehicle.id,
+        vehicleTitle: vehicle.name,
+        vehicleSubtitle: `${vehicle.brand} - ${vehicle.model}`,
+        vehicleBrand: vehicle.brand,
+        vehicleModel: vehicle.model,
+        vehicleYear: listingYear(vehicle.date),
+        vehicleImage: vehicle.image,
+        vehiclePrice: vehicle.price,
+        dateLabel: formatTestDriveDateLabel(testDriveDate, "short"),
+        dateDetailLabel: formatTestDriveDateLabel(testDriveDate, "long"),
+        driveDateIso: testDriveDate,
+        cancelledByCustomer: false,
+      };
+      return [request, ...current];
+    });
     setTestDriveNote(`Your test drive request for ${vehicleLabel} has been sent to the seller.`);
   }
 
@@ -2187,6 +4272,142 @@ export default function App() {
     );
   }
 
+  function activateSellerListing(vehicleId: string) {
+    setSellerListingStatus((current) => ({ ...current, [vehicleId]: "active" }));
+    setSellMenuOpenId(null);
+    setOwnerDetailsMenuOpen(false);
+    goToMyCarsWithStatus("active", "Listing is active again.");
+  }
+
+  function renderSellerVehicleCard(car: Listing) {
+    const menuOpen = sellMenuOpenId === car.id;
+    const listingStatus = sellerListingStatus[car.id] ?? "active";
+    const isInactive = listingStatus === "inactive";
+
+    return (
+      <article className="card sell-vehicle-card" key={car.id}>
+        <button
+          className="sell-vehicle-photo"
+          type="button"
+          onClick={() => openVehicleDetails(car.id)}
+          aria-label={`View details for ${car.name}`}
+        >
+          <img src={car.image} alt="" />
+        </button>
+        <div className="details">
+          <div className="sell-vehicle-identity">
+            <h3>{car.name}</h3>
+            <div className="sell-vehicle-menu-wrap">
+              <button
+                className="sell-vehicle-menu-btn"
+                type="button"
+                aria-label={`Manage ${car.name}`}
+                aria-expanded={menuOpen}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setSellMenuOpenId((current) => (current === car.id ? null : car.id));
+                }}
+              >
+                <img src={sellMenuIcon} width={16} height={16} alt="" />
+              </button>
+              {menuOpen && (
+                <div className="sell-vehicle-menu" role="menu" aria-label="ACTIONS">
+                  <div className="sell-vehicle-menu-head">ACTIONS</div>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="sell-vehicle-menu-item"
+                    onClick={() => {
+                      setSellMenuOpenId(null);
+                      openVehicleDetails(car.id);
+                    }}
+                  >
+                    <img src={vehicleActionViewIcon} width={14} height={14} alt="" />
+                    <span>View Listing</span>
+                  </button>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="sell-vehicle-menu-item"
+                    onClick={() => {
+                      setSellMenuOpenId(null);
+                      openEditVehicle(car.id);
+                    }}
+                  >
+                    <img src={vehicleActionEditIcon} width={14} height={14} alt="" />
+                    <span>Edit Vehicle</span>
+                  </button>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className={
+                      isInactive
+                        ? "sell-vehicle-menu-item sell-vehicle-menu-activate"
+                        : "sell-vehicle-menu-item sell-vehicle-menu-pause"
+                    }
+                    onClick={() =>
+                      isInactive
+                        ? activateSellerListing(car.id)
+                        : openPauseListingDialog(car.id)
+                    }
+                  >
+                    <span
+                      className={
+                        isInactive
+                          ? "sell-vehicle-menu-icon sell-vehicle-menu-icon-activate"
+                          : "sell-vehicle-menu-icon sell-vehicle-menu-icon-pause"
+                      }
+                      aria-hidden="true"
+                    >
+                      <img src={vehicleActionPauseIcon} width={8} height={8} alt="" />
+                    </span>
+                    <span>{isInactive ? "Activate Listing" : "Pause / Deactivate"}</span>
+                  </button>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="sell-vehicle-menu-item sell-vehicle-menu-sold"
+                    onClick={() => openSoldListingDialog(car.id)}
+                  >
+                    <span className="sell-vehicle-menu-icon sell-vehicle-menu-icon-sold" aria-hidden="true">
+                      <img src={vehicleActionSoldIcon} width={10} height={10} alt="" />
+                    </span>
+                    <span>Mark as Sold</span>
+                  </button>
+                  <div className="sell-vehicle-menu-divider" role="presentation" />
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="sell-vehicle-menu-item sell-vehicle-menu-danger"
+                    onClick={() => openDeleteListingDialog(car.id)}
+                  >
+                    <img src={vehicleActionDeleteIcon} width={14} height={14} alt="" />
+                    <span>Delete Listing</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+          <p className="price">
+            <span className="price-now">{money(car.price)}</span>
+            <span className="price-sep">/</span>
+            <span className="price-was">{money(car.was)}</span>
+          </p>
+          <div className="meta">
+            <span className="meta-item">
+              <img src={calendarIcon} width={16} height={16} alt="" />
+              {car.date}
+            </span>
+            <span className="meta-item">
+              <img src={mileageIcon} width={16} height={16} alt="" />
+              {car.mileage}
+            </span>
+          </div>
+        </div>
+      </article>
+    );
+  }
+
   const simpleModels =
     simpleBrand === "all" ? Object.values(MODELS).flat() : MODELS[simpleBrand as BrandName] ?? [];
 
@@ -2415,6 +4636,100 @@ export default function App() {
     );
   }, [popularBrand, popularSort]);
 
+  const sellerListings = useMemo(
+    () =>
+      sellerListingIds
+        .map(
+          (id) =>
+            customListings.find((car) => car.id === id) ??
+            LISTINGS.find((car) => car.id === id),
+        )
+        .filter((car): car is Listing => Boolean(car)),
+    [customListings, sellerListingIds],
+  );
+
+  const testDriveRequestStats = useMemo(
+    () => ({
+      upcoming: testDriveRequests.filter((item) => item.status === "upcoming").length,
+      accepted: testDriveRequests.filter((item) => item.status === "accepted").length,
+      rejected: testDriveRequests.filter((item) => item.status === "rejected").length,
+      completed: testDriveRequests.filter((item) => item.status === "completed").length,
+    }),
+    [testDriveRequests],
+  );
+
+  const selectedTestDriveRequest = useMemo(
+    () =>
+      testDriveRequests.find((item) => item.id === selectedTestDriveRequestId) ?? null,
+    [selectedTestDriveRequestId, testDriveRequests],
+  );
+
+  const addVehicleModels = avBrand ? MODELS[avBrand] ?? [] : [];
+
+  const usedSellerSlots = sellerListingIds.length;
+  const remainingSellerSlots = Math.max(0, sellerSlotLimit - usedSellerSlots);
+  const sellSlotProgress =
+    sellerSlotLimit > 0 ? Math.min(100, (usedSellerSlots / sellerSlotLimit) * 100) : 0;
+  const billingTotalLimit =
+    sellerSlotLimit > 0 ? sellerSlotLimit : billingPlan?.slotLimit ?? 0;
+  const billingUsedCars =
+    sellerSlotLimit > 0 ? usedSellerSlots : billingPlan ? Math.min(2, billingTotalLimit) : 0;
+  const billingRemainingSlots = Math.max(0, billingTotalLimit - billingUsedCars);
+  const billingSlotProgress =
+    billingTotalLimit > 0
+      ? Math.min(100, (billingUsedCars / billingTotalLimit) * 100)
+      : 0;
+  const sellTotalPages = Math.max(1, Math.ceil(Math.max(usedSellerSlots, 1) / sellPageSize));
+
+  const pagedSellerListings = useMemo(() => {
+    const start = (sellPage - 1) * sellPageSize;
+    return sellerListings.slice(start, start + sellPageSize);
+  }, [sellerListings, sellPage, sellPageSize]);
+
+  useEffect(() => {
+    const maxPage = Math.max(1, Math.ceil(Math.max(sellerListingIds.length, 1) / sellPageSize));
+    if (sellPage > maxPage) setSellPage(maxPage);
+  }, [sellerListingIds.length, sellPage, sellPageSize]);
+
+  const myCarsFiltered = useMemo(() => {
+    const needle = myCarsQuery.trim().toLowerCase();
+    const rows = sellerListings.filter((car) => {
+      const status = sellerListingStatus[car.id] ?? "active";
+      if (myCarsStatus !== "all" && status !== myCarsStatus) return false;
+      if (!needle) return true;
+      return (
+        car.name.toLowerCase().includes(needle) ||
+        car.brand.toLowerCase().includes(needle) ||
+        car.model.toLowerCase().includes(needle)
+      );
+    });
+    return [...rows].sort((a, b) => {
+      if (myCarsSort === "price-asc") return a.price - b.price;
+      if (myCarsSort === "price-desc") return b.price - a.price;
+      const aIndex = sellerListingIds.indexOf(a.id);
+      const bIndex = sellerListingIds.indexOf(b.id);
+      return myCarsSort === "oldest" ? aIndex - bIndex : bIndex - aIndex;
+    });
+  }, [
+    myCarsQuery,
+    myCarsSort,
+    myCarsStatus,
+    sellerListingIds,
+    sellerListingStatus,
+    sellerListings,
+  ]);
+
+  const myCarsTotalPages = Math.max(1, Math.ceil(Math.max(myCarsFiltered.length, 1) / myCarsPageSize));
+  const pagedMyCars = useMemo(() => {
+    const start = (myCarsPage - 1) * myCarsPageSize;
+    return myCarsFiltered.slice(start, start + myCarsPageSize);
+  }, [myCarsFiltered, myCarsPage, myCarsPageSize]);
+
+  useEffect(() => {
+    const maxPage = Math.max(1, Math.ceil(Math.max(myCarsFiltered.length, 1) / myCarsPageSize));
+    if (myCarsPage > maxPage) setMyCarsPage(maxPage);
+  }, [myCarsFiltered.length, myCarsPage, myCarsPageSize]);
+
   const onHomeTab = tab === "home";
   const onSearchTab = tab === "search";
   const onPlanTab = tab === "plan";
@@ -2427,6 +4742,31 @@ export default function App() {
     [notifications],
   );
 
+  const filteredBlogArticles = useMemo(() => {
+    const needle = blogQuery.trim().toLowerCase();
+    return BLOG_ARTICLES.filter((article) => {
+      if (blogCategory === "news" && article.category !== "News") return false;
+      if (!needle) return true;
+      return (
+        article.title.toLowerCase().includes(needle) ||
+        article.excerpt.toLowerCase().includes(needle)
+      );
+    });
+  }, [blogQuery, blogCategory]);
+
+  const selectedBlogArticle = useMemo(
+  () =>
+    BLOG_ARTICLES.find((article) => article.id === selectedBlogArticleId) ??
+    BLOG_ARTICLES[0] ??
+    null,
+  [selectedBlogArticleId],
+  );
+
+  const relatedBlogArticles = useMemo(() => {
+    if (!selectedBlogArticle) return [];
+    return BLOG_ARTICLES.filter((article) => article.id !== selectedBlogArticle.id);
+  }, [selectedBlogArticle]);
+
   const activeNotification = useMemo(
     () => notifications.find((item) => item.id === activeNotificationId) ?? null,
     [activeNotificationId, notifications],
@@ -2438,8 +4778,15 @@ export default function App() {
   );
 
   const selectedVehicle = useMemo(
-    () => LISTINGS.find((car) => car.id === selectedVehicleId) ?? null,
-    [selectedVehicleId],
+    () =>
+      customListings.find((car) => car.id === selectedVehicleId) ??
+      LISTINGS.find((car) => car.id === selectedVehicleId) ??
+      null,
+    [customListings, selectedVehicleId],
+  );
+
+  const isOwnListing = Boolean(
+    selectedVehicle && sellerListingIds.includes(selectedVehicle.id),
   );
 
   const selectedVehicleDealer = useMemo(() => {
@@ -2461,7 +4808,7 @@ export default function App() {
       [profileAddress, profileCity, profileZip, profileCountry]
         .map((value) => value.trim())
         .filter(Boolean)
-        .join(", ") || "Schweiz";
+        .join(", ") || "Switzerland";
     return `https://maps.google.com/maps?q=${encodeURIComponent(query)}&z=13&output=embed`;
   }, [profileAddress, profileCity, profileCountry, profileMapCoords, profileZip]);
 
@@ -2498,6 +4845,669 @@ export default function App() {
     }).length;
   }, [advMake, advModel, advQuery]);
 
+  if (showSplash) {
+    return (
+      <div className="stage">
+        <div className={splashLeaving ? "phone splash-phone splash-phone-leave" : "phone splash-phone"}>
+          <header className="status">
+            <p className="time">09:41</p>
+            <div className="status-icons">
+              <img src={signalIcon} width={20} height={12} alt="" />
+              <img src={wifiIcon} width={17} height={13} alt="" />
+              <img src={batteryIcon} width={27} height={13} alt="" />
+            </div>
+          </header>
+          <main className="splash-screen" aria-label="AutoPlaza splash screen">
+            <img
+              className="splash-logo"
+              src={splashLogo}
+              width={262}
+              height={98}
+              alt="AutoPlaza.ch"
+            />
+            <div className="splash-loading">
+              <span className="splash-spinner" aria-hidden="true" />
+              <p>Data is Loading</p>
+            </div>
+          </main>
+          <footer className="phone-footer" aria-hidden="true">
+            <div className="phone-footer-surface" />
+            <div className="phone-footer-indicator" />
+          </footer>
+        </div>
+      </div>
+    );
+  }
+
+  if (authGate === "buy-subscription") {
+    return (
+      <div className="stage">
+        <div className="phone">
+          <header className="status">
+            <p className="time">09:41</p>
+            <div className="status-icons">
+              <img src={signalIcon} width={20} height={12} alt="" />
+              <img src={wifiIcon} width={17} height={13} alt="" />
+              <img src={batteryIcon} width={27} height={13} alt="" />
+            </div>
+          </header>
+
+          <div className="header plan-header">
+            <h1 className="plan-header-title">Buy Subscription Plan</h1>
+          </div>
+
+          <main className="buy-subscription-page">
+            <div className="plan-page buy-subscription-content">
+              <div className="plan-subscription-card">
+                <div className="plan-subscription-symbol" aria-hidden="true">
+                  <img src={planLayersIcon} width={20} height={20} alt="" />
+                </div>
+                <div className="plan-subscription-copy">
+                  <h2>Choose a Subscription Plan</h2>
+                  <p>
+                    Unlock more vehicle listings, faster visibility, and premium tools to sell faster
+                    on AutoPlaza.
+                  </p>
+                </div>
+                <button className="plan-view-btn" type="button" onClick={viewPlansFromOnboarding}>
+                  View Plans
+                </button>
+              </div>
+
+              <section className="plan-why" aria-labelledby="buy-plan-why-title">
+                <h3 id="buy-plan-why-title">WHY AUTOPLAZA.CH is the best choice?</h3>
+                <p className="plan-why-lead">
+                  Full cost certainty, maximum reach in Switzerland and state-of-the-art sales tools.
+                </p>
+                <ul className="plan-benefits">
+                  {PLAN_BENEFITS.map((benefit) => (
+                    <li key={benefit.title} className="plan-benefit-card">
+                      <img
+                        className="plan-benefit-icon"
+                        src={benefit.icon}
+                        width={40}
+                        height={40}
+                        alt=""
+                      />
+                      <div className="plan-benefit-copy">
+                        <strong>{benefit.title}</strong>
+                        <p>{benefit.copy}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            </div>
+
+            <div className="buy-subscription-footer">
+              <button
+                className="buy-subscription-skip"
+                type="button"
+                onClick={skipBuySubscription}
+              >
+                Skip
+              </button>
+            </div>
+          </main>
+
+          <footer className="phone-footer" aria-hidden="true">
+            <div className="phone-footer-surface" />
+            <div className="phone-footer-indicator" />
+          </footer>
+        </div>
+      </div>
+    );
+  }
+
+  if (authGate !== "app") {
+    const isRegister = authGate === "register";
+    const isPersonalInfo = authGate === "personal-info";
+    const isForgot = authGate === "forgot";
+    const isResetCode = authGate === "reset-code";
+    const isResetPassword = authGate === "reset-password";
+    const isForgotFlow = isForgot || isResetCode || isResetPassword;
+    const hideAuthSwitch = isForgotFlow || isPersonalInfo;
+    return (
+      <div className="stage">
+        <div className="phone">
+          <header className="status">
+            <p className="time">09:41</p>
+            <div className="status-icons">
+              <img src={signalIcon} width={20} height={12} alt="" />
+              <img src={wifiIcon} width={17} height={13} alt="" />
+              <img src={batteryIcon} width={27} height={13} alt="" />
+            </div>
+          </header>
+
+          <main
+            className={
+              isRegister || isPersonalInfo
+                ? "auth-page auth-page-register"
+                : isForgotFlow
+                  ? "auth-page auth-page-login auth-page-forgot"
+                  : "auth-page auth-page-login"
+            }
+          >
+            <div className="auth-body">
+              <div className="auth-brand">
+                <img className="auth-logo" src={splashLogo} width={160} height={60} alt="AutoPlaza.ch" />
+              </div>
+
+              {isForgot ? (
+                <section className="auth-card" aria-labelledby="auth-forgot-title">
+                  <h1 id="auth-forgot-title">Forgot password?</h1>
+                  <p className="auth-lead">Enter your email below to reset your password</p>
+
+                  <label className="app-settings-field">
+                    <span>Email</span>
+                    <span className="app-settings-input">
+                      <input
+                        type="email"
+                        value={forgotEmail}
+                        onChange={(event) => setForgotEmail(event.target.value)}
+                        placeholder="Enter your email"
+                        autoComplete="email"
+                      />
+                    </span>
+                  </label>
+
+                  <button
+                    className="auth-link auth-link-underline auth-back-login"
+                    type="button"
+                    onClick={openAuthLogin}
+                  >
+                    Back to login
+                  </button>
+
+                  {authError && (
+                    <p className="auth-error" role="alert">
+                      {authError}
+                    </p>
+                  )}
+                  {forgotNote && (
+                    <p className="auth-success" role="status">
+                      {forgotNote}
+                    </p>
+                  )}
+
+                  <button
+                    className="app-settings-primary"
+                    type="button"
+                    onClick={submitForgotPassword}
+                  >
+                    Send reset link
+                  </button>
+                </section>
+              ) : isResetCode ? (
+                <section className="auth-card" aria-labelledby="auth-reset-code-title">
+                  <h1 id="auth-reset-code-title">Enter 6 digits code</h1>
+                  <p className="auth-lead">Enter the six-digit code that was emailed to you.</p>
+
+                  <label className="app-settings-field">
+                    <span>Verification Code</span>
+                    <span className="app-settings-input auth-otp-input">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        autoComplete="one-time-code"
+                        maxLength={6}
+                        value={forgotOtpInput}
+                        onChange={(event) => {
+                          const digits = event.target.value.replace(/\D/g, "").slice(0, 6);
+                          setForgotOtpInput(digits);
+                          setAuthError(null);
+                        }}
+                        placeholder="123456"
+                        aria-invalid={Boolean(authError)}
+                      />
+                    </span>
+                  </label>
+
+                  <div className="auth-otp-meta">
+                    <p className="auth-otp-expiry">
+                      <span>This code will expire in </span>
+                      <span className="auth-otp-timer">{formatOtpCountdown(forgotOtpSeconds)}</span>
+                    </p>
+                    <button
+                      className="auth-link auth-link-underline"
+                      type="button"
+                      onClick={resendForgotOtp}
+                    >
+                      Resend code
+                    </button>
+                  </div>
+
+                  <button
+                    className="auth-link auth-link-underline auth-back-login"
+                    type="button"
+                    onClick={openAuthLogin}
+                  >
+                    Back to login
+                  </button>
+
+                  <p className="auth-otp-demo" aria-live="polite">
+                    Demo code (no email server): <strong>{forgotOtpCode}</strong>
+                  </p>
+
+                  {authError && (
+                    <p className="auth-error" role="alert">
+                      {authError}
+                    </p>
+                  )}
+
+                  <button
+                    className="app-settings-primary"
+                    type="button"
+                    onClick={submitForgotOtp}
+                  >
+                    Verify
+                  </button>
+                </section>
+              ) : isResetPassword ? (
+                <section className="auth-card" aria-labelledby="auth-reset-password-title">
+                  <h1 id="auth-reset-password-title">Create New Password</h1>
+                  <p className="auth-lead">
+                    Your new password must be different from previous passwords.
+                  </p>
+
+                  <label className="app-settings-field">
+                    <span>password</span>
+                    <span className="app-settings-input">
+                      <input
+                        type={resetShowPassword ? "text" : "password"}
+                        value={resetPassword}
+                        onChange={(event) => {
+                          setResetPassword(event.target.value);
+                          setAuthError(null);
+                        }}
+                        placeholder="Enter new password"
+                        autoComplete="new-password"
+                      />
+                      <PasswordVisibilityButton
+                        visible={resetShowPassword}
+                        onToggle={() => setResetShowPassword((value) => !value)}
+                      />
+                    </span>
+                  </label>
+
+                  <label className="app-settings-field">
+                    <span>Confirm Password</span>
+                    <span className="app-settings-input">
+                      <input
+                        type={resetShowConfirm ? "text" : "password"}
+                        value={resetConfirmPassword}
+                        onChange={(event) => {
+                          setResetConfirmPassword(event.target.value);
+                          setAuthError(null);
+                        }}
+                        placeholder="Enter new password"
+                        autoComplete="new-password"
+                      />
+                      <PasswordVisibilityButton
+                        visible={resetShowConfirm}
+                        onToggle={() => setResetShowConfirm((value) => !value)}
+                      />
+                    </span>
+                  </label>
+
+                  {authError && (
+                    <p className="auth-error" role="alert">
+                      {authError}
+                    </p>
+                  )}
+
+                  <button
+                    className="app-settings-primary"
+                    type="button"
+                    onClick={submitResetPassword}
+                  >
+                    Confirm Password
+                  </button>
+                </section>
+              ) : isRegister ? (
+                <section className="auth-card" aria-labelledby="auth-register-title">
+                  <h1 id="auth-register-title">Registration</h1>
+                  <p className="auth-lead">Join AutoPlaza.ch to manage your vehicles</p>
+
+                  <label className="app-settings-field">
+                    <span>
+                      User Name<span className="auth-required">*</span>
+                    </span>
+                    <span className="app-settings-input">
+                      <input
+                        type="text"
+                        value={registerName}
+                        onChange={(event) => setRegisterName(event.target.value)}
+                        placeholder="Enter user name"
+                        autoComplete="username"
+                      />
+                    </span>
+                  </label>
+
+                  <label className="app-settings-field">
+                    <span>
+                      Email<span className="auth-required">*</span>
+                    </span>
+                    <span className="app-settings-input">
+                      <input
+                        type="email"
+                        value={registerEmail}
+                        onChange={(event) => setRegisterEmail(event.target.value)}
+                        placeholder="Enter your email"
+                        autoComplete="email"
+                      />
+                    </span>
+                  </label>
+
+                  <div className="auth-divider" role="presentation" />
+
+                  <div className="app-settings-field">
+                    <span>
+                      password<span className="auth-required">*</span>
+                    </span>
+                    <span className="app-settings-input">
+                      <input
+                        type={registerShowPassword ? "text" : "password"}
+                        value={registerPassword}
+                        onChange={(event) => setRegisterPassword(event.target.value)}
+                        placeholder="Enter new password"
+                        autoComplete="new-password"
+                      />
+                      <PasswordVisibilityButton
+                        visible={registerShowPassword}
+                        onToggle={() => setRegisterShowPassword((open) => !open)}
+                      />
+                    </span>
+                  </div>
+
+                  <div className="app-settings-field">
+                    <span>
+                      Confirm password<span className="auth-required">*</span>
+                    </span>
+                    <span className="app-settings-input">
+                      <input
+                        type={registerShowConfirm ? "text" : "password"}
+                        value={registerConfirmPassword}
+                        onChange={(event) => setRegisterConfirmPassword(event.target.value)}
+                        placeholder="Enter new password"
+                        autoComplete="new-password"
+                      />
+                      <PasswordVisibilityButton
+                        visible={registerShowConfirm}
+                        onToggle={() => setRegisterShowConfirm((open) => !open)}
+                      />
+                    </span>
+                  </div>
+
+                  {authError && (
+                    <p className="auth-error" role="alert">
+                      {authError}
+                    </p>
+                  )}
+
+                  <button className="app-settings-primary" type="button" onClick={submitRegister}>
+                    Create Account
+                  </button>
+                </section>
+              ) : isPersonalInfo ? (
+                <section className="auth-card" aria-labelledby="auth-personal-title">
+                  <h1 id="auth-personal-title">Personal Information</h1>
+                  <p className="auth-lead">Please Enter Your Personal Data</p>
+
+                  <label className="app-settings-field">
+                    <span>Contact No</span>
+                    <span className="app-settings-input">
+                      <input
+                        type="tel"
+                        value={profilePhone}
+                        onChange={(event) => setProfilePhone(event.target.value)}
+                        placeholder="Enter contact number"
+                        autoComplete="tel"
+                      />
+                    </span>
+                  </label>
+
+                  <label className="app-settings-field">
+                    <span>Gender</span>
+                    <span className="app-settings-input auth-select-input">
+                      <select
+                        value={profileGender}
+                        onChange={(event) => setProfileGender(event.target.value)}
+                        aria-label="Gender"
+                      >
+                        <option value="">Select gender</option>
+                        {PROFILE_GENDERS.map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                      <IconChevronDown />
+                    </span>
+                  </label>
+
+                  <label className="app-settings-field">
+                    <span>Occupation</span>
+                    <span className="app-settings-input">
+                      <input
+                        type="text"
+                        value={profileOccupation}
+                        onChange={(event) => setProfileOccupation(event.target.value)}
+                        placeholder="Enter occupation"
+                        autoComplete="organization-title"
+                      />
+                    </span>
+                  </label>
+
+                  <label className="app-settings-field">
+                    <span>Date of Birth</span>
+                    <span className="app-settings-input auth-date-input">
+                      <input
+                        type="date"
+                        value={profileBirthDate}
+                        onChange={(event) => setProfileBirthDate(event.target.value)}
+                        aria-label="Date of birth"
+                      />
+                      <img src={calendarIcon} width={16} height={16} alt="" aria-hidden="true" />
+                    </span>
+                  </label>
+
+                  <label className="app-settings-field">
+                    <span>Address</span>
+                    <span className="app-settings-input">
+                      <input
+                        type="text"
+                        value={profileAddress}
+                        onChange={(event) => {
+                          setProfileMapCoords(null);
+                          setProfileAddress(event.target.value);
+                        }}
+                        placeholder="Enter address"
+                        autoComplete="street-address"
+                      />
+                    </span>
+                  </label>
+
+                  <label className="app-settings-field">
+                    <span>City</span>
+                    <span className="app-settings-input auth-select-input">
+                      <select
+                        value={profileCity}
+                        onChange={(event) => {
+                          setProfileMapCoords(null);
+                          setProfileCity(event.target.value);
+                        }}
+                        aria-label="City"
+                      >
+                        <option value="">Select city</option>
+                        {PROFILE_CITIES.map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                      <IconChevronDown />
+                    </span>
+                  </label>
+
+                  <label className="app-settings-field">
+                    <span>Zip Code</span>
+                    <span className="app-settings-input">
+                      <input
+                        type="text"
+                        value={profileZip}
+                        onChange={(event) => {
+                          setProfileMapCoords(null);
+                          setProfileZip(event.target.value);
+                        }}
+                        placeholder="Enter zip code"
+                        autoComplete="postal-code"
+                      />
+                    </span>
+                  </label>
+
+                  <label className="app-settings-field">
+                    <span>Country</span>
+                    <span className="app-settings-input auth-select-input">
+                      <select
+                        value={profileCountry}
+                        onChange={(event) => {
+                          setProfileMapCoords(null);
+                          setProfileCountry(event.target.value);
+                        }}
+                        aria-label="Country"
+                      >
+                        <option value="">Select country</option>
+                        {PROFILE_COUNTRIES.map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                      <IconChevronDown />
+                    </span>
+                  </label>
+
+                  {authError && (
+                    <p className="auth-error" role="alert">
+                      {authError}
+                    </p>
+                  )}
+
+                  <button
+                    className="app-settings-primary"
+                    type="button"
+                    onClick={submitPersonalInformation}
+                  >
+                    Continue
+                  </button>
+                </section>
+              ) : (
+                <section className="auth-card" aria-labelledby="auth-login-title">
+                  <h1 id="auth-login-title">Welcome Back !</h1>
+                  <p className="auth-lead">Enter your credentials to continue</p>
+
+                  <label className="app-settings-field">
+                    <span>Email</span>
+                    <span className="app-settings-input">
+                      <input
+                        type="email"
+                        value={authEmail}
+                        onChange={(event) => setAuthEmail(event.target.value)}
+                        placeholder="Enter your email"
+                        autoComplete="email"
+                      />
+                    </span>
+                  </label>
+
+                  <div className="app-settings-field">
+                    <span>password</span>
+                    <span className="app-settings-input">
+                      <input
+                        type={authShowPassword ? "text" : "password"}
+                        value={authPassword}
+                        onChange={(event) => setAuthPassword(event.target.value)}
+                        placeholder="Enter new password"
+                        autoComplete="current-password"
+                      />
+                      <PasswordVisibilityButton
+                        visible={authShowPassword}
+                        onToggle={() => setAuthShowPassword((open) => !open)}
+                      />
+                    </span>
+                  </div>
+
+                  <div className="auth-row">
+                    <label className="auth-remember">
+                      <span className="auth-checkbox" aria-hidden="true">
+                        <input
+                          type="checkbox"
+                          checked={authRememberMe}
+                          onChange={(event) => setAuthRememberMe(event.target.checked)}
+                        />
+                      </span>
+                      <span>Remember me</span>
+                    </label>
+                    <button
+                      className="auth-link auth-link-underline"
+                      type="button"
+                      onClick={openForgotPassword}
+                    >
+                      Forgot Password?
+                    </button>
+                  </div>
+
+                  {authError && (
+                    <p className="auth-error" role="alert">
+                      {authError}
+                    </p>
+                  )}
+
+                  <button className="app-settings-primary" type="button" onClick={submitLogin}>
+                    Log In
+                  </button>
+                </section>
+              )}
+            </div>
+
+            {!hideAuthSwitch && (
+              <p className="auth-switch">
+                {isRegister ? (
+                  <>
+                    <span>Already have an account?</span>
+                    <button
+                      type="button"
+                      className="auth-link auth-link-switch"
+                      onClick={openAuthLogin}
+                    >
+                      Sign In
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <span>Have no account?</span>
+                    <button
+                      type="button"
+                      className="auth-link auth-link-switch"
+                      onClick={openAuthRegister}
+                    >
+                      Registration
+                    </button>
+                  </>
+                )}
+              </p>
+            )}
+          </main>
+
+          <footer className="phone-footer" aria-hidden="true">
+            <div className="phone-footer-surface" />
+            <div className="phone-footer-indicator" />
+          </footer>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="stage">
       <div className="phone">
@@ -2512,13 +5522,76 @@ export default function App() {
 
         {screen === "home" && onPlanTab && (
           <div className="header plan-header">
-            <h1 className="plan-header-title">Plan</h1>
+            <h1 className="plan-header-title">{isSeller ? "Sell" : "Plan"}</h1>
           </div>
         )}
 
         {screen === "home" && onProfileTab && (
           <div className="header plan-header">
             <h1 className="plan-header-title">Profile</h1>
+          </div>
+        )}
+
+        {screen === "subscription-plan" && (
+          <div className="header plan-header sub-plan-header">
+            <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
+              <IconChevronLeft />
+            </button>
+            <h1 className="plan-header-title">Subscription Plan</h1>
+          </div>
+        )}
+
+        {screen === "subscription-billing" && (
+          <div className="header plan-header sub-plan-header">
+            <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
+              <IconChevronLeft />
+            </button>
+            <h1 className="plan-header-title">Subscription & Billing</h1>
+          </div>
+        )}
+
+        {screen === "my-cars" && (
+          <div className="header plan-header sub-plan-header">
+            <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
+              <IconChevronLeft />
+            </button>
+            <h1 className="plan-header-title">My Cars</h1>
+          </div>
+        )}
+
+        {screen === "test-drive-requests" && (
+          <div className="header plan-header sub-plan-header">
+            <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
+              <IconChevronLeft />
+            </button>
+            <h1 className="plan-header-title">Test Drive Requests</h1>
+          </div>
+        )}
+
+        {screen === "test-drive-request-details" && (
+          <div className="header plan-header sub-plan-header">
+            <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
+              <IconChevronLeft />
+            </button>
+            <h1 className="plan-header-title">Test Drive Details</h1>
+          </div>
+        )}
+
+        {screen === "add-vehicle" && (
+          <div className="header plan-header sub-plan-header">
+            <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
+              <IconChevronLeft />
+            </button>
+            <h1 className="plan-header-title">Add New Vehicle</h1>
+          </div>
+        )}
+
+        {screen === "edit-vehicle" && (
+          <div className="header plan-header sub-plan-header">
+            <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
+              <IconChevronLeft />
+            </button>
+            <h1 className="plan-header-title">Edit Vehicle</h1>
           </div>
         )}
 
@@ -2555,17 +5628,415 @@ export default function App() {
         )}
 
         <main
+          ref={mainScrollRef}
           className={
             screen === "vehicle-details"
               ? "scroll scroll-vehicle-details"
               : screen === "test-drive"
                 ? "scroll scroll-test-drive"
+              : screen === "my-profile"
+                ? "scroll scroll-search-hub scroll-my-profile"
+              : screen === "contact"
+                ? "scroll scroll-search-hub scroll-contact"
+              : screen === "terms" || screen === "privacy"
+                ? "scroll scroll-search-hub scroll-terms"
               : showTabNavigation
                 ? "scroll"
                 : "scroll scroll-search-hub"
           }
         >
-          {screen === "popular-brands" ? (
+          {screen === "subscription-billing" ? (
+            <div className="billing-page">
+              <div className="billing-intro">
+                <p>
+                  Overview of your active plan, vehicle listing quotas, payment methods, and
+                  invoices.
+                </p>
+                <button
+                  type="button"
+                  className="billing-refresh"
+                  aria-label="Refresh billing overview"
+                  onClick={refreshSubscriptionBilling}
+                >
+                  <img src={billingRefreshIcon} width={18} height={18} alt="" />
+                </button>
+              </div>
+
+              {billingNote && (
+                <p className="billing-note" role="status">
+                  {billingNote}
+                </p>
+              )}
+
+              <section className="billing-plan-card" aria-labelledby="billing-plan-title">
+                <div className="billing-plan-status-row">
+                  <span
+                    className={
+                      billingPlan
+                        ? "billing-status-pill billing-status-active"
+                        : "billing-status-pill billing-status-inactive"
+                    }
+                  >
+                    ● {billingPlan ? "Active" : "Inactive"}
+                  </span>
+                </div>
+
+                <div className="billing-plan-copy">
+                  <h2 id="billing-plan-title">{billingPlan?.name ?? "No active plan"}</h2>
+                  <div className="billing-plan-price">
+                    <strong>{billingPlan?.amountLabel ?? "CHF 0.00"}</strong>
+                    <span>{billingPlan?.periodSuffix ?? "/ 30 days"}</span>
+                  </div>
+                </div>
+
+                <div className="billing-renewal-box">
+                  <div className="billing-renewal-row">
+                    <span>Period Start</span>
+                    <strong>{billingPlan?.periodStart ?? "—"}</strong>
+                  </div>
+                  <div className="billing-renewal-row">
+                    <span>Next Renewal</span>
+                    <strong>{billingPlan?.nextRenewal ?? "—"}</strong>
+                  </div>
+                  <div className="billing-renewal-row">
+                    <span>Automatic Renewal</span>
+                    <strong>{billingPlan?.autoRenewal ?? "Off"}</strong>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="billing-view-plans"
+                  onClick={openSubscriptionPlansFromBilling}
+                >
+                  View Plans
+                </button>
+              </section>
+
+              <section className="billing-slots-card" aria-labelledby="billing-slots-title">
+                <div className="billing-slots-head">
+                  <h2 id="billing-slots-title">Add New Vehicles</h2>
+                </div>
+                <div
+                  className="billing-slots-progress"
+                  role="progressbar"
+                  aria-valuemin={0}
+                  aria-valuemax={billingTotalLimit}
+                  aria-valuenow={billingUsedCars}
+                  aria-label="Used listing slots"
+                >
+                  <span style={{ width: `${billingSlotProgress}%` }} />
+                </div>
+                <div className="billing-slots-stats">
+                  <div className="billing-slot-stat billing-slot-remaining">
+                    <strong>{billingRemainingSlots}</strong>
+                    <span>Remaining Slots</span>
+                  </div>
+                  <div className="billing-slot-stat">
+                    <strong>{billingUsedCars}</strong>
+                    <span>Used Cars</span>
+                  </div>
+                  <div className="billing-slot-stat">
+                    <strong>{billingTotalLimit}</strong>
+                    <span>Total Limit</span>
+                  </div>
+                </div>
+              </section>
+
+              <section className="billing-invoices-card" aria-labelledby="billing-invoices-title">
+                <div className="billing-invoices-head">
+                  <h2 id="billing-invoices-title">Invoices & Payment History</h2>
+                  <p>Download receipts and official invoice PDFs</p>
+                </div>
+
+                <button
+                  type="button"
+                  className="billing-portal-link"
+                  onClick={() =>
+                    setBillingNote("Full invoice history opens in the Stripe customer portal.")
+                  }
+                >
+                  View full page↗
+                </button>
+
+                {billingInvoices.length === 0 ? (
+                  <p className="billing-invoices-empty">No invoices yet.</p>
+                ) : (
+                  <div className="billing-invoice-list">
+                    {billingInvoices.map((invoice) => (
+                      <article key={invoice.id} className="billing-invoice">
+                        <div className="billing-invoice-top">
+                          <strong>{invoice.id}</strong>
+                          <span className="billing-invoice-paid">Paid</span>
+                        </div>
+                        <div className="billing-invoice-summary">
+                          <span>{invoice.dateLabel}</span>
+                          <em>{invoice.amountLabel}</em>
+                        </div>
+                        <p className="billing-invoice-desc">{invoice.description}</p>
+                        <button
+                          type="button"
+                          className="billing-invoice-pdf"
+                          onClick={() => downloadBillingInvoice(invoice.id)}
+                        >
+                          PDF
+                        </button>
+                      </article>
+                    ))}
+                  </div>
+                )}
+
+                <p className="billing-stripe-note">
+                  Invoices and tax details are securely processed by Stripe.
+                </p>
+              </section>
+            </div>
+          ) : screen === "subscription-plan" ? (
+            <div
+              className={
+                subscriptionAudience === "dealers"
+                  ? "sub-plan-page sub-plan-page-dealers"
+                  : "sub-plan-page"
+              }
+            >
+              <div className="sub-plan-segment" role="tablist" aria-label="Plan audience">
+                <button
+                  type="button"
+                  role="tab"
+                  className={
+                    subscriptionAudience === "private"
+                      ? "sub-plan-seg sub-plan-seg-active sub-plan-seg-private"
+                      : "sub-plan-seg"
+                  }
+                  aria-selected={subscriptionAudience === "private"}
+                  onClick={() => {
+                    setSubscriptionAudience("private");
+                    setSubscriptionNote(null);
+                  }}
+                >
+                  <span className="sub-plan-seg-dot" aria-hidden="true" />
+                  Private Sale
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  className={
+                    subscriptionAudience === "dealers"
+                      ? "sub-plan-seg sub-plan-seg-active sub-plan-seg-dealers"
+                      : "sub-plan-seg"
+                  }
+                  aria-selected={subscriptionAudience === "dealers"}
+                  onClick={() => {
+                    setSubscriptionAudience("dealers");
+                    setSubscriptionNote(null);
+                  }}
+                >
+                  <span className="sub-plan-seg-dot" aria-hidden="true" />
+                  Dealers
+                </button>
+              </div>
+
+              {subscriptionAudience === "private" ? (
+                <section className="sub-plan-card" aria-labelledby="sub-plan-private-title">
+                  <div className="sub-plan-card-head">
+                    <h2 id="sub-plan-private-title">Sell your vehicle</h2>
+                    <p>Advertise easily. Sell quickly.</p>
+                  </div>
+
+                  <div className="sub-plan-price-box sub-plan-price-box-private">
+                    <strong>CHF 14.90</strong>
+                    <span>per vehicle / month</span>
+                  </div>
+
+                  <ul className="sub-plan-features">
+                    {PRIVATE_PLAN_FEATURES.map((feature) => (
+                      <li key={feature}>
+                        <span className="sub-plan-check sub-plan-check-private" aria-hidden="true">
+                          <img src={subPlanCheckIcon} width={12} height={12} alt="" />
+                        </span>
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    className="sub-plan-cta sub-plan-cta-private"
+                    type="button"
+                    onClick={confirmSubscriptionPlan}
+                  >
+                    Advertise now for CHF 14.90
+                  </button>
+
+                  <p className="sub-plan-fine">
+                    <img src={subPlanLockSmIcon} width={14} height={14} alt="" />
+                    Cancel monthly anytime · Secure payment via Stripe
+                  </p>
+                </section>
+              ) : (
+                <section className="sub-plan-card" aria-labelledby="sub-plan-dealer-title">
+                  <div className="sub-plan-card-head">
+                    <h2 id="sub-plan-dealer-title">Choose your dealer package</h2>
+                    <p>Choose the number of vehicles you want to advertise simultaneously.</p>
+                  </div>
+
+                  <div className="sub-plan-price-box sub-plan-price-box-dealers">
+                    <span className="sub-plan-price-label">Your selected package</span>
+                    <strong className="sub-plan-price-vehicles">
+                      {dealerVehicleCount} vehicles
+                    </strong>
+                    <strong className="sub-plan-price-amount">
+                      CHF {formatDealerPrice(dealerVehicleCount)}
+                    </strong>
+                    <span>per month</span>
+                  </div>
+
+                  <div className="sub-plan-vehicle-selector">
+                    <p className="sub-plan-vehicle-label">Number of vehicles</p>
+                    <label className="sub-plan-slider">
+                      <input
+                        type="range"
+                        min={1}
+                        max={50}
+                        value={Math.min(dealerVehicleCount, 50)}
+                        onChange={(event) => {
+                          setDealerVehicleCount(Number(event.target.value));
+                          setSubscriptionNote(null);
+                        }}
+                        aria-label="Number of vehicles"
+                      />
+                      <span className="sub-plan-slider-ends">
+                        <span>1</span>
+                        <span>50</span>
+                      </span>
+                    </label>
+                    <div className="sub-plan-count-grid" role="listbox" aria-label="Vehicle packages">
+                      {DEALER_VEHICLE_OPTIONS.map((count) => (
+                        <button
+                          key={count}
+                          type="button"
+                          role="option"
+                          aria-selected={dealerVehicleCount === count}
+                          className={
+                            dealerVehicleCount === count
+                              ? "sub-plan-count sub-plan-count-active"
+                              : "sub-plan-count"
+                          }
+                          onClick={() => {
+                            setDealerVehicleCount(count);
+                            setSubscriptionNote(null);
+                          }}
+                        >
+                          {count}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <ul className="sub-plan-features">
+                    {DEALER_PLAN_FEATURES.map((feature) => (
+                      <li key={feature}>
+                        <span className="sub-plan-check sub-plan-check-dealers" aria-hidden="true">
+                          <img src={subPlanCheckIcon} width={12} height={12} alt="" />
+                        </span>
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    className="sub-plan-cta sub-plan-cta-dealers"
+                    type="button"
+                    onClick={confirmSubscriptionPlan}
+                  >
+                    Get Started · CHF {formatDealerPrice(dealerVehicleCount)}/month
+                  </button>
+
+                  <p className="sub-plan-fine">
+                    <img src={subPlanLockSmIcon} width={14} height={14} alt="" />
+                    Cancel monthly anytime · Secure payment via Stripe
+                  </p>
+                </section>
+              )}
+
+              {activeSubscription && (
+                <p className="sub-plan-active" role="status">
+                  Active package: {activeSubscription}
+                </p>
+              )}
+              {subscriptionNote && (
+                <p className="sub-plan-note" role="status">
+                  {subscriptionNote}
+                </p>
+              )}
+
+              <section className="sub-plan-why" aria-labelledby="sub-plan-why-title">
+                <h3 id="sub-plan-why-title">Why AutoPlaza.ch is the best choice</h3>
+                <p>
+                  Full cost transparency, maximum reach in Switzerland and modern selling tools.
+                </p>
+                <div className="sub-plan-why-cards">
+                  <article className="sub-plan-why-card">
+                    <span className="sub-plan-why-icon" aria-hidden="true">
+                      <img
+                        src={
+                          subscriptionAudience === "dealers"
+                            ? subPlanLockWhyBlueIcon
+                            : subPlanLockWhyIcon
+                        }
+                        width={20}
+                        height={20}
+                        alt=""
+                      />
+                    </span>
+                    <strong>No Hidden Fees</strong>
+                    <p>
+                      {subscriptionAudience === "dealers"
+                        ? "Transparent monthly pricing in CHF."
+                        : "Transparent CHF prices. No automatic renewal for private listings."}
+                    </p>
+                  </article>
+                  <article className="sub-plan-why-card">
+                    <span className="sub-plan-why-icon" aria-hidden="true">
+                      <img
+                        src={
+                          subscriptionAudience === "dealers" ? subPlanCarBlueIcon : subPlanCarIcon
+                        }
+                        width={20}
+                        height={20}
+                        alt=""
+                      />
+                    </span>
+                    <strong>Instant Online</strong>
+                    <p>
+                      {subscriptionAudience === "dealers"
+                        ? "Listings go live immediately for Swiss buyers."
+                        : "Your listing goes live immediately. Shown to Swiss buyers."}
+                    </p>
+                  </article>
+                  <article className="sub-plan-why-card">
+                    <span className="sub-plan-why-icon" aria-hidden="true">
+                      <img
+                        src={
+                          subscriptionAudience === "dealers"
+                            ? subPlanPaymentBlueIcon
+                            : subPlanPaymentIcon
+                        }
+                        width={20}
+                        height={14}
+                        alt=""
+                      />
+                    </span>
+                    <strong>Secure Payment</strong>
+                    <p>
+                      {subscriptionAudience === "dealers"
+                        ? "TWINT, Apple Pay or Google Pay supported."
+                        : "Pay via TWINT, Apple Pay or Google Pay with bank encryption."}
+                    </p>
+                  </article>
+                </div>
+              </section>
+            </div>
+          ) : screen === "popular-brands" ? (
             <div className="popular-brands-page">
               <div className="search-hub-top">
                 <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
@@ -2793,7 +6264,7 @@ export default function App() {
                   Once you delete your account, there is no going back. All your vehicle listings,
                   test drive requests, and account data will be permanently removed.
                 </p>
-                <button className="app-settings-danger" type="button" onClick={deleteAccount}>
+                <button className="app-settings-danger" type="button" onClick={requestDeleteAccount}>
                   Delete Account
                 </button>
               </section>
@@ -2810,6 +6281,1520 @@ export default function App() {
                   {settingsMessage}
                 </p>
               )}
+
+              {settingsOtpOpen && settingsOtpPurpose && (
+                <div
+                  className="settings-otp-modal"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="settings-otp-title"
+                >
+                  <button
+                    className="settings-otp-backdrop"
+                    type="button"
+                    aria-label="Cancel verification"
+                    onClick={closeSettingsOtpModal}
+                  />
+                  <div
+                    className={
+                      settingsOtpPurpose === "delete"
+                        ? "settings-otp-card settings-otp-card-danger"
+                        : "settings-otp-card"
+                    }
+                  >
+                    <h2 id="settings-otp-title">
+                      {settingsOtpPurpose === "delete"
+                        ? "Confirm account deletion"
+                        : "Confirm verification code"}
+                    </h2>
+                    <p className="settings-otp-lead">
+                      {settingsOtpPurpose === "delete" ? (
+                        <>
+                          We sent a 6-digit code to{" "}
+                          <strong>{profileEmail || "your registered email"}</strong>. Enter it below
+                          to permanently delete your account and all saved data.
+                        </>
+                      ) : (
+                        <>
+                          We sent a 6-digit code to{" "}
+                          <strong>{profileEmail || "your registered email"}</strong>. Enter it below
+                          to confirm your new password.
+                        </>
+                      )}
+                    </p>
+                    <p className="settings-otp-demo" aria-live="polite">
+                      Demo code (no email server): <strong>{settingsOtpCode}</strong>
+                    </p>
+                    <label className="settings-otp-field">
+                      <span>Verification code</span>
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        autoComplete="one-time-code"
+                        maxLength={6}
+                        value={settingsOtpInput}
+                        onChange={(event) =>
+                          setSettingsOtpInput(event.target.value.replace(/\D/g, "").slice(0, 6))
+                        }
+                        placeholder="Enter 6-digit OTP"
+                        aria-invalid={Boolean(settingsOtpError)}
+                      />
+                    </label>
+                    {settingsOtpError && (
+                      <p className="settings-otp-error" role="alert">
+                        {settingsOtpError}
+                      </p>
+                    )}
+                    <button
+                      className={
+                        settingsOtpPurpose === "delete"
+                          ? "app-settings-danger settings-otp-confirm"
+                          : "app-settings-primary settings-otp-confirm"
+                      }
+                      type="button"
+                      onClick={confirmSettingsOtp}
+                    >
+                      {settingsOtpPurpose === "delete" ? "Confirm delete account" : "Confirm OTP"}
+                    </button>
+                    <button
+                      className="settings-otp-cancel"
+                      type="button"
+                      onClick={closeSettingsOtpModal}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : screen === "select-language" ? (
+            <div className="select-language-page">
+              <div className="search-hub-top">
+                <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
+                  <IconChevronLeft />
+                </button>
+                <h1 className="search-hub-title select-language-title">Select Language</h1>
+              </div>
+
+              <div className="select-language-intro">
+                <img src={profileMenuLanguage} width={24} height={24} alt="" />
+                <h2>Choose your language</h2>
+              </div>
+              <p className="select-language-lead">
+                AutoPlaza is shown in English. Your preferred language is saved on your profile for
+                future updates.
+              </p>
+
+              <div className="select-language-list" role="radiogroup" aria-label="Available languages">
+                {APP_LANGUAGES.map((language) => {
+                  const selected = appLanguageCode === language.code;
+                  return (
+                    <button
+                      key={language.code}
+                      type="button"
+                      role="radio"
+                      aria-checked={selected}
+                      className={
+                        selected ? "select-language-option select-language-option-active" : "select-language-option"
+                      }
+                      onClick={() => selectAppLanguage(language.code)}
+                    >
+                      <span className="select-language-code">{language.code}</span>
+                      <span className="select-language-copy">
+                        <strong>{language.label}</strong>
+                        <span>{language.subtitle}</span>
+                      </span>
+                      <img
+                        src={selected ? languageCheckIcon : languageRadioIcon}
+                        width={22}
+                        height={22}
+                        alt=""
+                        aria-hidden="true"
+                      />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ) : screen === "about-us" ? (
+            <div className="about-us-page">
+              <div className="search-hub-top">
+                <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
+                  <IconChevronLeft />
+                </button>
+                <h1 className="search-hub-title about-us-title">About Us</h1>
+              </div>
+
+              {ABOUT_US_SECTIONS.map((section) => (
+                <section key={section.id} className="about-us-section">
+                  <h2 className="about-us-heading">
+                    {section.lead} <span>{section.accent}</span>
+                  </h2>
+                  <div className={section.tall ? "about-us-figure about-us-figure-tall" : "about-us-figure"}>
+                    <img className="about-us-photo" src={section.image} alt="" />
+                  </div>
+                  <p className="about-us-body">{section.body}</p>
+                </section>
+              ))}
+            </div>
+          ) : screen === "contact" ? (
+            <div className="contact-page">
+              <div className="search-hub-top">
+                <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
+                  <IconChevronLeft />
+                </button>
+                <h1 className="search-hub-title contact-title">Contact</h1>
+              </div>
+
+              <h2 className="contact-heading">Contact Us</h2>
+              <p className="contact-lead">
+                Have questions or need assistance? Our expert team is here to help you buy or sell your
+                car with complete confidence and transparency.
+              </p>
+
+              <section className="contact-card" aria-label="Contact details">
+                <div className="contact-info-row">
+                  <img className="contact-info-icon" src={contactEmailIcon} width={20} height={20} alt="" />
+                  <div className="contact-info-copy">
+                    <span className="contact-info-label">Email</span>
+                    <a className="contact-info-value" href="mailto:support@autoplaza.ch">
+                      support@autoplaza.ch
+                    </a>
+                  </div>
+                </div>
+                <div className="contact-info-row">
+                  <img className="contact-info-icon" src={contactClockIcon} width={20} height={20} alt="" />
+                  <div className="contact-info-copy">
+                    <span className="contact-info-label">Opening hours</span>
+                    <p className="contact-info-value">Mon - Fri: 08:00-12:00 / 13:00-17:00</p>
+                  </div>
+                </div>
+                <div className="contact-info-row">
+                  <img className="contact-info-icon" src={contactLocationIcon} width={20} height={20} alt="" />
+                  <div className="contact-info-copy">
+                    <span className="contact-info-label">Location</span>
+                    <p className="contact-info-value">Switzerland</p>
+                  </div>
+                </div>
+              </section>
+
+              <section className="contact-card" aria-labelledby="contact-form-title">
+                <h2 id="contact-form-title" className="contact-form-title">
+                  Send us a message
+                </h2>
+
+                <label className="app-settings-field">
+                  <span>Full Name</span>
+                  <span className="app-settings-input">
+                    <input
+                      type="text"
+                      value={contactFullName}
+                      onChange={(event) => setContactFullName(event.target.value)}
+                      placeholder="Enter your full name"
+                      autoComplete="name"
+                    />
+                  </span>
+                </label>
+
+                <label className="app-settings-field">
+                  <span>Phone Number</span>
+                  <span className="app-settings-input">
+                    <input
+                      type="tel"
+                      value={contactPhone}
+                      onChange={(event) => setContactPhone(event.target.value)}
+                      placeholder="Enter your phone number"
+                      autoComplete="tel"
+                    />
+                  </span>
+                </label>
+
+                <label className="app-settings-field">
+                  <span>Email</span>
+                  <span className="app-settings-input">
+                    <input
+                      type="email"
+                      value={contactEmail}
+                      onChange={(event) => setContactEmail(event.target.value)}
+                      placeholder="Enter your email address"
+                      autoComplete="email"
+                    />
+                  </span>
+                </label>
+
+                <label className="app-settings-field contact-field-message">
+                  <span>Message</span>
+                  <span className="app-settings-input contact-message-input">
+                    <textarea
+                      value={contactMessage}
+                      onChange={(event) => setContactMessage(event.target.value)}
+                      placeholder="How can we help you?"
+                      rows={5}
+                    />
+                  </span>
+                </label>
+
+                <button className="app-settings-primary" type="button" onClick={sendContactMessage}>
+                  Send Message
+                </button>
+              </section>
+
+              {contactNote && (
+                <p
+                  className={
+                    contactNoteTone === "success"
+                      ? "app-settings-note app-settings-note-success"
+                      : "app-settings-note app-settings-note-error"
+                  }
+                  role="status"
+                >
+                  {contactNote}
+                </p>
+              )}
+            </div>
+          ) : screen === "terms" ? (
+            <div className="terms-page">
+              <div className="search-hub-top">
+                <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
+                  <IconChevronLeft />
+                </button>
+                <h1 className="search-hub-title terms-title">Terms &amp; Conditions</h1>
+              </div>
+
+              <header className="terms-intro">
+                <h2 className="terms-brand">AutoPlaza.ch</h2>
+                <p className="terms-subtitle">General Terms and Conditions (GTC)</p>
+                <p className="terms-date">As of: October 2026</p>
+              </header>
+
+              <article className="terms-body" aria-label="Terms and conditions text">
+                <div className="terms-body-main">{TERMS_CONDITIONS_BODY}</div>
+                <div className="terms-body-contact">{TERMS_CONDITIONS_CONTACT}</div>
+              </article>
+            </div>
+          ) : screen === "privacy" ? (
+            <div className="terms-page privacy-page">
+              <div className="search-hub-top">
+                <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
+                  <IconChevronLeft />
+                </button>
+                <h1 className="search-hub-title terms-title">Privacy Policy</h1>
+              </div>
+
+              <header className="terms-intro">
+                <h2 className="terms-brand">{PRIVACY_POLICY_META.brand}</h2>
+                <p className="terms-subtitle">{PRIVACY_POLICY_META.subtitle}</p>
+                <p className="terms-date">{PRIVACY_POLICY_META.status}</p>
+                <p className="terms-date">{PRIVACY_POLICY_META.validFrom}</p>
+              </header>
+
+              <article className="terms-body" aria-label="Privacy policy text">
+                <div className="terms-body-main">{PRIVACY_POLICY_BODY}</div>
+              </article>
+            </div>
+          ) : screen === "blog" ? (
+            <div className="blog-page">
+              <div className="search-hub-top">
+                <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
+                  <IconChevronLeft />
+                </button>
+                <h1 className="search-hub-title blog-title">Blog</h1>
+              </div>
+
+              <div className="blog-intro">
+                <p className="blog-kicker">AutoPlaza Magazine &amp; News</p>
+                <h2 className="blog-headline">Latest Automotive News &amp; Insights</h2>
+                <p className="blog-lead">
+                  Discover in-depth reports, new models, electromobility and valuable tips for buying
+                  and selling cars in Switzerland.
+                </p>
+              </div>
+
+              <label className="blog-search">
+                <img className="blog-search-icon" src={blogSearchIcon} width={18} height={18} alt="" />
+                <input
+                  type="search"
+                  value={blogQuery}
+                  onChange={(event) => setBlogQuery(event.target.value)}
+                  placeholder="Browse articles..."
+                  aria-label="Browse articles"
+                />
+              </label>
+
+              <div className="blog-filters" role="tablist" aria-label="Article categories">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={blogCategory === "all"}
+                  className={blogCategory === "all" ? "blog-filter blog-filter-active" : "blog-filter"}
+                  onClick={() => setBlogCategory("all")}
+                >
+                  All posts
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={blogCategory === "news"}
+                  className={blogCategory === "news" ? "blog-filter blog-filter-active" : "blog-filter"}
+                  onClick={() => setBlogCategory("news")}
+                >
+                  News
+                </button>
+              </div>
+
+              <p className="blog-count" role="status">
+                {filteredBlogArticles.length} item{filteredBlogArticles.length === 1 ? "" : "s"} found
+              </p>
+
+              <div className="blog-list">
+                {filteredBlogArticles.map((article) => (
+                  <BlogArticleCard
+                    key={article.id}
+                    article={article}
+                    onSelect={() => openBlogArticle(article.id)}
+                  />
+                ))}
+                {filteredBlogArticles.length === 0 && (
+                  <p className="blog-empty">No articles match your search.</p>
+                )}
+              </div>
+            </div>
+          ) : screen === "blog-article" && selectedBlogArticle ? (
+            <div className="blog-article-page">
+              <div className="search-hub-top">
+                <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
+                  <IconChevronLeft />
+                </button>
+                <h1 className="search-hub-title blog-article-title">Blog Article Details</h1>
+              </div>
+
+              <div className="blog-article-content">
+                <div className="blog-article-toolbar">
+                  <button
+                    type="button"
+                    className="blog-article-share"
+                    onClick={() => shareBlogArticle(selectedBlogArticle)}
+                  >
+                    <IconShareLink />
+                    Share
+                  </button>
+                </div>
+
+                <header className="blog-article-head">
+                  <h2 className="blog-article-heading">{selectedBlogArticle.title}</h2>
+                </header>
+
+                <div className="blog-article-figure">
+                  <img className="blog-article-hero" src={selectedBlogArticle.image} alt="" />
+                </div>
+
+                <article className="blog-article-body-card" aria-label="Article body">
+                  {selectedBlogArticle.body.map((paragraph, index) => (
+                    <p key={index}>{paragraph}</p>
+                  ))}
+                </article>
+              </div>
+
+              <section className="blog-article-related" aria-labelledby="blog-related-title">
+                <h2 id="blog-related-title" className="blog-article-related-title">
+                  Related Articles
+                </h2>
+                <p className="blog-article-related-lead">
+                  Discover more news and guides on AutoPlaza
+                </p>
+                {relatedBlogArticles.map((article) => (
+                  <BlogArticleCard
+                    key={article.id}
+                    article={article}
+                    compact
+                    onSelect={() => openBlogArticle(article.id)}
+                  />
+                ))}
+              </section>
+            </div>
+          ) : screen === "add-vehicle" || screen === "edit-vehicle" ? (
+            <div className="add-vehicle-page">
+              <section className="av-card av-images" aria-labelledby="av-images-title">
+                <h2 id="av-images-title">Vehicle Images</h2>
+                <div className="av-image-row">
+                  <button
+                    type="button"
+                    className={avMainPhoto ? "av-main-upload av-main-upload-filled" : "av-main-upload"}
+                    onClick={() => avMainPhotoInputRef.current?.click()}
+                  >
+                    {avMainPhoto ? (
+                      <img src={avMainPhoto} alt="" />
+                    ) : (
+                      <>
+                        <img src={addVehicleCameraIcon} width={24} height={24} alt="" />
+                        <span>Main Photo</span>
+                      </>
+                    )}
+                  </button>
+                  <input
+                    ref={avMainPhotoInputRef}
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={(event) => {
+                      readVehiclePhoto(event.target.files?.[0], setAvMainPhoto);
+                      event.target.value = "";
+                    }}
+                  />
+                  <div className="av-extra-uploads">
+                    {avExtraPhotos.map((photo, index) => (
+                      <button
+                        key={`extra-${index}`}
+                        type="button"
+                        className={photo ? "av-extra-upload av-extra-upload-filled" : "av-extra-upload"}
+                        onClick={() => avExtraPhotoInputRefs.current[index]?.click()}
+                        aria-label={`Upload extra photo ${index + 1}`}
+                      >
+                        {photo ? (
+                          <img src={photo} alt="" />
+                        ) : (
+                          <img src={addVehicleGalleryIcon} width={16} height={16} alt="" />
+                        )}
+                      </button>
+                    ))}
+                    {avExtraPhotos.map((_, index) => (
+                      <input
+                        key={`extra-input-${index}`}
+                        ref={(node) => {
+                          avExtraPhotoInputRefs.current[index] = node;
+                        }}
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        onChange={(event) => {
+                          readVehiclePhoto(event.target.files?.[0], (url) => {
+                            setAvExtraPhotos((current) => {
+                              const next = [...current];
+                              next[index] = url;
+                              return next;
+                            });
+                          });
+                          event.target.value = "";
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              <section className="av-card" aria-labelledby="av-basic-title">
+                <h2 id="av-basic-title">Basic data</h2>
+                <label className="av-field">
+                  <span>Vehicle Description</span>
+                  <span className="av-control">
+                    <img src={carIcon} width={16} height={16} alt="" />
+                    <input
+                      type="text"
+                      value={avTitle}
+                      onChange={(event) => setAvTitle(event.target.value)}
+                      placeholder="e.g. BMW 3 Series"
+                    />
+                  </span>
+                </label>
+                <div className="av-row">
+                  <label className="av-field">
+                    <span>Brand</span>
+                    <span className="av-control">
+                      <img src={carIcon} width={16} height={16} alt="" />
+                      <select
+                        value={avBrand}
+                        onChange={(event) => {
+                          const next = event.target.value as BrandName | "";
+                          setAvBrand(next);
+                          setAvModel("");
+                        }}
+                      >
+                        <option value="">Select Brand</option>
+                        {BRANDS.map((brand) => (
+                          <option key={brand.name} value={brand.name}>
+                            {brand.name}
+                          </option>
+                        ))}
+                      </select>
+                      <img src={addVehicleChevronIcon} width={16} height={16} alt="" />
+                    </span>
+                  </label>
+                  <label className="av-field">
+                    <span>Model</span>
+                    <span className="av-control">
+                      <img src={carIcon} width={16} height={16} alt="" />
+                      <select
+                        value={avModel}
+                        onChange={(event) => setAvModel(event.target.value)}
+                        disabled={!avBrand}
+                      >
+                        <option value="">Select Model</option>
+                        {addVehicleModels.map((model) => (
+                          <option key={model} value={model}>
+                            {model}
+                          </option>
+                        ))}
+                      </select>
+                      <img src={addVehicleChevronIcon} width={16} height={16} alt="" />
+                    </span>
+                  </label>
+                </div>
+                <div className="av-row">
+                  <label className="av-field">
+                    <span>Registration (Year)</span>
+                    <span className="av-control">
+                      <img src={calendarIcon} width={16} height={16} alt="" />
+                      <input
+                        type="number"
+                        min={1980}
+                        max={2030}
+                        value={avYear}
+                        onChange={(event) => setAvYear(event.target.value)}
+                      />
+                    </span>
+                  </label>
+                  <label className="av-field">
+                    <span>Condition</span>
+                    <span className="av-control">
+                      <select
+                        value={avCondition}
+                        onChange={(event) => setAvCondition(event.target.value)}
+                      >
+                        <option value="">Choose</option>
+                        {VEHICLE_CONDITIONS.map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                      <img src={addVehicleChevronIcon} width={16} height={16} alt="" />
+                    </span>
+                  </label>
+                </div>
+                <div className="av-row">
+                  <label className="av-field">
+                    <span>Mileage</span>
+                    <span className="av-control">
+                      <img src={mileageIcon} width={16} height={16} alt="" />
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        value={avMileage}
+                        onChange={(event) => setAvMileage(event.target.value)}
+                      />
+                      <em>km</em>
+                    </span>
+                  </label>
+                  <label className="av-field">
+                    <span>Accident Vehicle</span>
+                    <span className="av-control">
+                      <select
+                        value={avAccident}
+                        onChange={(event) => setAvAccident(event.target.value)}
+                      >
+                        <option value="">Choose</option>
+                        {VEHICLE_ACCIDENT.map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                      <img src={addVehicleChevronIcon} width={16} height={16} alt="" />
+                    </span>
+                  </label>
+                </div>
+                <div className="av-row">
+                  <label className="av-field">
+                    <span>Body Type</span>
+                    <span className="av-control">
+                      <select value={avBody} onChange={(event) => setAvBody(event.target.value)}>
+                        <option value="">Choose</option>
+                        {VEHICLE_BODY_TYPES.map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                      <img src={addVehicleChevronIcon} width={16} height={16} alt="" />
+                    </span>
+                  </label>
+                  <label className="av-field">
+                    <span>Last MFK</span>
+                    <span className="av-control">
+                      <img src={calendarIcon} width={16} height={16} alt="" />
+                      <input
+                        type="text"
+                        value={avMfk}
+                        onChange={(event) => setAvMfk(event.target.value)}
+                        placeholder="DD.MM.YYYY"
+                      />
+                    </span>
+                  </label>
+                </div>
+                <div className="av-row">
+                  <label className="av-field">
+                    <span>Warranty</span>
+                    <span className="av-control">
+                      <select
+                        value={avWarranty}
+                        onChange={(event) => setAvWarranty(event.target.value)}
+                      >
+                        {VEHICLE_WARRANTY.map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                      <img src={addVehicleChevronIcon} width={16} height={16} alt="" />
+                    </span>
+                  </label>
+                  <label className="av-field">
+                    <span>Service History</span>
+                    <span className="av-control">
+                      <select
+                        value={avService}
+                        onChange={(event) => setAvService(event.target.value)}
+                      >
+                        <option value="">Choose</option>
+                        {VEHICLE_SERVICE.map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                      <img src={addVehicleChevronIcon} width={16} height={16} alt="" />
+                    </span>
+                  </label>
+                </div>
+                <label className="av-field">
+                  <span>Direct Import</span>
+                  <span className="av-control">
+                    <select value={avImport} onChange={(event) => setAvImport(event.target.value)}>
+                      <option value="">Choose</option>
+                      {VEHICLE_IMPORT.map((item) => (
+                        <option key={item} value={item}>
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+                    <img src={addVehicleChevronIcon} width={16} height={16} alt="" />
+                  </span>
+                </label>
+              </section>
+
+              <section className="av-card" aria-labelledby="av-about-title">
+                <h2 id="av-about-title">About the car</h2>
+                <label className="av-field">
+                  <span>Vehicle Description</span>
+                  <span className="av-hint">Rich text (paragraphs, bullets, bold)</span>
+                  <textarea
+                    className="av-textarea"
+                    value={avAbout}
+                    onChange={(event) => setAvAbout(event.target.value)}
+                    rows={5}
+                    placeholder="Describe the vehicle in detail (condition, equipment highlights, history, service, accessories)..."
+                  />
+                </label>
+              </section>
+
+              <section className="av-card" aria-labelledby="av-prices-title">
+                <h2 id="av-prices-title">Prices</h2>
+                <label className="av-field">
+                  <span>Price</span>
+                  <span className="av-control">
+                    <span className="av-chf">CHF</span>
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      value={avPrice}
+                      onChange={(event) => setAvPrice(event.target.value)}
+                      placeholder="0.00"
+                    />
+                  </span>
+                </label>
+              </section>
+
+              <section className="av-card" aria-labelledby="av-tech-title">
+                <h2 id="av-tech-title">Technical Specifications</h2>
+                <div className="av-row">
+                  <label className="av-field">
+                    <span>Fuel Type</span>
+                    <span className="av-control">
+                      <select value={avFuel} onChange={(event) => setAvFuel(event.target.value)}>
+                        <option value="">Choose</option>
+                        {VEHICLE_FUEL.map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                      <img src={addVehicleChevronIcon} width={16} height={16} alt="" />
+                    </span>
+                  </label>
+                  <label className="av-field">
+                    <span>Drive Type</span>
+                    <span className="av-control">
+                      <select value={avDrive} onChange={(event) => setAvDrive(event.target.value)}>
+                        <option value="">Choose</option>
+                        {VEHICLE_DRIVE.map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                      <img src={addVehicleChevronIcon} width={16} height={16} alt="" />
+                    </span>
+                  </label>
+                </div>
+                <div className="av-row">
+                  <label className="av-field">
+                    <span>Transmission</span>
+                    <span className="av-control">
+                      <select value={avTrans} onChange={(event) => setAvTrans(event.target.value)}>
+                        <option value="">Choose</option>
+                        {VEHICLE_TRANS.map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                      <img src={addVehicleChevronIcon} width={16} height={16} alt="" />
+                    </span>
+                  </label>
+                  <label className="av-field">
+                    <span>Gears</span>
+                    <span className="av-control">
+                      <select value={avGears} onChange={(event) => setAvGears(event.target.value)}>
+                        <option value="">Choose</option>
+                        {VEHICLE_GEARS.map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                      <img src={addVehicleChevronIcon} width={16} height={16} alt="" />
+                    </span>
+                  </label>
+                </div>
+                <div className="av-row">
+                  <label className="av-field">
+                    <span>Performance</span>
+                    <span className="av-control">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        value={avHp}
+                        onChange={(event) => setAvHp(event.target.value)}
+                      />
+                      <em>HP</em>
+                    </span>
+                  </label>
+                  <label className="av-field">
+                    <span>Engine Displacement</span>
+                    <span className="av-control">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        value={avCc}
+                        onChange={(event) => setAvCc(event.target.value)}
+                      />
+                      <em>cc</em>
+                    </span>
+                  </label>
+                </div>
+                <label className="av-field">
+                  <span>Cylinders</span>
+                  <span className="av-control">
+                    <select
+                      value={avCylinders}
+                      onChange={(event) => setAvCylinders(event.target.value)}
+                    >
+                      <option value="">Choose</option>
+                      {VEHICLE_CYLINDERS.map((item) => (
+                        <option key={item} value={item}>
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+                    <img src={addVehicleChevronIcon} width={16} height={16} alt="" />
+                  </span>
+                </label>
+              </section>
+
+              <section className="av-card" aria-labelledby="av-electric-title">
+                <h2 id="av-electric-title">Electric & Hybrid</h2>
+                <div className="av-row">
+                  <label className="av-field">
+                    <span>Reach</span>
+                    <span className="av-control">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        value={avReach}
+                        onChange={(event) => setAvReach(event.target.value)}
+                        placeholder="350"
+                      />
+                      <em>WLTP/km</em>
+                    </span>
+                  </label>
+                  <label className="av-field">
+                    <span>Battery Capacity</span>
+                    <span className="av-control">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        value={avBattery}
+                        onChange={(event) => setAvBattery(event.target.value)}
+                        placeholder="75"
+                      />
+                      <em>kWh</em>
+                    </span>
+                  </label>
+                </div>
+              </section>
+
+              <section className="av-card" aria-labelledby="av-weight-title">
+                <h2 id="av-weight-title">Weight Information</h2>
+                <div className="av-row">
+                  <label className="av-field">
+                    <span>Empty Weight</span>
+                    <span className="av-control">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        value={avEmptyWeight}
+                        onChange={(event) => setAvEmptyWeight(event.target.value)}
+                        placeholder="1500"
+                      />
+                      <em>kg</em>
+                    </span>
+                  </label>
+                  <label className="av-field">
+                    <span>Total Weight</span>
+                    <span className="av-control">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        value={avTotalWeight}
+                        onChange={(event) => setAvTotalWeight(event.target.value)}
+                        placeholder="2000"
+                      />
+                      <em>kg</em>
+                    </span>
+                  </label>
+                </div>
+                <label className="av-field">
+                  <span>Towing Capacity</span>
+                  <span className="av-control">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      value={avTowing}
+                      onChange={(event) => setAvTowing(event.target.value)}
+                      placeholder="1500"
+                    />
+                    <em>kg</em>
+                  </span>
+                </label>
+              </section>
+
+              <section className="av-card" aria-labelledby="av-color-title">
+                <h2 id="av-color-title">Color</h2>
+                <label className="av-field">
+                  <span>Exterior Color</span>
+                  <span className="av-control">
+                    <select value={avColor} onChange={(event) => setAvColor(event.target.value)}>
+                      <option value="">Choose</option>
+                      {VEHICLE_COLORS.map((item) => (
+                        <option key={item} value={item}>
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+                    <img src={addVehicleChevronIcon} width={16} height={16} alt="" />
+                  </span>
+                </label>
+              </section>
+
+              <section className="av-card" aria-labelledby="av-seats-title">
+                <h2 id="av-seats-title">Seats & Doors</h2>
+                <div className="av-row">
+                  <label className="av-field">
+                    <span>Seats</span>
+                    <span className="av-control">
+                      <input
+                        type="number"
+                        min={1}
+                        max={9}
+                        value={avSeats}
+                        onChange={(event) => setAvSeats(event.target.value)}
+                      />
+                    </span>
+                  </label>
+                  <label className="av-field">
+                    <span>Doors</span>
+                    <span className="av-control">
+                      <input
+                        type="number"
+                        min={2}
+                        max={5}
+                        value={avDoors}
+                        onChange={(event) => setAvDoors(event.target.value)}
+                      />
+                    </span>
+                  </label>
+                </div>
+              </section>
+
+              <section className="av-card" aria-labelledby="av-energy-title">
+                <h2 id="av-energy-title">Energy & Emissions</h2>
+                <div className="av-row">
+                  <label className="av-field">
+                    <span>Consumption</span>
+                    <span className="av-control">
+                      <input
+                        type="text"
+                        value={avConsumption}
+                        onChange={(event) => setAvConsumption(event.target.value)}
+                        placeholder="6.5"
+                      />
+                      <em>l/100km</em>
+                    </span>
+                  </label>
+                  <label className="av-field">
+                    <span>CO₂</span>
+                    <span className="av-control">
+                      <input
+                        type="text"
+                        value={avCo2}
+                        onChange={(event) => setAvCo2(event.target.value)}
+                        placeholder="120"
+                      />
+                      <em>g/km</em>
+                    </span>
+                  </label>
+                </div>
+              </section>
+
+              <section className="av-card" aria-labelledby="av-euro-title">
+                <h2 id="av-euro-title">Emission Standard</h2>
+                <label className="av-field">
+                  <span>Euro Norm</span>
+                  <span className="av-control">
+                    <select value={avEuro} onChange={(event) => setAvEuro(event.target.value)}>
+                      <option value="">Choose</option>
+                      {["Euro 4", "Euro 5", "Euro 6", "Euro 6d", "Euro 6e"].map((item) => (
+                        <option key={item} value={item}>
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+                    <img src={addVehicleChevronIcon} width={16} height={16} alt="" />
+                  </span>
+                </label>
+              </section>
+
+              <section className="av-card" aria-labelledby="av-equip-title">
+                <div className="av-equip-head">
+                  <h2 id="av-equip-title">Equipment</h2>
+                  <button
+                    type="button"
+                    className="av-equip-toggle"
+                    onClick={() => {
+                      const allSelected = EQUIPMENT_OPTIONS.every((item) => avEquipment[item]);
+                      setAvEquipment(
+                        allSelected
+                          ? {}
+                          : Object.fromEntries(EQUIPMENT_OPTIONS.map((item) => [item, true])),
+                      );
+                    }}
+                  >
+                    {EQUIPMENT_OPTIONS.every((item) => avEquipment[item])
+                      ? "Clear all"
+                      : "Select all"}
+                  </button>
+                </div>
+                <div className="av-equip-list">
+                  {EQUIPMENT_OPTIONS.map((item) => (
+                    <label className="av-equip-option" key={item}>
+                      <input
+                        type="checkbox"
+                        checked={Boolean(avEquipment[item])}
+                        onChange={() =>
+                          setAvEquipment((current) => ({
+                            ...current,
+                            [item]: !current[item],
+                          }))
+                        }
+                      />
+                      <span>{item}</span>
+                    </label>
+                  ))}
+                </div>
+              </section>
+
+              {addVehicleError && (
+                <p className="av-error" role="alert">
+                  {addVehicleError}
+                </p>
+              )}
+
+              <button
+                className="av-confirm-btn"
+                type="button"
+                onClick={screen === "edit-vehicle" ? confirmSaveEditVehicle : confirmAddVehicle}
+              >
+                {screen === "edit-vehicle" ? "Save & Edit" : "Confirm Vehicle"}
+              </button>
+            </div>
+          ) : screen === "my-cars" ? (
+            <div className="my-cars-page">
+              <section className="my-cars-intro" aria-labelledby="my-cars-intro-title">
+                <h2 id="my-cars-intro-title">My Vehicles</h2>
+                <p>
+                  Manage your vehicle listings, update specifications, and monitor your listing
+                  quota.
+                </p>
+              </section>
+
+              <section className="sell-slots-card" aria-labelledby="my-cars-slots-title">
+                <div className="sell-slots-head">
+                  <h2 id="my-cars-slots-title">Add New Vehicles</h2>
+                  <button
+                    className="sell-bulk-btn"
+                    type="button"
+                    onClick={bulkUpdateSellerVehicles}
+                  >
+                    Bulk Update
+                  </button>
+                </div>
+                <div
+                  className="sell-slots-progress"
+                  role="progressbar"
+                  aria-valuemin={0}
+                  aria-valuemax={sellerSlotLimit}
+                  aria-valuenow={usedSellerSlots}
+                  aria-label="Used listing slots"
+                >
+                  <span style={{ width: `${sellSlotProgress}%` }} />
+                </div>
+                <div className="sell-slots-stats">
+                  <div className="sell-stat sell-stat-remaining">
+                    <strong>{remainingSellerSlots}</strong>
+                    <span>Remaining Slots</span>
+                  </div>
+                  <div className="sell-stat">
+                    <strong>{usedSellerSlots}</strong>
+                    <span>Used Cars</span>
+                  </div>
+                  <div className="sell-stat">
+                    <strong>{sellerSlotLimit}</strong>
+                    <span>Total Limit</span>
+                  </div>
+                </div>
+              </section>
+
+              <section className="my-cars-controls" aria-label="Vehicle listing controls">
+                <label className="my-cars-search">
+                  <img src={myCarsSearchIcon} width={18} height={18} alt="" />
+                  <input
+                    type="search"
+                    value={myCarsQuery}
+                    onChange={(event) => {
+                      setMyCarsQuery(event.target.value);
+                      setMyCarsPage(1);
+                    }}
+                    placeholder="Search vehicles by make or model..."
+                    aria-label="Search vehicles by make or model"
+                  />
+                </label>
+
+                <button className="my-cars-add-btn" type="button" onClick={openAddVehicle}>
+                  + Add Vehicle
+                </button>
+
+                <div className="my-cars-filters" role="tablist" aria-label="Listing status">
+                  {(
+                    [
+                      { id: "all", label: "All" },
+                      { id: "active", label: "Active" },
+                      { id: "inactive", label: "Inactive" },
+                      { id: "sold", label: "Sold" },
+                    ] as const
+                  ).map((filter) => (
+                    <button
+                      key={filter.id}
+                      type="button"
+                      role="tab"
+                      className={
+                        myCarsStatus === filter.id
+                          ? `my-cars-filter my-cars-filter-${filter.id} my-cars-filter-active-state`
+                          : `my-cars-filter my-cars-filter-${filter.id}`
+                      }
+                      aria-selected={myCarsStatus === filter.id}
+                      onClick={() => {
+                        setMyCarsStatus(filter.id);
+                        setMyCarsPage(1);
+                        setSellMenuOpenId(null);
+                      }}
+                    >
+                      {filter.label}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="my-cars-results-row">
+                  <p>
+                    {myCarsFiltered.length} Vehicle{myCarsFiltered.length === 1 ? "" : "s"}
+                  </p>
+                  <label className="my-cars-sort">
+                    <select
+                      value={myCarsSort}
+                      onChange={(event) => {
+                        setMyCarsSort(event.target.value as MyCarsSort);
+                        setMyCarsPage(1);
+                      }}
+                      aria-label="Sort vehicles"
+                    >
+                      <option value="newest">Newest First</option>
+                      <option value="oldest">Oldest First</option>
+                      <option value="price-desc">Price: High to Low</option>
+                      <option value="price-asc">Price: Low to High</option>
+                    </select>
+                    <img src={myCarsSortIcon} width={14} height={14} alt="" />
+                  </label>
+                </div>
+
+                <div className="sell-page-size" aria-label="Vehicles per page">
+                  <span>Per page:</span>
+                  {([10, 25, 50, 100] as const).map((size) => (
+                    <button
+                      key={size}
+                      type="button"
+                      className={
+                        myCarsPageSize === size
+                          ? "sell-page-size-btn sell-page-size-btn-active"
+                          : "sell-page-size-btn"
+                      }
+                      aria-pressed={myCarsPageSize === size}
+                      onClick={() => {
+                        setMyCarsPageSize(size);
+                        setMyCarsPage(1);
+                        setSellMenuOpenId(null);
+                      }}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              {myCarsNote && (
+                <p className="sell-note" role="status">
+                  {myCarsNote}
+                </p>
+              )}
+
+              {pagedMyCars.length === 0 ? (
+                <p className="empty">No vehicles match these filters.</p>
+              ) : (
+                <div className="list sell-vehicle-list my-cars-list">
+                  {pagedMyCars.map((car) => renderSellerVehicleCard(car))}
+                </div>
+              )}
+
+              {myCarsFiltered.length > myCarsPageSize && (
+                <div className="sell-pagination">
+                  <button
+                    type="button"
+                    className="sell-page-nav"
+                    disabled={myCarsPage <= 1}
+                    onClick={() => {
+                      setSellMenuOpenId(null);
+                      setMyCarsPage((page) => Math.max(1, page - 1));
+                    }}
+                  >
+                    Previous
+                  </button>
+                  <span>
+                    Page {myCarsPage} of {myCarsTotalPages}
+                  </span>
+                  <button
+                    type="button"
+                    className="sell-page-nav"
+                    disabled={myCarsPage >= myCarsTotalPages}
+                    onClick={() => {
+                      setSellMenuOpenId(null);
+                      setMyCarsPage((page) => Math.min(myCarsTotalPages, page + 1));
+                    }}
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : screen === "test-drive-requests" ? (
+            <div className="tdr-page">
+              <section className="tdr-summary" aria-label="Request status totals">
+                <div className="tdr-summary-row">
+                  <article className="tdr-stat tdr-stat-stack">
+                    <strong className="tdr-stat-upcoming">{testDriveRequestStats.upcoming}</strong>
+                    <span>Upcoming</span>
+                  </article>
+                  <article className="tdr-stat tdr-stat-stack">
+                    <strong className="tdr-stat-accepted">{testDriveRequestStats.accepted}</strong>
+                    <span>Accepted</span>
+                  </article>
+                </div>
+                <div className="tdr-summary-row">
+                  <article className="tdr-stat tdr-stat-inline">
+                    <strong>{testDriveRequestStats.rejected}</strong>
+                    <span>Rejected</span>
+                  </article>
+                  <article className="tdr-stat tdr-stat-inline">
+                    <strong>{testDriveRequestStats.completed}</strong>
+                    <span>Completed</span>
+                  </article>
+                </div>
+              </section>
+
+              {myCarsNote && (
+                <p className="tdr-detail-note" role="status">
+                  {myCarsNote}
+                </p>
+              )}
+
+              {testDriveRequests.length === 0 ? (
+                <p className="empty">No test drive requests yet.</p>
+              ) : (
+                <div className="tdr-list">
+                  {testDriveRequests.map((request) => {
+                    const locked = isTestDriveRequestLocked(request);
+                    return (
+                    <button
+                      key={request.id}
+                      type="button"
+                      className={locked ? "tdr-card tdr-card-locked" : "tdr-card"}
+                      onClick={() => openTestDriveRequestDetails(request.id)}
+                      aria-label={`Open ${request.vehicleTitle} request details`}
+                    >
+                      <div className="tdr-card-top">
+                        <span className="tdr-card-id">#{request.number}</span>
+                        <span className={`tdr-status tdr-status-${request.status}`}>
+                          {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                        </span>
+                      </div>
+
+                      <div className="tdr-customer">
+                        <img
+                          className="tdr-avatar"
+                          src={request.customerAvatar}
+                          width={40}
+                          height={40}
+                          alt=""
+                        />
+                        <div className="tdr-customer-copy">
+                          <strong>{request.customerName}</strong>
+                          <span>{request.customerEmail}</span>
+                          <span className="tdr-customer-phone">{request.customerPhone}</span>
+                        </div>
+                      </div>
+
+                      <div className="tdr-vehicle">
+                        <img src={request.vehicleImage} width={88} height={64} alt="" />
+                        <div className="tdr-vehicle-copy">
+                          <strong>{request.vehicleTitle}</strong>
+                          <span>{request.vehicleSubtitle}</span>
+                        </div>
+                      </div>
+
+                      <div className="tdr-date">
+                        <img src={tdrCalendarIcon} width={18} height={18} alt="" />
+                        <span>Date</span>
+                        <strong>{request.dateLabel}</strong>
+                      </div>
+                      {locked && (
+                        <p className="tdr-card-lock-note">
+                          Locked until {request.dateDetailLabel}
+                        </p>
+                      )}
+                    </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          ) : screen === "test-drive-request-details" && selectedTestDriveRequest ? (
+            <div className="tdr-detail-page">
+              <section className="tdr-detail-card" aria-labelledby="tdr-customer-title">
+                <div className="tdr-detail-card-head">
+                  <img src={tdrDetailProfileIcon} width={18} height={18} alt="" />
+                  <h2 id="tdr-customer-title">Customer Information</h2>
+                </div>
+                <hr className="tdr-detail-rule" />
+                <div className="tdr-detail-customer">
+                  <img
+                    className="tdr-detail-avatar"
+                    src={selectedTestDriveRequest.customerAvatar}
+                    width={52}
+                    height={52}
+                    alt=""
+                  />
+                  <div className="tdr-detail-customer-copy">
+                    <h3>{selectedTestDriveRequest.customerName}</h3>
+                    <p>
+                      <img src={tdrDetailMailIcon} width={14} height={14} alt="" />
+                      <span>{selectedTestDriveRequest.customerEmail}</span>
+                    </p>
+                    <p>
+                      <img src={tdrDetailCallIcon} width={14} height={14} alt="" />
+                      <span>{selectedTestDriveRequest.customerPhone}</span>
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              <section className="tdr-detail-card" aria-labelledby="tdr-vehicle-title">
+                <div className="tdr-detail-card-head">
+                  <img src={tdrDetailCarIcon} width={18} height={18} alt="" />
+                  <h2 id="tdr-vehicle-title">Vehicle Information</h2>
+                </div>
+                <hr className="tdr-detail-rule" />
+                <div className="tdr-detail-vehicle">
+                  <img
+                    src={selectedTestDriveRequest.vehicleImage}
+                    width={96}
+                    height={72}
+                    alt=""
+                  />
+                  <div className="tdr-detail-vehicle-copy">
+                    <h3>{selectedTestDriveRequest.vehicleTitle}</h3>
+                    <p>
+                      <span>Brand:</span> {selectedTestDriveRequest.vehicleBrand}
+                    </p>
+                    <p>
+                      <span>Model:</span> {selectedTestDriveRequest.vehicleModel}
+                    </p>
+                    <p>
+                      <span>Year:</span> {selectedTestDriveRequest.vehicleYear}
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              <section className="tdr-detail-card" aria-labelledby="tdr-booking-title">
+                <div className="tdr-detail-card-head">
+                  <img src={tdrDetailCalendarIcon} width={18} height={18} alt="" />
+                  <h2 id="tdr-booking-title">Booking Details</h2>
+                </div>
+                <hr className="tdr-detail-rule" />
+                <div className="tdr-detail-booking">
+                  <div className="tdr-detail-booking-row">
+                    <div className="tdr-detail-booking-field">
+                      <span>Date</span>
+                      <strong>{selectedTestDriveRequest.dateDetailLabel}</strong>
+                    </div>
+                    <div className="tdr-detail-booking-field">
+                      <span>Status</span>
+                      <em
+                        className={`tdr-detail-status tdr-detail-status-${selectedTestDriveRequest.status}`}
+                      >
+                        {selectedTestDriveRequest.status.charAt(0).toUpperCase() +
+                          selectedTestDriveRequest.status.slice(1)}
+                      </em>
+                    </div>
+                  </div>
+                  <hr className="tdr-detail-rule tdr-detail-rule-soft" />
+                  <div className="tdr-detail-booking-row">
+                    <div className="tdr-detail-booking-field">
+                      <span>Price</span>
+                      <strong>CHF {selectedTestDriveRequest.vehiclePrice.toLocaleString("en-US")}</strong>
+                    </div>
+                    <div className="tdr-detail-booking-field">
+                      <span>Cancelled by customer</span>
+                      <strong>{selectedTestDriveRequest.cancelledByCustomer ? "YES" : "NO"}</strong>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {(() => {
+                const locked = isTestDriveRequestLocked(selectedTestDriveRequest);
+                const canDecide = selectedTestDriveRequest.status === "upcoming";
+                const canComplete = selectedTestDriveRequest.status === "accepted";
+                const isCompleted = selectedTestDriveRequest.status === "completed";
+
+                return (
+                  <>
+                    {locked && (
+                      <p className="tdr-detail-lock" role="status">
+                        Accepted. This car is locked for{" "}
+                        <strong>{selectedTestDriveRequest.customerName}</strong> until{" "}
+                        <strong>{selectedTestDriveRequest.dateDetailLabel}</strong>.
+                      </p>
+                    )}
+                    {canComplete && !locked && (
+                      <p className="tdr-detail-note" role="status">
+                        Test drive date has passed. Mark the drive complete when finished.
+                      </p>
+                    )}
+                    {isCompleted && (
+                      <p className="tdr-detail-note" role="status">
+                        This test drive is completed.
+                      </p>
+                    )}
+                    {testDriveRequestNote && canDecide && (
+                      <p className="tdr-detail-note" role="status">
+                        {testDriveRequestNote}
+                      </p>
+                    )}
+                    {canDecide && (
+                      <div className="tdr-detail-actions">
+                        <button
+                          type="button"
+                          className="tdr-detail-reject"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            rejectTestDriveRequest(selectedTestDriveRequest.id);
+                          }}
+                        >
+                          <img src={tdrDetailRejectIcon} width={16} height={16} alt="" />
+                          Reject
+                        </button>
+                        <button
+                          type="button"
+                          className="tdr-detail-accept"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            acceptTestDriveRequest(selectedTestDriveRequest.id);
+                          }}
+                        >
+                          <img src={tdrDetailAcceptIcon} width={16} height={16} alt="" />
+                          Accept
+                        </button>
+                      </div>
+                    )}
+                    {canComplete && (
+                      <div className="tdr-detail-actions">
+                        <button
+                          type="button"
+                          className="tdr-detail-complete"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            completeTestDriveRequest(selectedTestDriveRequest.id);
+                          }}
+                        >
+                          <img src={tdrDetailAcceptIcon} width={16} height={16} alt="" />
+                          Complete Drive
+                        </button>
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           ) : screen === "my-favourites" ? (
             <div className="favourites-page">
@@ -2817,7 +7802,7 @@ export default function App() {
                 <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
                   <IconChevronLeft />
                 </button>
-                <h1 className="search-hub-title favourites-title">My Favourite</h1>
+                <h1 className="search-hub-title favourites-title">My Favourites</h1>
               </div>
 
               <section className="favourites-intro" aria-labelledby="favourites-intro-title">
@@ -2858,7 +7843,9 @@ export default function App() {
                 <div className="profile-hero-copy">
                   <h2>{profileFullName || "Your name"}</h2>
                   <p>{profileEmail || "Add your email"}</p>
-                  <span className="profile-role">Buyer</span>
+                  <span className={accountRoleBadgeClass(accountRole)}>
+                    {accountRoleLabel(accountRole)}
+                  </span>
                 </div>
               </section>
 
@@ -2905,13 +7892,25 @@ export default function App() {
                       aria-label="Gender"
                     >
                       <option value="">Select gender</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Other">Other</option>
-                      <option value="Prefer not to say">Prefer not to say</option>
+                      {PROFILE_GENDERS.map((item) => (
+                        <option key={item} value={item}>
+                          {item}
+                        </option>
+                      ))}
                     </select>
                     <IconChevronDown />
                   </span>
+                </label>
+
+                <label className="profile-field">
+                  <span>Occupation</span>
+                  <input
+                    type="text"
+                    value={profileOccupation}
+                    onChange={(event) => setProfileOccupation(event.target.value)}
+                    placeholder="Enter occupation"
+                    aria-label="Occupation"
+                  />
                 </label>
 
                 <label className="profile-field">
@@ -2923,7 +7922,6 @@ export default function App() {
                       onChange={(event) => setProfileBirthDate(event.target.value)}
                       aria-label="Date of birth"
                     />
-                    <img src={calendarIcon} width={16} height={16} alt="" />
                   </span>
                 </label>
 
@@ -3305,11 +8303,26 @@ export default function App() {
             </div>
           ) : screen === "vehicle-details" && selectedVehicle && selectedVehicleDealer ? (
             (() => {
-              const extras = getListingExtras(selectedVehicle, selectedVehicleDealer);
+              const extras = getListingExtras(
+                selectedVehicle,
+                selectedVehicleDealer,
+                listingDetailOverrides[selectedVehicle.id],
+              );
               const year = listingYear(selectedVehicle.date);
-              const dealerListings = LISTINGS.filter((car) =>
-                selectedVehicleDealer.vehicleIds.includes(car.id),
-              ).length;
+              const dealerListings = isOwnListing
+                ? sellerListingIds.length
+                : LISTINGS.filter((car) =>
+                    selectedVehicleDealer.vehicleIds.includes(car.id),
+                  ).length;
+              const ownerLocationLabel = [profileZip, profileCity]
+                .filter(Boolean)
+                .join(" ");
+              const displayLocation = isOwnListing
+                ? ownerLocationLabel || extras.location
+                : extras.location;
+              const sellerLocation = isOwnListing
+                ? `${displayLocation} · ${accountRoleLabel(accountRole)}`
+                : `${extras.location} · Seller`;
               const glance = [
                 { label: "Mileage", value: selectedVehicle.mileage, icon: specMileageIcon },
                 { label: "Power", value: extras.power, icon: specPowerIcon },
@@ -3318,7 +8331,6 @@ export default function App() {
                 { label: "Drive", value: extras.drive, icon: specDriveIcon },
                 { label: "Year", value: year, icon: specYearIcon },
               ];
-              const sellerLocation = `${extras.location} · Seller`;
               const basicRows = [
                 { label: "Brand", value: selectedVehicle.brand },
                 { label: "Model", value: selectedVehicle.model },
@@ -3334,7 +8346,7 @@ export default function App() {
                 { label: "Service History", value: extras.serviceHistory },
                 { label: "Warranty", value: extras.warranty },
                 { label: "Price", value: chfMoney(selectedVehicle.price) },
-                { label: "Location", value: extras.location },
+                { label: "Location", value: displayLocation },
               ];
               const technicalRows = [
                 { label: "Engine Displacement", value: extras.engine },
@@ -3375,45 +8387,145 @@ export default function App() {
               ];
 
               return (
-                <div className="vehicle-details">
+                <div
+                  className={
+                    isOwnListing
+                      ? "vehicle-details vehicle-details-owner"
+                      : "vehicle-details"
+                  }
+                >
                   <div className="search-hub-top vehicle-details-top">
                     <button className="hub-back" type="button" aria-label="Go back" onClick={goBack}>
                       <IconChevronLeft />
                     </button>
                     <h1 className="search-hub-title">Car Details</h1>
-                    <div className="vehicle-details-actions">
-                      <button
-                        className="vehicle-details-icon-btn"
-                        type="button"
-                        aria-label="Schedule test drive"
-                        onClick={openTestDrive}
-                      >
-                        <img src={calendarIcon} width={18} height={18} alt="" />
-                      </button>
-                      <button
-                        className="vehicle-details-icon-btn"
-                        type="button"
-                        aria-label="Add to comparisons"
-                        aria-pressed={compareIds.includes(selectedVehicle.id)}
-                        onClick={() => addVehicleToComparisons(selectedVehicle)}
-                      >
-                        <img src={compareIcon} width={18} height={18} alt="" />
-                      </button>
-                      <button
-                        className="vehicle-details-icon-btn"
-                        type="button"
-                        aria-label={saved[selectedVehicle.id] ? "Remove from saved" : "Save vehicle"}
-                        aria-pressed={Boolean(saved[selectedVehicle.id])}
-                        onClick={() =>
-                          setSaved((current) => ({
-                            ...current,
-                            [selectedVehicle.id]: !current[selectedVehicle.id],
-                          }))
-                        }
-                      >
-                        <img src={heartIcon} width={16} height={16} alt="" />
-                      </button>
-                    </div>
+                    {isOwnListing ? (
+                      <div className="vehicle-details-actions vehicle-details-owner-menu-wrap">
+                        <button
+                          className="vehicle-details-icon-btn"
+                          type="button"
+                          aria-label={`Manage ${selectedVehicle.name}`}
+                          aria-expanded={ownerDetailsMenuOpen}
+                          onClick={() =>
+                            setOwnerDetailsMenuOpen((current) => !current)
+                          }
+                        >
+                          <img src={sellMenuIcon} width={16} height={16} alt="" />
+                        </button>
+                        {ownerDetailsMenuOpen && (
+                          <div
+                            className="sell-vehicle-menu vehicle-details-owner-menu"
+                            role="menu"
+                            aria-label="ACTIONS"
+                          >
+                            <div className="sell-vehicle-menu-head">ACTIONS</div>
+                            <button
+                              type="button"
+                              role="menuitem"
+                              className="sell-vehicle-menu-item"
+                              onClick={() => {
+                                setOwnerDetailsMenuOpen(false);
+                                openEditVehicle(selectedVehicle.id);
+                              }}
+                            >
+                              <img src={vehicleActionEditIcon} width={14} height={14} alt="" />
+                              <span>Edit Vehicle</span>
+                            </button>
+                            <button
+                              type="button"
+                              role="menuitem"
+                              className={
+                                (sellerListingStatus[selectedVehicle.id] ?? "active") === "inactive"
+                                  ? "sell-vehicle-menu-item sell-vehicle-menu-activate"
+                                  : "sell-vehicle-menu-item sell-vehicle-menu-pause"
+                              }
+                              onClick={() =>
+                                (sellerListingStatus[selectedVehicle.id] ?? "active") === "inactive"
+                                  ? activateSellerListing(selectedVehicle.id)
+                                  : openPauseListingDialog(selectedVehicle.id)
+                              }
+                            >
+                              <span
+                                className={
+                                  (sellerListingStatus[selectedVehicle.id] ?? "active") ===
+                                  "inactive"
+                                    ? "sell-vehicle-menu-icon sell-vehicle-menu-icon-activate"
+                                    : "sell-vehicle-menu-icon sell-vehicle-menu-icon-pause"
+                                }
+                                aria-hidden="true"
+                              >
+                                <img src={vehicleActionPauseIcon} width={8} height={8} alt="" />
+                              </span>
+                              <span>
+                                {(sellerListingStatus[selectedVehicle.id] ?? "active") === "inactive"
+                                  ? "Activate Listing"
+                                  : "Pause / Deactivate"}
+                              </span>
+                            </button>
+                            <button
+                              type="button"
+                              role="menuitem"
+                              className="sell-vehicle-menu-item sell-vehicle-menu-sold"
+                              onClick={() => openSoldListingDialog(selectedVehicle.id)}
+                            >
+                              <span
+                                className="sell-vehicle-menu-icon sell-vehicle-menu-icon-sold"
+                                aria-hidden="true"
+                              >
+                                <img src={vehicleActionSoldIcon} width={10} height={10} alt="" />
+                              </span>
+                              <span>Mark as Sold</span>
+                            </button>
+                            <div className="sell-vehicle-menu-divider" role="presentation" />
+                            <button
+                              type="button"
+                              role="menuitem"
+                              className="sell-vehicle-menu-item sell-vehicle-menu-danger"
+                              onClick={() => openDeleteListingDialog(selectedVehicle.id)}
+                            >
+                              <img src={vehicleActionDeleteIcon} width={14} height={14} alt="" />
+                              <span>Delete Listing</span>
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="vehicle-details-actions">
+                        <button
+                          className="vehicle-details-icon-btn"
+                          type="button"
+                          aria-label="Schedule test drive"
+                          onClick={openTestDrive}
+                        >
+                          <img src={calendarIcon} width={18} height={18} alt="" />
+                        </button>
+                        <button
+                          className="vehicle-details-icon-btn"
+                          type="button"
+                          aria-label="Add to comparisons"
+                          aria-pressed={compareIds.includes(selectedVehicle.id)}
+                          onClick={() => addVehicleToComparisons(selectedVehicle)}
+                        >
+                          <img src={compareIcon} width={18} height={18} alt="" />
+                        </button>
+                        <button
+                          className="vehicle-details-icon-btn"
+                          type="button"
+                          aria-label={
+                            saved[selectedVehicle.id] ? "Remove from saved" : "Save vehicle"
+                          }
+                          aria-pressed={Boolean(saved[selectedVehicle.id])}
+                          onClick={() =>
+                            setSaved((current) => ({
+                              ...current,
+                              [selectedVehicle.id]: !current[selectedVehicle.id],
+                            }))
+                          }
+                        >
+                          <img src={heartIcon} width={16} height={16} alt="" />
+                        </button>
+                      </div>
+                    )}
                   </div>
 
                   <div className="vehicle-details-scroll">
@@ -3451,22 +8563,28 @@ export default function App() {
                         <p className="vehicle-details-price">{chfMoney(selectedVehicle.price)}</p>
                         <p className="vehicle-details-location">
                           <img src={pinIcon} width={16} height={16} alt="" />
-                          {extras.location}
+                          {displayLocation}
                         </p>
-                        <hr className="vehicle-details-divider" />
-                        <div className="vehicle-details-dealer-row">
-                          <span>
-                            <strong>{dealerListings}</strong> Vehicles online
-                          </span>
-                          <button
-                            type="button"
-                            className="vehicle-details-dealer-link"
-                            onClick={() => openVehicleDealerFromListing(selectedVehicleDealer.id)}
-                          >
-                            vehicles from this dealer
-                            <IconChevronRight />
-                          </button>
-                        </div>
+                        {!isOwnListing && (
+                          <>
+                            <hr className="vehicle-details-divider" />
+                            <div className="vehicle-details-dealer-row">
+                              <span>
+                                <strong>{dealerListings}</strong> Vehicles online
+                              </span>
+                              <button
+                                type="button"
+                                className="vehicle-details-dealer-link"
+                                onClick={() =>
+                                  openVehicleDealerFromListing(selectedVehicleDealer.id)
+                                }
+                              >
+                                vehicles from this dealer
+                                <IconChevronRight />
+                              </button>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </section>
 
@@ -3492,25 +8610,54 @@ export default function App() {
                     <section className="vehicle-details-panel">
                       <div className="vehicle-details-seller">
                         <h3>Seller Information</h3>
-                        <div className="vehicle-details-seller-card">
-                          <span className="dealer-detail-avatar" aria-hidden="true">
-                            <IconDealerAvatar />
-                          </span>
-                          <div className="vehicle-details-seller-copy">
-                            <h4>{selectedVehicleDealer.name}</h4>
-                            <p>
-                              <IconPinSmall />
-                              {sellerLocation}
-                            </p>
-                            <button
-                              type="button"
-                              className="vehicle-details-dealer-stock"
-                              onClick={() => openVehicleDealerFromListing(selectedVehicleDealer.id)}
-                            >
-                              {dealerListings} vehicles online
-                            </button>
+                        {isOwnListing ? (
+                          <button
+                            type="button"
+                            className="vehicle-details-seller-card vehicle-details-owner-card"
+                            onClick={openMyProfile}
+                            aria-label="Open My Profile"
+                          >
+                            <img
+                              className="vehicle-details-owner-avatar"
+                              src={profilePhoto}
+                              width={52}
+                              height={52}
+                              alt=""
+                            />
+                            <div className="vehicle-details-seller-copy">
+                              <h4>{profileFullName || "Your name"}</h4>
+                              <p>
+                                <IconPinSmall />
+                                {sellerLocation}
+                              </p>
+                              <span className="vehicle-details-dealer-stock">
+                                {dealerListings} vehicles online
+                              </span>
+                            </div>
+                          </button>
+                        ) : (
+                          <div className="vehicle-details-seller-card">
+                            <span className="dealer-detail-avatar" aria-hidden="true">
+                              <IconDealerAvatar />
+                            </span>
+                            <div className="vehicle-details-seller-copy">
+                              <h4>{selectedVehicleDealer.name}</h4>
+                              <p>
+                                <IconPinSmall />
+                                {sellerLocation}
+                              </p>
+                              <button
+                                type="button"
+                                className="vehicle-details-dealer-stock"
+                                onClick={() =>
+                                  openVehicleDealerFromListing(selectedVehicleDealer.id)
+                                }
+                              >
+                                {dealerListings} vehicles online
+                              </button>
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </div>
                     </section>
 
@@ -3539,20 +8686,28 @@ export default function App() {
                     <section className="vehicle-details-tail" aria-hidden="true" />
                   </div>
 
-                  <div className="vehicle-details-cta">
-                    <div>
-                      <span>Total Price</span>
-                      <strong>{chfMoney(selectedVehicle.price)}</strong>
+                  {!isOwnListing && (
+                    <div className="vehicle-details-cta">
+                      <div>
+                        <span>Total Price</span>
+                        <strong>{chfMoney(selectedVehicle.price)}</strong>
+                      </div>
+                      <a
+                        className="vehicle-details-email"
+                        href={`mailto:${selectedVehicleDealer.email}`}
+                      >
+                        <IconMail />
+                        Email
+                      </a>
+                      <a
+                        className="vehicle-details-contact"
+                        href={`tel:${selectedVehicleDealer.phone}`}
+                      >
+                        <IconPhone />
+                        Contact
+                      </a>
                     </div>
-                    <a className="vehicle-details-email" href={`mailto:${selectedVehicleDealer.email}`}>
-                      <IconMail />
-                      Email
-                    </a>
-                    <a className="vehicle-details-contact" href={`tel:${selectedVehicleDealer.phone}`}>
-                      <IconPhone />
-                      Contact
-                    </a>
-                  </div>
+                  )}
                 </div>
               );
             })()
@@ -4341,12 +9496,37 @@ export default function App() {
                 <div className="profile-account-copy">
                   <strong>{profileHubDisplayName(profileFullName)}</strong>
                   <p>{profileEmail}</p>
-                  <span className="profile-role">Buyer</span>
+                  <span className={accountRoleBadgeClass(accountRole)}>
+                    {accountRoleLabel(accountRole)}
+                  </span>
                 </div>
               </button>
 
               <div className="profile-menu">
                 <div className="profile-menu-group">
+                  {canSell &&
+                    PROFILE_MENU_SELLER.map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        className="profile-menu-item"
+                        onClick={() => handleSellerMenu(item.id)}
+                      >
+                        <span className="profile-menu-label">
+                          <img src={item.icon} width={16} height={16} alt="" />
+                          <span>{item.label}</span>
+                        </span>
+                        <span className="profile-menu-trail">
+                          <img
+                            className="profile-menu-chevron"
+                            src={profileMenuChevron}
+                            width={6}
+                            height={10}
+                            alt=""
+                          />
+                        </span>
+                      </button>
+                    ))}
                   {PROFILE_MENU_PRIMARY.map((item) => (
                     <button
                       key={item.id}
@@ -4359,15 +9539,16 @@ export default function App() {
                       onClick={() => {
                         if (item.id === "favourites") openMyFavourites();
                         if (item.id === "settings") openAppSettings();
+                        if (item.id === "language") openSelectLanguage();
                       }}
                     >
                       <span className="profile-menu-label">
                         <img src={item.icon} width={16} height={16} alt="" />
-                        <span>{item.label}</span>
+                        <span>{canSell && item.id === "favourites" ? "My Favourite" : item.label}</span>
                       </span>
                       <span className="profile-menu-trail">
-                        {"meta" in item && item.meta ? (
-                          <span className="profile-menu-meta">{item.meta}</span>
+                        {item.id === "language" ? (
+                          <span className="profile-menu-meta">{appLanguageMenuMeta(appLanguageCode)}</span>
                         ) : null}
                         <img
                           className="profile-menu-chevron"
@@ -4385,7 +9566,12 @@ export default function App() {
 
                 <div className="profile-menu-group">
                   {PROFILE_MENU_SECONDARY.map((item) => (
-                    <button key={item.id} type="button" className="profile-menu-item">
+                    <button
+                      key={item.id}
+                      type="button"
+                      className="profile-menu-item"
+                      onClick={() => handleProfileSecondaryMenu(item.id)}
+                    >
                       <span className="profile-menu-label">
                         <img src={item.icon} width={16} height={16} alt="" />
                         <span>{item.label}</span>
@@ -4399,7 +9585,11 @@ export default function App() {
                       />
                     </button>
                   ))}
-                  <button type="button" className="profile-menu-item profile-menu-item-danger">
+                  <button
+                    type="button"
+                    className="profile-menu-item profile-menu-item-danger"
+                    onClick={openSignOutConfirm}
+                  >
                     <span className="profile-menu-label">
                       <img src={profileMenuSignOut} width={14} height={14} alt="" />
                       <span>Sign Out</span>
@@ -4409,47 +9599,191 @@ export default function App() {
               </div>
             </div>
           ) : onPlanTab ? (
-            <div className="plan-page">
-              <div className="plan-subscription-card">
-                <div className="plan-subscription-symbol" aria-hidden="true">
-                  <img src={planLayersIcon} width={20} height={20} alt="" />
+            isSeller ? (
+              <div className="sell-page">
+                <div className="plan-subscription-card">
+                  <div className="plan-subscription-symbol" aria-hidden="true">
+                    <img src={planLayersIcon} width={20} height={20} alt="" />
+                  </div>
+                  <div className="plan-subscription-copy">
+                    <h2>Need More Vehicle Listings?</h2>
+                    <p>
+                      Add another subscription plan to list more vehicles. Your current plan stays
+                      active.
+                    </p>
+                  </div>
+                  <button className="plan-view-btn" type="button" onClick={openSubscriptionPlans}>
+                    View Plans
+                  </button>
                 </div>
-                <div className="plan-subscription-copy">
-                  <h2>Choose a Subscription Plan</h2>
-                  <p>
-                    Unlock more vehicle listings, faster visibility, and premium tools to sell faster
-                    on AutoPlaza.
-                  </p>
-                </div>
-                <button className="plan-view-btn" type="button">
-                  View Plans
-                </button>
-              </div>
 
-              <section className="plan-why" aria-labelledby="plan-why-title">
-                <h3 id="plan-why-title">WHY AUTOPLAZA.CH is the best choice?</h3>
-                <p className="plan-why-lead">
-                  Full cost certainty, maximum reach in Switzerland and state-of-the-art sales tools.
-                </p>
-                <ul className="plan-benefits">
-                  {PLAN_BENEFITS.map((benefit) => (
-                    <li key={benefit.title} className="plan-benefit-card">
-                      <img
-                        className="plan-benefit-icon"
-                        src={planBenefitIcon}
-                        width={40}
-                        height={40}
-                        alt=""
-                      />
-                      <div className="plan-benefit-copy">
-                        <strong>{benefit.title}</strong>
-                        <p>{benefit.copy}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            </div>
+                <section className="sell-slots-card" aria-labelledby="sell-slots-title">
+                  <div className="sell-slots-head">
+                    <h2 id="sell-slots-title">Add New Vehicles</h2>
+                    <button
+                      className="sell-bulk-btn"
+                      type="button"
+                      onClick={bulkUpdateSellerVehicles}
+                    >
+                      Bulk Update
+                    </button>
+                  </div>
+                  <div
+                    className="sell-slots-progress"
+                    role="progressbar"
+                    aria-valuemin={0}
+                    aria-valuemax={sellerSlotLimit}
+                    aria-valuenow={usedSellerSlots}
+                    aria-label="Used listing slots"
+                  >
+                    <span style={{ width: `${sellSlotProgress}%` }} />
+                  </div>
+                  <div className="sell-slots-stats">
+                    <div className="sell-stat sell-stat-remaining">
+                      <strong>{remainingSellerSlots}</strong>
+                      <span>Remaining Slots</span>
+                    </div>
+                    <div className="sell-stat">
+                      <strong>{usedSellerSlots}</strong>
+                      <span>Used Cars</span>
+                    </div>
+                    <div className="sell-stat">
+                      <strong>{sellerSlotLimit}</strong>
+                      <span>Total Limit</span>
+                    </div>
+                  </div>
+                </section>
+
+                <div className="sell-divider" aria-hidden="true" />
+
+                <section className="sell-manage" aria-labelledby="sell-manage-title">
+                  <div className="sell-manage-head">
+                    <div>
+                      <h2 id="sell-manage-title">Manage My Vehicles</h2>
+                      <p>Manage and add you cars</p>
+                    </div>
+                  </div>
+
+                  {(sellNote || subscriptionNote) && (
+                    <p className="sell-note" role="status">
+                      {sellNote ?? subscriptionNote}
+                    </p>
+                  )}
+
+                  <div className="sell-results-row">
+                    <p>
+                      {usedSellerSlots} Vehicle{usedSellerSlots === 1 ? "" : "s"}
+                    </p>
+                  </div>
+
+                  <div className="sell-page-size" aria-label="Vehicles per page">
+                    <span>Per page:</span>
+                    {([1, 2, 3] as const).map((size) => (
+                      <button
+                        key={size}
+                        type="button"
+                        className={
+                          sellPageSize === size
+                            ? "sell-page-size-btn sell-page-size-btn-active"
+                            : "sell-page-size-btn"
+                        }
+                        aria-pressed={sellPageSize === size}
+                        onClick={() => {
+                          setSellPageSize(size);
+                          setSellPage(1);
+                          setSellMenuOpenId(null);
+                        }}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+
+                  {pagedSellerListings.length === 0 ? (
+                    <p className="empty">
+                      No vehicles listed yet.
+                    </p>
+                  ) : (
+                    <div className="list sell-vehicle-list">
+                      {pagedSellerListings.map((car) => renderSellerVehicleCard(car))}
+                    </div>
+                  )}
+
+                  {usedSellerSlots > sellPageSize && (
+                    <div className="sell-pagination">
+                      <button
+                        type="button"
+                        className="sell-page-nav"
+                        disabled={sellPage <= 1}
+                        onClick={() => {
+                          setSellMenuOpenId(null);
+                          setSellPage((page) => Math.max(1, page - 1));
+                        }}
+                      >
+                        Previous
+                      </button>
+                      <span>
+                        Page {sellPage} of {sellTotalPages}
+                      </span>
+                      <button
+                        type="button"
+                        className="sell-page-nav"
+                        disabled={sellPage >= sellTotalPages}
+                        onClick={() => {
+                          setSellMenuOpenId(null);
+                          setSellPage((page) => Math.min(sellTotalPages, page + 1));
+                        }}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  )}
+                </section>
+              </div>
+            ) : (
+              <div className="plan-page">
+                <div className="plan-subscription-card">
+                  <div className="plan-subscription-symbol" aria-hidden="true">
+                    <img src={planLayersIcon} width={20} height={20} alt="" />
+                  </div>
+                  <div className="plan-subscription-copy">
+                    <h2>Choose a Subscription Plan</h2>
+                    <p>
+                      Unlock more vehicle listings, faster visibility, and premium tools to sell
+                      faster on AutoPlaza.
+                    </p>
+                  </div>
+                  <button className="plan-view-btn" type="button" onClick={openSubscriptionPlans}>
+                    View Plans
+                  </button>
+                </div>
+
+                <section className="plan-why" aria-labelledby="plan-why-title">
+                  <h3 id="plan-why-title">WHY AUTOPLAZA.CH is the best choice?</h3>
+                  <p className="plan-why-lead">
+                    Full cost certainty, maximum reach in Switzerland and state-of-the-art sales
+                    tools.
+                  </p>
+                  <ul className="plan-benefits">
+                    {PLAN_BENEFITS.map((benefit) => (
+                      <li key={benefit.title} className="plan-benefit-card">
+                        <img
+                          className="plan-benefit-icon"
+                          src={benefit.icon}
+                          width={40}
+                          height={40}
+                          alt=""
+                        />
+                        <div className="plan-benefit-copy">
+                          <strong>{benefit.title}</strong>
+                          <p>{benefit.copy}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              </div>
+            )
           ) : (
           <div className="home">
             <section className="hero-wrap" aria-label="Featured">
@@ -4807,7 +10141,7 @@ export default function App() {
                     alt=""
                   />
                 </span>
-                <span className="tab-label">Plan</span>
+                <span className="tab-label">{isSeller ? "Sell" : "Plan"}</span>
               </button>
               <button
                 className={onProfileNavActive ? "tab tab-active" : "tab"}
@@ -4833,6 +10167,587 @@ export default function App() {
             <div className="phone-footer-surface" />
             <div className="phone-footer-indicator" />
           </footer>
+        )}
+
+        {listingActionDialog &&
+          (() => {
+            const dialogVehicle =
+              customListings.find((car) => car.id === listingActionDialog.vehicleId) ??
+              LISTINGS.find((car) => car.id === listingActionDialog.vehicleId) ??
+              null;
+            const vehicleLabel = dialogVehicle?.name ?? dialogVehicle?.brand ?? "Vehicle";
+
+            if (listingActionDialog.type === "pause") {
+              return (
+                <div
+                  className="listing-action-modal"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="listing-pause-title"
+                >
+                  <button
+                    className="listing-action-backdrop"
+                    type="button"
+                    aria-label="Dismiss deactivate listing"
+                    onClick={closeListingActionDialog}
+                  />
+                  <div className="listing-action-card listing-pause-card">
+                    <div className="listing-action-head">
+                      <span className="listing-pause-emblem" aria-hidden="true">
+                        <span className="listing-pause-ring">
+                          <img src={listingPauseIcon} width={12} height={12} alt="" />
+                        </span>
+                      </span>
+                      <div className="listing-action-titles">
+                        <h2 id="listing-pause-title">Deactivate Listing</h2>
+                        <p>{vehicleLabel}</p>
+                      </div>
+                      <button
+                        type="button"
+                        className="listing-action-close"
+                        aria-label="Close"
+                        onClick={closeListingActionDialog}
+                      >
+                        <img src={listingDialogCloseIcon} width={24} height={24} alt="" />
+                      </button>
+                    </div>
+                    <div className="listing-action-body">
+                      <hr className="listing-action-rule" />
+                      <p className="listing-action-copy">
+                        Are you sure you want to deactivate this listing? It will be taken offline
+                        and moved to Inactive. You can reactivate it anytime.
+                      </p>
+                      <hr className="listing-action-rule" />
+                    </div>
+                    <div className="listing-action-actions">
+                      <button
+                        type="button"
+                        className="listing-action-cancel"
+                        onClick={closeListingActionDialog}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="listing-pause-confirm"
+                        onClick={confirmPauseListing}
+                      >
+                        Confirm
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
+            if (listingActionDialog.type === "sold") {
+              return (
+                <div
+                  className="listing-action-modal"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="listing-sold-title"
+                >
+                  <button
+                    className="listing-action-backdrop"
+                    type="button"
+                    aria-label="Dismiss mark as sold"
+                    onClick={closeListingActionDialog}
+                  />
+                  <div className="listing-action-card listing-sold-card">
+                    <div className="listing-action-head">
+                      <span className="listing-sold-emblem" aria-hidden="true">
+                        <span className="listing-sold-ring">
+                          <img src={listingSoldCheckIcon} width={12} height={12} alt="" />
+                        </span>
+                      </span>
+                      <div className="listing-action-titles">
+                        <h2 id="listing-sold-title">Mark as Sold</h2>
+                        <p>{vehicleLabel}</p>
+                      </div>
+                      <button
+                        type="button"
+                        className="listing-action-close"
+                        aria-label="Close"
+                        onClick={closeListingActionDialog}
+                      >
+                        <img src={listingDialogCloseIcon} width={20} height={20} alt="" />
+                      </button>
+                    </div>
+                    <div className="listing-action-body">
+                      <hr className="listing-action-rule" />
+                      <p className="listing-action-copy listing-sold-copy">
+                        Are you sure you want to mark this vehicle as sold? The listing will be set
+                        offline and auto-renewal in Stripe will be permanently terminated.
+                      </p>
+                      <hr className="listing-action-rule" />
+                    </div>
+                    <div className="listing-action-actions">
+                      <button
+                        type="button"
+                        className="listing-action-cancel"
+                        onClick={closeListingActionDialog}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="listing-sold-confirm"
+                        onClick={confirmSoldListing}
+                      >
+                        Yes, Mark as Sold
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
+            return (
+              <div
+                className="listing-action-modal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="listing-delete-title"
+              >
+                <button
+                  className="listing-action-backdrop"
+                  type="button"
+                  aria-label="Dismiss delete listing"
+                  onClick={closeListingActionDialog}
+                />
+                <div className="listing-action-card listing-delete-card">
+                  {listingActionDialog.step === "confirm" ? (
+                    <>
+                      <div className="listing-action-head">
+                        <span className="listing-delete-emblem" aria-hidden="true">
+                          <img src={listingDeleteAlertIcon} width={20} height={20} alt="" />
+                        </span>
+                        <div className="listing-action-titles">
+                          <h2 id="listing-delete-title">Delete Vehicle</h2>
+                          <p>{vehicleLabel}</p>
+                        </div>
+                        <button
+                          type="button"
+                          className="listing-action-close"
+                          aria-label="Close"
+                          onClick={closeListingActionDialog}
+                        >
+                          <img src={listingDialogCloseIcon} width={20} height={20} alt="" />
+                        </button>
+                      </div>
+                      <div className="listing-action-body">
+                        <hr className="listing-action-rule" />
+                        <p className="listing-action-copy">
+                          Are you sure you want to delete this listing? The vehicle will be removed
+                          and automatic renewal will be cancelled automatically.
+                        </p>
+                        <hr className="listing-action-rule" />
+                      </div>
+                      <div className="listing-action-actions">
+                        <button
+                          type="button"
+                          className="listing-action-cancel"
+                          onClick={closeListingActionDialog}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          className="listing-delete-confirm"
+                          onClick={requestDeleteListingOtp}
+                        >
+                          Delete Listing
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="listing-action-head">
+                        <span className="listing-delete-emblem" aria-hidden="true">
+                          <img src={listingDeleteAlertIcon} width={20} height={20} alt="" />
+                        </span>
+                        <div className="listing-action-titles">
+                          <h2 id="listing-delete-title">Confirm deletion</h2>
+                          <p>{vehicleLabel}</p>
+                        </div>
+                        <button
+                          type="button"
+                          className="listing-action-close"
+                          aria-label="Close"
+                          onClick={closeListingActionDialog}
+                        >
+                          <img src={listingDialogCloseIcon} width={20} height={20} alt="" />
+                        </button>
+                      </div>
+                      <div className="listing-action-body listing-delete-otp-body">
+                        <hr className="listing-action-rule" />
+                        <p className="listing-action-copy">
+                          We sent a 6-digit code to{" "}
+                          <strong>{profileEmail || "your registered email"}</strong>. Enter it
+                          below to permanently delete this listing.
+                        </p>
+                        <p className="listing-delete-otp-demo" aria-live="polite">
+                          Demo code (no email server): <strong>{listingDeleteOtpCode}</strong>
+                        </p>
+                        <label className="listing-delete-otp-field">
+                          <span>Verification code</span>
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            autoComplete="one-time-code"
+                            maxLength={6}
+                            value={listingDeleteOtpInput}
+                            onChange={(event) => {
+                              setListingDeleteOtpInput(
+                                event.target.value.replace(/\D/g, "").slice(0, 6),
+                              );
+                              setListingDeleteOtpError(null);
+                            }}
+                            placeholder="Enter 6-digit OTP"
+                            aria-invalid={Boolean(listingDeleteOtpError)}
+                          />
+                        </label>
+                        {listingDeleteOtpError && (
+                          <p className="listing-delete-otp-error" role="alert">
+                            {listingDeleteOtpError}
+                          </p>
+                        )}
+                        <hr className="listing-action-rule" />
+                      </div>
+                      <div className="listing-action-actions">
+                        <button
+                          type="button"
+                          className="listing-action-cancel"
+                          onClick={closeListingActionDialog}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          className="listing-delete-confirm"
+                          onClick={confirmDeleteListingOtp}
+                        >
+                          Confirm OTP
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            );
+          })()}
+
+        {signOutOpen && (
+          <div
+            className="sign-out-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="sign-out-title"
+          >
+            <button
+              className="sign-out-backdrop"
+              type="button"
+              aria-label="Dismiss sign out"
+              onClick={closeSignOutConfirm}
+            />
+            <div className="sign-out-card">
+              <div className="sign-out-symbol" aria-hidden="true">
+                <img src={signOutIcon} width={25} height={25} alt="" />
+              </div>
+              <div className="sign-out-copy">
+                <h2 id="sign-out-title">Sign Out?</h2>
+                <p>Are you sure you want to sign out of your AutoPlaza account?</p>
+                <p className="sign-out-note">
+                  Your saved vehicles will be here when you sign in again.
+                </p>
+              </div>
+              <div className="sign-out-actions">
+                <button className="sign-out-confirm" type="button" onClick={confirmSignOut}>
+                  Sign Out
+                </button>
+                <button className="sign-out-cancel" type="button" onClick={closeSignOutConfirm}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {paymentGatewayOpen && (
+          <div
+            className="payment-gateway-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="payment-gateway-title"
+          >
+            <button
+              className="payment-gateway-backdrop"
+              type="button"
+              aria-label="Dismiss payment gateway"
+              onClick={closePaymentGateway}
+            />
+            <div className="payment-gateway-card">
+              {paymentGatewayStep === "choose" || !selectedPaymentGateway ? (
+                <>
+                  <div className="payment-gateway-copy">
+                    <h2 id="payment-gateway-title">Choose payment method</h2>
+                    <p>
+                      Complete your subscription for{" "}
+                      <strong>{subscriptionCheckoutAmount()}</strong>
+                      {subscriptionAudience === "dealers"
+                        ? ` · ${dealerVehicleCount} vehicles / month`
+                        : " per vehicle / month"}
+                      .
+                    </p>
+                  </div>
+
+                  <div className="payment-gateway-list" role="listbox" aria-label="Payment gateways">
+                    {PAYMENT_GATEWAYS.map((gateway) => (
+                      <button
+                        key={gateway.id}
+                        type="button"
+                        role="option"
+                        aria-selected={selectedPaymentGateway === gateway.id}
+                        className={`payment-gateway-option payment-gateway-${gateway.tone}`}
+                        onClick={() => openGatewayPaymentPage(gateway.id)}
+                      >
+                        <img
+                          className="payment-gateway-icon"
+                          src={gateway.icon}
+                          width={40}
+                          height={40}
+                          alt=""
+                        />
+                        <span className="payment-gateway-option-copy">
+                          <strong>{gateway.name}</strong>
+                          <span>{gateway.subtitle}</span>
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    className="payment-gateway-cancel"
+                    type="button"
+                    onClick={closePaymentGateway}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <>
+                  {(() => {
+                    const gateway = PAYMENT_GATEWAYS.find(
+                      (item) => item.id === selectedPaymentGateway,
+                    );
+                    if (!gateway) return null;
+                    return (
+                      <>
+                        <div className="payment-gateway-pay-head">
+                          <button
+                            className="payment-gateway-back"
+                            type="button"
+                            onClick={backToPaymentGatewayList}
+                          >
+                            Back
+                          </button>
+                          <div className="payment-gateway-pay-brand">
+                            <img src={gateway.icon} width={40} height={40} alt="" />
+                            <div>
+                              <h2 id="payment-gateway-title">{gateway.name} payment</h2>
+                              <p>
+                                Pay <strong>{subscriptionCheckoutAmount()}</strong> for{" "}
+                                {subscriptionPackageLabel()}.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {gateway.id === "stripe" && (
+                          <div className="payment-gateway-form">
+                            <label className="payment-gateway-field">
+                              <span>Cardholder name</span>
+                              <input
+                                type="text"
+                                value={payCardName}
+                                onChange={(event) => {
+                                  setPayCardName(event.target.value);
+                                  setPaymentError(null);
+                                }}
+                                placeholder="Name on card"
+                                autoComplete="cc-name"
+                              />
+                            </label>
+                            <label className="payment-gateway-field">
+                              <span>Card number</span>
+                              <input
+                                type="text"
+                                inputMode="numeric"
+                                value={payCardNumber}
+                                onChange={(event) => {
+                                  setPayCardNumber(formatCardNumberInput(event.target.value));
+                                  setPaymentError(null);
+                                }}
+                                placeholder="ACCT-000035"
+                                autoComplete="cc-number"
+                              />
+                            </label>
+                            <div className="payment-gateway-row">
+                              <label className="payment-gateway-field">
+                                <span>Expiry</span>
+                                <input
+                                  type="text"
+                                  inputMode="numeric"
+                                  value={payCardExpiry}
+                                  onChange={(event) => {
+                                    setPayCardExpiry(formatCardExpiryInput(event.target.value));
+                                    setPaymentError(null);
+                                  }}
+                                  placeholder="MM/YY"
+                                  autoComplete="cc-exp"
+                                />
+                              </label>
+                              <label className="payment-gateway-field">
+                                <span>CVC</span>
+                                <input
+                                  type="password"
+                                  inputMode="numeric"
+                                  value={payCardCvc}
+                                  onChange={(event) => {
+                                    setPayCardCvc(event.target.value.replace(/\D/g, "").slice(0, 4));
+                                    setPaymentError(null);
+                                  }}
+                                  placeholder="123"
+                                  autoComplete="cc-csc"
+                                />
+                              </label>
+                            </div>
+                          </div>
+                        )}
+
+                        {gateway.id === "paypal" && (
+                          <div className="payment-gateway-form">
+                            <label className="payment-gateway-field">
+                              <span>PayPal email</span>
+                              <input
+                                type="email"
+                                value={payPaypalEmail}
+                                onChange={(event) => {
+                                  setPayPaypalEmail(event.target.value);
+                                  setPaymentError(null);
+                                }}
+                                placeholder="name@example.com"
+                                autoComplete="email"
+                              />
+                            </label>
+                            <label className="payment-gateway-field">
+                              <span>PayPal password</span>
+                              <input
+                                type="password"
+                                value={payPaypalPassword}
+                                onChange={(event) => {
+                                  setPayPaypalPassword(event.target.value);
+                                  setPaymentError(null);
+                                }}
+                                placeholder="Enter password"
+                                autoComplete="current-password"
+                              />
+                            </label>
+                          </div>
+                        )}
+
+                        {gateway.id === "fastpay" && (
+                          <div className="payment-gateway-form">
+                            <label className="payment-gateway-field">
+                              <span>FastPay mobile number</span>
+                              <input
+                                type="tel"
+                                value={payFastpayMobile}
+                                onChange={(event) => {
+                                  setPayFastpayMobile(event.target.value.replace(/[^\d+\s]/g, ""));
+                                  setPaymentError(null);
+                                }}
+                                placeholder="01XXXXXXXXX"
+                                autoComplete="tel"
+                              />
+                            </label>
+                            <label className="payment-gateway-field">
+                              <span>FastPay PIN</span>
+                              <input
+                                type="password"
+                                inputMode="numeric"
+                                value={payFastpayPin}
+                                onChange={(event) => {
+                                  setPayFastpayPin(event.target.value.replace(/\D/g, "").slice(0, 6));
+                                  setPaymentError(null);
+                                }}
+                                placeholder="Enter PIN"
+                              />
+                            </label>
+                          </div>
+                        )}
+
+                        {gateway.id === "sslcommerz" && (
+                          <div className="payment-gateway-form">
+                            <label className="payment-gateway-field">
+                              <span>Payment option</span>
+                              <select
+                                value={paySslMethod}
+                                onChange={(event) => {
+                                  setPaySslMethod(event.target.value);
+                                  setPaymentError(null);
+                                }}
+                              >
+                                <option value="card">Visa / Mastercard</option>
+                                <option value="bkash">bKash</option>
+                                <option value="nagad">Nagad</option>
+                                <option value="rocket">Rocket</option>
+                              </select>
+                            </label>
+                            <label className="payment-gateway-field">
+                              <span>Mobile number</span>
+                              <input
+                                type="tel"
+                                value={paySslMobile}
+                                onChange={(event) => {
+                                  setPaySslMobile(event.target.value.replace(/[^\d+\s]/g, ""));
+                                  setPaymentError(null);
+                                }}
+                                placeholder="01XXXXXXXXX"
+                                autoComplete="tel"
+                              />
+                            </label>
+                          </div>
+                        )}
+
+                        {paymentError && (
+                          <p className="payment-gateway-error" role="alert">
+                            {paymentError}
+                          </p>
+                        )}
+
+                        <button
+                          className="payment-gateway-confirm"
+                          type="button"
+                          onClick={confirmPaymentPurchase}
+                        >
+                          Confirm payment
+                        </button>
+                        <button
+                          className="payment-gateway-cancel"
+                          type="button"
+                          onClick={closePaymentGateway}
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    );
+                  })()}
+                </>
+              )}
+            </div>
+          </div>
         )}
       </div>
     </div>
